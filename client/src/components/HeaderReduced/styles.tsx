@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-export default function Header() {
-    const StyledHeader = styled.header`
+export const StyledHeader = styled.header`
     z-index: 100;
     background-color: #1A2A3A;
     position:fixed;
@@ -11,13 +10,6 @@ export default function Header() {
     height: 50px;
     color: #FFF;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     `
-
-    return (
-        <StyledHeader>
-            <h1>Social Torcedor</h1>
-        </StyledHeader>
-    )
-}

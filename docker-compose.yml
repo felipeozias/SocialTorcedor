@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  back:
+    build: "./server"
+    container_name: server
+    restart: always
+    ports:
+      - "8000:8000"
+  front:
+    build: "./client"
+    container_name: client
+    restart: always
+    ports:
+      - "80:80"

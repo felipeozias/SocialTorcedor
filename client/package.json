@@ -44,6 +44,5 @@
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
     "@types/file-loader":"^5.0.1"
-
   }
 }
