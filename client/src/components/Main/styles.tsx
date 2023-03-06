@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-export default function Main() {
-    const StyledMain = styled.main`
+export const StyledMain = styled.main`
     position:absolute;
     scroll-behavior: smooth;
     margin: 50px 0 0;
@@ -15,10 +14,3 @@ export default function Main() {
     align-items: center;
     flex-wrap: wrap;
     `
-    return (
-        <StyledMain>
-            <h1>Social Torcedor</h1>
-            <img src='./favicon.png' alt="Logo" />
-        </StyledMain>
-    )
-}
