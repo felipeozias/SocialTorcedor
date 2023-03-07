@@ -1,13 +1,14 @@
 * {
-  /* font-family: 'Inter', sans-serif;
+    /* font-family: 'Inter', sans-serif;
   font-family: 'Lobster', cursive;
   font-family: 'Share', cursive; */
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
 }
 
 body {
-  background-color: #3F4A54;
-  background-color: #657687;
+    background-color: #3f4a54;
+    background-color: #657687;
 }
