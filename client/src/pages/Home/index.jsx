@@ -1,6 +1,7 @@
 import Header from "../../components/Header";
 import Main from "../../components/Main/Main";
 import Footer from "../../components/Footer";
+import GroupModal from "../../components/Modals/GroupModal";
 
 //------ Declared context ------
 import DataUserForHeader from "../../components/contexts/DataUserForHeader";
