@@ -1,16 +1,16 @@
-version: "3.9"
+version: "2"
 
 services:
 
   redis:
     image: redis:latest
     container_name: redis
-    command: redis-server --requirepass admin --user admin
+    command: redis-server --requirepass socialtorcedor --user socialtorcedor
     restart: always
     ports:
       - "6379:6379"
     volumes:
-      - /home/ozias/redis-data:/data
+      - /home/${USER_NAME}/app/redis-data:/data
 
   mongo:
     image: mongo:latest
@@ -19,10 +19,10 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /home/ubuntu/mongo-data:/data/db
+      - /home/${USER_NAME}/app/mongo-data:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_ROOT_USERNAME=socialtorcedor
+      - MONGO_INITDB_ROOT_PASSWORD=socialtorcedor
 
   back:
     build: "./server"
@@ -30,8 +30,14 @@ services:
     restart: always
     ports:
       - "8000:8000"
-    # volumes:
-    #   - /home/ozias/server-node:/server
+    volumes:
+      - /home/${USER_NAME}/app/server-node:/server
+    environment:
+      - REDIS_DB=redis
+      - MONGO_DB=mongo
+    depends_on:
+      - redis
+      - mongo
 
   front:
     build: "./client"
@@ -39,8 +45,10 @@ services:
     restart: always
     ports:
       - "8080:80"
-    # volumes:
-    #   - /home/ozias/nginx-http:/usr/share/nginx/html
+    volumes:
+      - /home/${USER_NAME}/app:/usr/nginx/
+    depends_on:
+      - back
 
 networks:
   social_torcedor:
