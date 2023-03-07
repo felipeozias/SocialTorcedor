@@ -46,7 +46,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - /home/${USER_NAME}/app/nginx-http:/usr/share/nginx/html
+      - /home/${USER_NAME}/app:/usr/nginx/
     depends_on:
       - back
 
