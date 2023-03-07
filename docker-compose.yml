@@ -1,14 +1,47 @@
-version: "3.8"
+version: "3.9"
+
 services:
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: redis-server --requirepass admin --user admin
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /home/ozias/redis-data:/data
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/ubuntu/mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+
   back:
     build: "./server"
     container_name: server
     restart: always
     ports:
       - "8000:8000"
+    # volumes:
+    #   - /home/ozias/server-node:/server
+
   front:
     build: "./client"
     container_name: client
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"
+    # volumes:
+    #   - /home/ozias/nginx-http:/usr/share/nginx/html
+
+networks:
+  social_torcedor:
+    driver: bridge
