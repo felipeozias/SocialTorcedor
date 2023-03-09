@@ -11,13 +11,25 @@ export default function Footer() {
                 Devs Torcedores
             </p>
             <ContainerIcons>
-                <a href="https://www.facebook.com">
+                <a
+                    href="https://www.facebook.com"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     <Icons src={FacebookIcon} alt="Logo do Facebook"></Icons>
                 </a>
-                <a href="https://www.instagram.com">
+                <a
+                    href="https://www.instagram.com"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     <Icons src={InstagramIcon} alt="Logo do Instagram"></Icons>
                 </a>
-                <a href="https://www.gmail.com">
+                <a
+                    href="https://www.gmail.com"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     <Icons src={GmailIcon} alt="Logo do Instagram"></Icons>
                 </a>
             </ContainerIcons>
