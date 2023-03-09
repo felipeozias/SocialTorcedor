@@ -15,15 +15,22 @@ export const Template = styled.div`
     position: fixed;
     right: 0;
     gap: 0.5rem;
+    @media (max-width: 1000px) {
+        width: 40vw;
+    }
+    @media (max-width: 780px) {
+        width: 100vw;
+    }
 `;
 
 export const Logo = styled.img<IProps>`
-    width: 150px;
+    height: 15vh;
     content: url(${(props) => props.image});
 `;
 
 export const NameLogo = styled.h1`
     color: #fff;
+    font-size: 5vh;
     font-family: "Lobster", cursive;
 `;
 
@@ -33,7 +40,7 @@ export const BoxLogo = styled.div`
     justify-content: center;
     flex-direction: column;
     position: fixed;
-    top: 10%;
+    top: 6vh;
 `;
 
 export const BoxChild = styled.div`

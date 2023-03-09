@@ -1,4 +1,4 @@
-import { ContainerIcons, Icons, StyledFooter } from "./styles";
+import { ContainerIcons, Icons, MessageFooter, StyledFooter } from "./styles";
 import FacebookIcon from "../../assets/icon-facebook.png";
 import InstagramIcon from "../../assets/icon-instagram.png";
 import GmailIcon from "../../assets/icon-gmail.png";
@@ -6,10 +6,10 @@ import GmailIcon from "../../assets/icon-gmail.png";
 export default function Footer() {
     return (
         <StyledFooter>
-            <p>
+            <MessageFooter>
                 © 2023 por Social Torcedores. Orgulhosamente criado pela equipe
                 Devs Torcedores
-            </p>
+            </MessageFooter>
             <ContainerIcons>
                 <a
                     href="https://www.facebook.com"
