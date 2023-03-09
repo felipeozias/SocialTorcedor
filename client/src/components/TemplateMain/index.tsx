@@ -1,4 +1,4 @@
-import { Logo, Template, Title } from "./style";
+import { BoxChild, BoxLogo, Logo, NameLogo, Template } from "./style";
 import ImageLogo from "../../assets/logo.png";
 
 interface IProps {
@@ -9,9 +9,11 @@ interface IProps {
 export default function TemplateLogin(props: IProps): JSX.Element {
     return (
         <Template>
-            <Logo image={ImageLogo} />
-            <Title>{props.title}</Title>
-            {props.children}
+            <BoxLogo>
+                <Logo image={ImageLogo} />
+                <NameLogo>Social Torcedor</NameLogo>
+            </BoxLogo>
+            <BoxChild>{props.children}</BoxChild>
         </Template>
     );
 }

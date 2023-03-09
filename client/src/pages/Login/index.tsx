@@ -7,7 +7,7 @@ import FormLogin from "../../components/FormLogin";
 export default function Login(): JSX.Element {
     return (
         <>
-            <HeaderReduced />
+            {/*  <HeaderReduced /> */}
             <BackgroundFan />
             <TemplateLogin title="ENTRAR">
                 <FormLogin />
