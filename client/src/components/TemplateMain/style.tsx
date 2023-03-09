@@ -18,15 +18,24 @@ export const Template = styled.div`
 `;
 
 export const Logo = styled.img<IProps>`
-    position: fixed;
-    top: 110px;
     width: 150px;
     content: url(${(props) => props.image});
 `;
 
-export const Title = styled.h1`
-    color: #ffffff;
-    font-weight: bolder;
-    padding: 30px;
-    margin-top: 50px;
+export const NameLogo = styled.h1`
+    color: #fff;
+    font-family: "Lobster", cursive;
+`;
+
+export const BoxLogo = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    top: 10%;
+`;
+
+export const BoxChild = styled.div`
+    margin-top: 20%;
 `;
