@@ -11,7 +11,7 @@ export const Form = styled.form`
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.4rem;
 `;
 
 export const Message = styled.p`

@@ -13,4 +13,8 @@ export const BoxBackground = styled.div<IBackground>`
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    @media (max-width: 1000px) {
+        background-position-x: 55%;
+    }
 `;

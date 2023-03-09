@@ -6,7 +6,7 @@ export default function FormLogin(): JSX.Element {
     return (
         <Form>
             <BoxInputs>
-                <InputUser type="email">E-mail:</InputUser>
+                <InputUser type="text">Apelido:</InputUser>
                 <InputUser type="password">Senha:</InputUser>
             </BoxInputs>
 
