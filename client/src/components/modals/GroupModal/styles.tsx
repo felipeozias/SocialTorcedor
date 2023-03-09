@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StyledModal = styled.form`
+z-index: 1001;
 height: 45vh;
 width: 40.5vw;
 font-size: 15px;
@@ -103,4 +104,21 @@ export const StyledButton = styled.button`
     box-shadow: 0.5px 0.5px 0.5px 0.5px #f3f3f3;
     background-color: #054a18;
     color: #f3f3f3;
+    margin-top: 1.4vh;
+`
+export const StyledButton2 = styled.button`
+    :hover {
+        cursor: pointer;
+        border: none;
+        box-shadow: 0.5px 0.5px 1px 1px #f3f3f3;
+    }
+    :active {
+        opacity: 0.7;
+    }
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px #f3f3f3;
+    background-color: #054a18;
+    color: #f3f3f3;
+    width: 12vw;
 `
