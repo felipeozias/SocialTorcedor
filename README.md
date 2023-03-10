@@ -1,3 +1,3 @@
 # Social Torcedor
 
-## Rede social para orcedores e futebol
+## Rede social para torcedores de futebol
