@@ -1,4 +1,4 @@
-import { ChangeEvent, ChildContextProvider, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { StyledModal, StyledInputName, StyledTextArea, StyledSectionLeft, StyledSectionRight, StyledInputFile, StyledLabelFile, StyledButton, StyledImg, StyledButton2 } from "./styles";
 import DataList from "../DataList"
 import { simulateDb } from "../DataList";
@@ -63,8 +63,13 @@ export default function GroupModal(props: Imodal) {
             <ModalOverlay isOpen={props.isOpen} toggle={() => {}} />
             <NotificationModal message={notifMessage} isOpen={isOpen} toggle={props.toggle}/>
                 <StyledModal onSubmit={ (e) => {
-                    props.toggle();
                     usersAdded = [];
+                    setNotifMessage(`Grupo criado com sucesso!`);
+                    setIsOpen(true);
+                    setTimeout( () => {
+                        setIsOpen(false);
+                        props.toggle();
+                    },2000)
                     e.preventDefault();
                 }}>
                     <StyledSectionLeft>

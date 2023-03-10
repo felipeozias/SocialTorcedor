@@ -105,6 +105,8 @@ export const StyledButton = styled.button`
     background-color: #054a18;
     color: #f3f3f3;
     margin-top: 1.4vh;
+    height: 5vh;
+    font-size: 1.4vw;
 `
 export const StyledButton2 = styled.button`
     :hover {
@@ -121,4 +123,6 @@ export const StyledButton2 = styled.button`
     background-color: #054a18;
     color: #f3f3f3;
     width: 12vw;
+    height: 5vh;
+    font-size: 1.4vw;
 `
