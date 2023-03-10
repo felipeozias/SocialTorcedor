@@ -12,3 +12,9 @@ body {
     background-color: #3f4a54;
     background-color: #657687;
 }
+
+.link-style {
+    text-decoration: none;
+    font-weight: bold;
+    color: #f3f3f3;
+}

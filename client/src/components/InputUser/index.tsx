@@ -7,6 +7,7 @@ interface IProps {
     children: string | JSX.Element | JSX.Element[];
     type: string;
     password?: boolean;
+    name?: string;
 }
 
 export default function InputUser(props: IProps): JSX.Element {
@@ -22,7 +23,10 @@ export default function InputUser(props: IProps): JSX.Element {
         <LabelInput>
             {props.children}
             <BoxInputIcon>
-                <Input type={!visible ? props.type : "text"} />
+                <Input
+                    type={!visible ? props.type : "text"}
+                    name={props.name}
+                />
                 {props.password && (
                     <IconVisible source={icon} onClick={passwordVisibility} />
                 )}

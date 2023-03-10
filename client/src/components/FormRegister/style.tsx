@@ -5,13 +5,13 @@ export const Form = styled.form`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 2.8rem;
+    gap: 1.2rem;
 `;
 
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.3rem;
 `;
 
 export const Message = styled.p`
