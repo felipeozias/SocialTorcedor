@@ -1,5 +1,6 @@
 import Button from "../Button";
 import InputUser from "../InputUser";
+import SelectType from "../SelectType";
 import { BoxInputs, Form, Link, Message } from "./style";
 
 export default function FormRegister(): JSX.Element {
@@ -8,7 +9,7 @@ export default function FormRegister(): JSX.Element {
             <BoxInputs>
                 <InputUser type="text">Apelido:</InputUser>
                 <InputUser type="text">Nome:</InputUser>
-                <InputUser type="select">Time do coração:</InputUser>
+                <SelectType></SelectType>
                 <InputUser type="password">Senha:</InputUser>
                 <InputUser type="password">Confimar Senha:</InputUser>
             </BoxInputs>
