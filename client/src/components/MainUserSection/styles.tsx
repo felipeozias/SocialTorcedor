@@ -20,7 +20,7 @@ export const StyledInputContainer = styled.div`
     background-color: #EAEAEA;
     width: 21vw;
     height: 5vh;
-    border-radius: 15px;
+    border-radius: 8px;
     display: flex;
 `
 export const StyledInput = styled.input`
@@ -50,4 +50,7 @@ export const StyledImg = styled.img`
     :hover {
         cursor: pointer;
     }
+`
+export const UsersContainer = styled.div`
+    overflow: auto;
 `
