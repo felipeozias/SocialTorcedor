@@ -1,4 +1,3 @@
-import HeaderReduced from "../../components/HeaderReduced";
 import Footer from "../../components/Footer";
 import TemplateMain from "../../components/TemplateMain";
 import BackgroundFan from "../../components/BackgroundFan";
