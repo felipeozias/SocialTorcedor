@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../Button";
 import InputUser from "../InputUser";
+import SelectType from "../SelectType";
 import { BoxInputs, Form, Message } from "./style";
 
 export default function FormRegister(): JSX.Element {
@@ -9,13 +10,9 @@ export default function FormRegister(): JSX.Element {
             <BoxInputs>
                 <InputUser type="text">Apelido:</InputUser>
                 <InputUser type="text">Nome:</InputUser>
-                <InputUser type="select">Time do coração:</InputUser>
-                <InputUser type="password" password={true}>
-                    Senha:
-                </InputUser>
-                <InputUser type="password" password={true}>
-                    Confimar Senha:
-                </InputUser>
+                <SelectType></SelectType>
+                <InputUser type="password">Senha:</InputUser>
+                <InputUser type="password">Confimar Senha:</InputUser>
             </BoxInputs>
 
             <Button>CADASTRAR</Button>

@@ -86,8 +86,13 @@ export default function GroupModal(props: Imodal) {
                     />
                     <StyledModal
                         onSubmit={(e) => {
-                            props.toggle();
                             usersAdded = [];
+                            setNotifMessage(`Grupo criado com sucesso!`);
+                            setIsOpen(true);
+                            setTimeout(() => {
+                                setIsOpen(false);
+                                props.toggle();
+                            }, 2000);
                             e.preventDefault();
                         }}
                     >
