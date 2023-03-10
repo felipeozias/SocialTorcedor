@@ -5,17 +5,18 @@ export default async function loginService(
     e: React.FormEvent<HTMLFormElement>
 ) {
     e.preventDefault();
-    //alert("Estamos no Service!");
     const inputs = e.target as HTMLFormElement;
     const formData = new FormData(inputs);
     const reqBody = Object.fromEntries(formData.entries());
 
     for (const input in reqBody) {
         if (!inputIsEmpty(reqBody[input])) {
-            alert("Preencha o campo " + input);
+            alert(`Preencha o campo ${input === "nick" ? "Apelido" : "Senha"}`);
             return;
         }
     }
+
+    redirect("/home");
 
     try {
         const options = {
@@ -25,7 +26,7 @@ export default async function loginService(
         };
 
         const res = await fetch(
-            "http://localhost:8000/accounts/login",
+            `http://localhost:8000/user/exists/${reqBody.nick}`,
             options
         );
 
