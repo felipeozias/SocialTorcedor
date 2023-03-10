@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { router } from "./router/router";
 import MongoDB from "./database/mongodb";
 import Logger from "./logger/logger";
+import cors from "cors";
 
 dotenv.config({ path: "./env/.env" });
 
@@ -11,6 +12,7 @@ const port = process.env.PORT || 8000;
 const app = Express();
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
+app.use(cors());
 
 app.use(router);
 

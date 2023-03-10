@@ -18,9 +18,3 @@ export const Message = styled.p`
     color: #f3f3f3;
     font-size: 9pt;
 `;
-
-export const Link = styled.a`
-    color: #f3f3f3;
-    text-decoration: none;
-    font-weight: bold;
-`;

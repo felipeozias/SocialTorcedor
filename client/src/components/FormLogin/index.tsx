@@ -1,18 +1,32 @@
 import Button from "../Button";
 import InputUser from "../InputUser";
-import { BoxInputs, Form, Link, Message } from "./style";
+import { BoxInputs, Form, Message } from "./style";
+import { Link } from "react-router-dom";
 
-export default function FormLogin(): JSX.Element {
+interface IProps {
+    submit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export default function FormLogin(props: IProps): JSX.Element {
     return (
-        <Form>
+        <Form onSubmit={props.submit}>
             <BoxInputs>
-                <InputUser type="text">Apelido:</InputUser>
-                <InputUser type="password">Senha:</InputUser>
+                <InputUser type="text" name="nick">
+                    Apelido:
+                </InputUser>
+                <InputUser type="password" password={true} name="password">
+                    Senha:
+                </InputUser>
             </BoxInputs>
 
-            <Button>ENTRAR</Button>
+            {/* <Link to="/home"> */}
+            <Button type="submit">ENTRAR</Button>
+            {/* </Link> */}
             <Message>
-                Ainda não possúi conta? <Link href="/">CADASTRE-SE AQUI</Link>
+                Ainda não possúi conta?{" "}
+                <Link to={"/register"} className="link-style">
+                    CADASTRE-SE AQUI
+                </Link>
             </Message>
         </Form>
     );
