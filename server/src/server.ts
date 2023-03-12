@@ -24,5 +24,5 @@ app.listen(port, async () => {
 
     const mongo = new MongoDB(uri, user, password, database);
     await mongo.connect();
-    Logger.info(`🔰 Servidor rodando na porta ${port}!`);
+    Logger.info(`🔰 Servidor rodando na porrrrra ${port}!`);
 });

@@ -11,15 +11,19 @@ export default function FormRegister(): JSX.Element {
                 <InputUser type="text">Apelido:</InputUser>
                 <InputUser type="text">Nome:</InputUser>
                 <SelectType></SelectType>
-                <InputUser type="password">Senha:</InputUser>
-                <InputUser type="password">Confimar Senha:</InputUser>
+                <InputUser type="password" password={true}>
+                    Senha:
+                </InputUser>
+                <InputUser type="password" password={true}>
+                    Confimar Senha:
+                </InputUser>
             </BoxInputs>
 
             <Button>CADASTRAR</Button>
             <Message>
                 Já possui conta?{" "}
                 <Link to={"/login"} className="link-style">
-                    CADASTRE-SE AQUI
+                    ENTRE AQUI
                 </Link>
             </Message>
         </Form>

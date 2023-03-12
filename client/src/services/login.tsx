@@ -1,43 +1,28 @@
-import { redirect } from "react-router";
-import { inputIsEmpty } from "../utils/validations";
-
-export default async function loginService(
-    e: React.FormEvent<HTMLFormElement>
-) {
-    e.preventDefault();
-    const inputs = e.target as HTMLFormElement;
-    const formData = new FormData(inputs);
-    const reqBody = Object.fromEntries(formData.entries());
-
-    for (const input in reqBody) {
-        if (!inputIsEmpty(reqBody[input])) {
-            alert(`Preencha o campo ${input === "nick" ? "Apelido" : "Senha"}`);
-            return;
-        }
-    }
-
-    redirect("/home");
-
+export default async function loginService(formData: any) {
     try {
         const options = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(reqBody),
+            body: JSON.stringify(formData),
         };
 
         const res = await fetch(
-            `http://localhost:8000/user/exists/${reqBody.nick}`,
+            `http://localhost:8000/user/authenticate`,
             options
         );
 
         if (!res.ok) {
-            alert("Usuário ou senha inválidos");
-            return console.error("Erro na requisição", await res.json());
+            if (res.status === 404)
+                return { auth: false, isNoAuth: true, status: res.status };
+
+            console.error("Erro ao fazer requisição", await res.json());
+            return { auth: false, isNoAuth: false, status: res.status };
         }
 
         const data = await res.json();
         console.log(data);
-        redirect("/home");
+
+        return { auth: true, status: res.status, data: data };
     } catch (err) {
         console.error(err);
     }
