@@ -3,24 +3,26 @@ import { Link } from "react-router-dom";
 import Button from "../Button";
 import InputUser from "../InputUser";
 import SelectType from "../SelectType";
-import { BoxInputs, ErrorMessage, Form, Message } from "./style";
+import { BoxInputs, ErrorMessage, ErrorServer, Form, Message } from "./style";
 
-export default function FormRegister(): JSX.Element {
+interface IProps {
+    submit: (e: any) => void;
+    noAuth?: boolean;
+}
+
+export default function FormRegister(props: IProps): JSX.Element {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const submit = (data: any) => {
-        console.log(data);
-    };
-
     return (
-        <Form onSubmit={handleSubmit(submit)}>
+        <Form onSubmit={handleSubmit(props.submit)}>
             <BoxInputs>
                 <InputUser
                     type="text"
+                    name="nickname"
                     validates={{
                         ...register("nickname", {
                             required: true,
@@ -41,11 +43,11 @@ export default function FormRegister(): JSX.Element {
                 )}
                 <InputUser
                     type="text"
+                    name="name"
                     validates={{
                         ...register("name", {
                             required: true,
-                            pattern:
-                                /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/,
+                            pattern: /^[a-zA-Zà-úÀ-Ú ]+$/,
                         }),
                     }}
                 >
@@ -60,9 +62,17 @@ export default function FormRegister(): JSX.Element {
                         conter letras
                     </ErrorMessage>
                 )}
-                <SelectType></SelectType>
+                <SelectType
+                    name="team"
+                    validates={{
+                        ...register("team", {
+                            required: true,
+                        }),
+                    }}
+                />
                 <InputUser
                     type="password"
+                    name="password"
                     password={true}
                     validates={{
                         ...register("password", {
@@ -77,6 +87,7 @@ export default function FormRegister(): JSX.Element {
                 )}
                 <InputUser
                     type="password"
+                    name="confirm-password"
                     password={true}
                     validates={{
                         ...register("password", {
@@ -90,6 +101,11 @@ export default function FormRegister(): JSX.Element {
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
                 )}
             </BoxInputs>
+            {props.noAuth && (
+                <ErrorServer>
+                    Houve um erro no servidor :({<br />} tente nvamente
+                </ErrorServer>
+            )}
 
             <Button>CADASTRAR</Button>
             <Message>
