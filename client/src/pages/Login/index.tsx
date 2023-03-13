@@ -28,7 +28,7 @@ export default function Login(): JSX.Element {
     return (
         <>
             <BackgroundFan />
-            <TemplateMain>
+            <TemplateMain smallLogo={false}>
                 <FormLogin submit={(e: any) => login(e)} noAuth={authError} />
             </TemplateMain>
             <Footer />

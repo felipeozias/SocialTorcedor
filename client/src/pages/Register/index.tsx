@@ -7,7 +7,7 @@ export default function Register(): JSX.Element {
     return (
         <>
             <BackgroundFan />
-            <TemplateMain>
+            <TemplateMain smallLogo={true}>
                 <FormRegister />
             </TemplateMain>
             <Footer />

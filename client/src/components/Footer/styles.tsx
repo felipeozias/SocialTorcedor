@@ -13,9 +13,11 @@ export const StyledFooter = styled.footer`
     justify-content: space-between;
     align-items: center;
     padding: 0px 7% 0px 7%;
-
     @media (max-width: 780px) {
         justify-content: center;
+    }
+    @media (max-width: 780px) and (max-height: 640px) {
+        display: "none";
     }
 `;
 
