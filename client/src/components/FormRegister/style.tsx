@@ -5,13 +5,13 @@ export const Form = styled.form`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 2.8rem;
+    gap: 1.5rem;
 `;
 
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.3rem;
 `;
 
 export const Message = styled.p`
@@ -21,11 +21,5 @@ export const Message = styled.p`
 
 export const ErrorMessage = styled.span`
     color: #ff0000;
-    font-size: 10pt;
-`;
-
-export const NoAuthMessage = styled.span`
-    color: #ff0000;
-    font-size: 12pt;
-    margin-top: -30px;
+    font-size: 9pt;
 `;
