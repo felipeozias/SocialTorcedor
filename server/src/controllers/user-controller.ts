@@ -4,20 +4,34 @@ import IUser from "../interfaces/iuser";
 import Logger from "../logger/logger";
 import UserService from "../services/user-service";
 
-export default function UserControlller() {
-    async function create(req: Request, res: Response) {
+class UserControlller {
+    async create(req: Request, res: Response) {
+        // #swagger.tags = ["User"];
+        // #swagger.description = "Endpoints para criar um usuário";
+
         try {
-            const data = req.body;
+            /* #swagger.parameters[] = { 
+                in: 'body',
+                description: 'Informações do usuário',
+                schema: { $ref: "#/definitions/AddUser" }
+            } */
+            const data: IUser = req.body;
             const service = new UserService();
+
             const result: IResult<IUser> = await service.create(data);
+            // #swagger.responses[201] = { schema: { data: {$ref: "#/definitions/User" }, status: 201 } }
+            // #swagger.responses[400] = { schema: { errors: ["[nickname]: O apelido já existe"], status: 400 } }
+            // #swagger.responses[422] = { description:"Erro de Validação", schema: {$ref: "#/definitions/UserValidator"} }
             return res.status(result.status || 500).json(result);
         } catch (error: any) {
+            //#swagger.responses[500] ={schema: { $ref: "#/definitions/Error500" }}
+
             Logger.error("Erro ao criar usuário", error);
             return res.status(500).json({ errors: [error.message] });
         }
     }
 
-    async function getById(req: Request, res: Response) {
+    async getById(req: Request, res: Response) {
         try {
             const id = req.params.id;
             const service = new UserService();
@@ -29,7 +43,7 @@ export default function UserControlller() {
         }
     }
 
-    async function exists(req: Request, res: Response) {
+    async exists(req: Request, res: Response) {
         try {
             const nickname = req.params.nickname;
             const service = new UserService();
@@ -41,7 +55,7 @@ export default function UserControlller() {
         }
     }
 
-    async function list(req: Request, res: Response) {
+    async list(req: Request, res: Response) {
         try {
             const name: string = (req.query.name as string) || "";
             const service = new UserService();
@@ -53,7 +67,7 @@ export default function UserControlller() {
         }
     }
 
-    async function update(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
         try {
             const data = req.body;
             const _id = req.params.id;
@@ -66,7 +80,7 @@ export default function UserControlller() {
         }
     }
 
-    async function remove(req: Request, res: Response) {
+    async remove(req: Request, res: Response) {
         try {
             const id = req.params.id;
             const service = new UserService();
@@ -78,9 +92,9 @@ export default function UserControlller() {
         }
     }
 
-    async function authenticate(req: Request, res: Response) {
+    async authenticate(req: Request, res: Response) {
         try {
-            const nickname = req.body.nickname;
+            const nickname = req.body.nickname.toLowerCase() || "";
             const password = req.body.password;
             const service = new UserService();
             const result: IResult<IUser> = await service.authenticate(nickname, password);
@@ -90,6 +104,6 @@ export default function UserControlller() {
             return res.status(500).json({ errors: [error.message] });
         }
     }
-
-    return { create, getById, exists, list, remove, update, authenticate };
 }
+
+export const user = new UserControlller();

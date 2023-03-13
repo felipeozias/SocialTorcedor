@@ -8,7 +8,7 @@ export default class UserService {
         let result: IResult<IUser> = { errors: [] };
         try {
             if ((await this.exists(data.nickname)).data) {
-                result.errors?.push("O apelido já existe");
+                result.errors?.push("[nickname]: O apelido já existe");
                 result.status = 400;
                 return result;
             }
@@ -16,6 +16,7 @@ export default class UserService {
             data.password = CryptoJS.SHA256(data.password).toString();
             const user = await User.create(data);
             result.data = user;
+            //#swagger.responses[201]
             result.status = 201;
         } catch (error: any) {
             result.errors?.push(error.message);
