@@ -1,18 +1,28 @@
 import {
     createBrowserRouter,
-    redirect,
     RouterProvider,
+    useNavigate,
 } from "react-router-dom";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
+import { useEffect } from "react";
+
+function Root() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/login");
+    }, [navigate]);
+
+    return <></>;
+}
 
 export default function Routes() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Login />,
-            action: () => redirect("/login"),
+            element: <Root />,
         },
         {
             path: "/login",

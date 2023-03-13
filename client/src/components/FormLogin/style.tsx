@@ -18,3 +18,14 @@ export const Message = styled.p`
     color: #f3f3f3;
     font-size: 9pt;
 `;
+
+export const ErrorMessage = styled.span`
+    color: #ff0000;
+    font-size: 10pt;
+`;
+
+export const NoAuthMessage = styled.span`
+    color: #ff0000;
+    font-size: 12pt;
+    margin-top: -30px;
+`;

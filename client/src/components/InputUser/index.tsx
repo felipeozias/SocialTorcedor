@@ -8,9 +8,10 @@ interface IProps {
     type: string;
     password?: boolean;
     name?: string;
+    validates?: any;
 }
 
-export default function InputUser(props: IProps): JSX.Element {
+export default function InputUser(this: any, props: IProps): JSX.Element {
     const [visible, setVisible] = useState(false);
     const [icon, setIcon] = useState(IconNoVisible);
 
@@ -26,6 +27,7 @@ export default function InputUser(props: IProps): JSX.Element {
                 <Input
                     type={!visible ? props.type : "text"}
                     name={props.name}
+                    {...props.validates}
                 />
                 {props.password && (
                     <IconVisible source={icon} onClick={passwordVisibility} />

@@ -16,5 +16,10 @@ router.get("/user/:id", user().getById);
 router.get("/user/exists/:nickname", user().exists);
 router.get("/users", user().list);
 router.post("/user/authenticate", user().authenticate);
-router.patch("/user/:id", userUpdateValidator(), handleValidation, user().update);
+router.patch(
+    "/user/:id",
+    userUpdateValidator(),
+    handleValidation,
+    user().update
+);
 router.delete("/user/:id", user().remove);
