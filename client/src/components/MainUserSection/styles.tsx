@@ -52,7 +52,8 @@ export const StyledImg = styled.img`
     }
 `
 export const UsersContainer = styled.div`
-    overflow: auto;
+    overflow-y: scroll;
+    margin-left: 1.3vw;
   ::-webkit-scrollbar {
     width: 15px;
   }
