@@ -53,4 +53,17 @@ export const StyledImg = styled.img`
 `
 export const UsersContainer = styled.div`
     overflow: auto;
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #3D6287;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
 `

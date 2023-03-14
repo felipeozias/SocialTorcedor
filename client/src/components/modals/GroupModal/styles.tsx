@@ -12,8 +12,10 @@ border-radius: 10px;
 display: flex;
 box-shadow: 0.5px 0.5px 0.5px 0.5px;
 font-family: 'Inter', sans-serif;
-background-color: #343232;
+background-color: #054a18;
 `
+// #343232
+// #054a18
 export const StyledSectionLeft = styled.section`
     height: 45vh;
     width: 24vw;
@@ -69,7 +71,7 @@ export const StyledInputFile = styled.input`
 export const StyledLabelFile = styled.label`
     font-size: 1.8vw;
     border-radius: 10px;
-    background-color: #054a18;
+    background-color: #343232;
     text-align: center;
     width: 12vw;
     align-self: center;
@@ -102,7 +104,7 @@ export const StyledButton = styled.button`
     border: none;
     border-radius: 10px;
     box-shadow: 0.5px 0.5px 0.5px 0.5px #f3f3f3;
-    background-color: #054a18;
+    background-color: #343232;
     color: #f3f3f3;
     margin-top: 1.4vh;
     height: 5vh;
@@ -120,7 +122,7 @@ export const StyledButton2 = styled.button`
     border: none;
     border-radius: 10px;
     box-shadow: 0.5px 0.5px 0.5px 0.5px #f3f3f3;
-    background-color: #054a18;
+    background-color: #343232;
     color: #f3f3f3;
     width: 12vw;
     height: 5vh;
