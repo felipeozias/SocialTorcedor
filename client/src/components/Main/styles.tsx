@@ -11,12 +11,13 @@ export const StyledMain = styled.main`
     color: #ffffff;
     display: flex;
     flex-wrap: wrap;
-    /* background-color: red; */
 `
 export const StyledMainSection = styled.section`
-    background-color: black;
+    display: flexbox;
+    text-align: center;
     width: 40%;
-    height: 81.9vh;
+    min-height: calc(100vh - 110px);
+    padding-bottom: 80px;
 `
 export const StyledRigthSection = styled.section`
     background-color: blue;
