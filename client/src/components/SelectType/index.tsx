@@ -1,14 +1,23 @@
 import { LabelInput, Select } from "./style";
 
-export default function SelectType(): JSX.Element {
+interface IProps {
+    name?: string;
+    validates?: any;
+}
+
+export default function SelectType(props: IProps): JSX.Element {
     return (
         <LabelInput>
-           <label>Time do coração:</label>
-           <Select>
-                <option>Flamengo</option>
-                <option>Corintians</option>
-                <option>outro</option>
-           </Select>
+            <label>Time do coração:</label>
+            <Select
+                name={props.name}
+                {...props.validates}
+                defaultValue="Flamengo"
+            >
+                <option value={"Flamengo"}>Flamengo</option>
+                <option value={"Corinthians"}>Corintians</option>
+                <option value={"Outro"}>Outro</option>
+            </Select>
         </LabelInput>
     );
 }

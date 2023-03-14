@@ -23,3 +23,8 @@ export const ErrorMessage = styled.span`
     color: #ff0000;
     font-size: 9pt;
 `;
+
+export const ErrorServer = styled.span`
+    color: #ff0000;
+    font-size: 9pt;
+`;
