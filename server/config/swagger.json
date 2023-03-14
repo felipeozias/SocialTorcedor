@@ -12,6 +12,10 @@
     {
       "name": "User",
       "description": "Endpoints to manage users"
+    },
+    {
+      "name": "Post",
+      "description": "Endpoints to manage posts"
     }
   ],
   "schemes": [
@@ -494,6 +498,497 @@
           }
         }
       }
+    },
+    "/posts": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para criar um post",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do post",
+            "schema": {
+              "$ref": "#/definitions/AddPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Post"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 201
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Criado"
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/PostValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para remover um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Post"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para recupear um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Post"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/feed": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para listar o feed de posts do mais recente para o mais antigo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Post"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}/like/{userId}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para curtir/descurtir um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "User ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}/comments": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para incluir um comentário de um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do comentário",
+            "schema": {
+              "$ref": "#/definitions/AddComment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/PostValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}/comments/{commentId}": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para remover um comentário de um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Comentário ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "description": "Post ou comentário não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post ou comentário não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -579,6 +1074,120 @@
         "team"
       ]
     },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6410b677f77571f9f323740d"
+        },
+        "pathImage": {
+          "type": "string",
+          "example": "/img/6410b677f77571f9f323740d.png"
+        },
+        "content": {
+          "type": "string",
+          "example": "Esse Ano seremos campeão!!!"
+        },
+        "author": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "640f6af6ad964b6d45a13c35"
+            },
+            "nickname": {
+              "type": "string",
+              "example": "zoro_oliveira"
+            },
+            "name": {
+              "type": "string",
+              "example": "Zoro Oliveira"
+            },
+            "team": {
+              "type": "string",
+              "example": "são paulo"
+            }
+          }
+        },
+        "likes": {
+          "type": "array",
+          "example": [
+            "640ab68a27fea004b4b9ce05"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "example": "Perdemos de novo. Rumo a lanterna"
+              },
+              "author": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "640f6af6ad964b6d45a13c35"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "example": "zoro_oliveira"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Zoro Oliveira"
+                  }
+                }
+              },
+              "_id": {
+                "type": "string",
+                "example": "6410bf1dace5da35c401601c"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2023-03-14T18:38:21.739Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2023-03-14T18:38:21.739Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "AddPost": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "example": "Esse Ano seremos campeão!!!"
+        },
+        "author": {
+          "type": "string",
+          "example": "640f6af6ad964b6d45a13c35"
+        }
+      }
+    },
+    "AddComment": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "example": "Perdemos de novo. Rumo à lanterna =("
+        },
+        "author": {
+          "type": "string",
+          "example": "640f6af6ad964b6d45a13c35"
+        }
+      }
+    },
     "IResult": {
       "type": "object",
       "properties": {
@@ -660,6 +1269,21 @@
           "type": "array",
           "example": [
             "[id]: O id deve ser um ObjectId válido."
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "PostValidator": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "example": [
+            "[author]: O código do autor deve ser um ObjectId válido.",
+            "[content]: O conteúdo deve ter no máximo 2500 caracteres."
           ],
           "items": {
             "type": "string"
