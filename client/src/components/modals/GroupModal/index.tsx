@@ -38,14 +38,14 @@ export default function GroupModal(props: Imodal) {
 
         if (user.value === "") {
             // console.log("String vazia...");
-            setNotifMessage("String vazia...");
+            setNotifMessage("Campo vazio, digite/escolha um usuário...");
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else if (usersAdded.includes(user.value)) {
             // console.log(`Usuário: ${user.value} já adicionado!`);
-            setNotifMessage(`Usuário: ${user.value} já adicionado!`);
+            setNotifMessage(`Usuário: "${user.value}" já adicionado!`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
@@ -56,14 +56,14 @@ export default function GroupModal(props: Imodal) {
             ) === false
         ) {
             // console.log(`Usuário: ${user.value} inexistente...`);
-            setNotifMessage(`Usuário: ${user.value} inexistente...`);
+            setNotifMessage(`Usuário: "${user.value}" inexistente...`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else {
             usersAdded.push(user.value);
-            console.log(`${user.value} Adicionado com sucesso!`);
+            // console.log(`${user.value} Adicionado com sucesso!`);
             user.value = "";
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);

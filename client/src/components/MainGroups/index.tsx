@@ -13,8 +13,9 @@ import chatIcon from "../../assets/chat.png"
 import editIcon from "../../assets/edit.png"
 
 interface Iprops {
-    name: string,
-    groupName: string
+    owner: string,
+    groupName: string,
+    textSize: number
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -31,8 +32,8 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 <Img src={logoIcon} />
             </ImgContainer>
             <Pcontainer>
-                <P> {props.groupName} </P>
-                <P2> Criado por: {props.name}</P2>
+                <P textSize={props.textSize}> {props.groupName} </P>
+                <P2> Criado por: {props.owner}</P2>
             </Pcontainer>
             <ImgContainer2>
                 <ChatIcon src={chatIcon} onClick={startChat}/>
