@@ -7,7 +7,7 @@ export default function Login(): JSX.Element {
     return (
         <>
             <BackgroundFan />
-            <TemplateMain>
+            <TemplateMain smallLogo={true}>
                 <FormUpdate />
             </TemplateMain>
             <Footer />

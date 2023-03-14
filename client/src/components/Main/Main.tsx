@@ -37,6 +37,7 @@ export default function Main(): JSX.Element {
             </StyledMainSection>
 
             <StyledRigthSection>
+                Chat em desenvolvimento!
             </StyledRigthSection>
         </StyledMain>
     )
