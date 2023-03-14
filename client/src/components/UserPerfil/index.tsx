@@ -1,5 +1,5 @@
 import { StyledContainer } from "./styles";
-import IconImage from "../IconImage";
+import IconImage from "../ImagePerfil";
 import PerfilNameEmail from "../PerfilNameEmail";
 
 //------ Using context ------

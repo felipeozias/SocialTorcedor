@@ -12,7 +12,7 @@ export default function Name() {
     return (
         <DataUserForHeader.Provider
             value={{
-                logo: "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png",
+                logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
                 name: "Torcedor",
                 email: "torcedor@mail.com",
