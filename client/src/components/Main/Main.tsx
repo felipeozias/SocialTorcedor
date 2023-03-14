@@ -1,9 +1,16 @@
-import { StyledMain } from './styles'
+import { StyledMain,StyledMainSection,StyledRigthSection} from './styles'
+import MainLeftSection from '../MainLeftSection'
 
-export default function Main() {
+export default function Main(): JSX.Element {
     return (
         <StyledMain>
-            <h1>Main</h1>
+            <MainLeftSection />
+            <StyledMainSection>
+
+            </StyledMainSection>
+            <StyledRigthSection>
+
+            </StyledRigthSection>
         </StyledMain>
     )
 }

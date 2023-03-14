@@ -5,13 +5,13 @@ export const Form = styled.form`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 1.0rem;
+    gap: 1.5rem;
 `;
 
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.3rem;
 `;
 
 export const Message = styled.p`
@@ -19,13 +19,12 @@ export const Message = styled.p`
     font-size: 9pt;
 `;
 
-export const Label = styled.label`
-    color: #f3f3f3;
+export const ErrorMessage = styled.span`
+    color: #ff0000;
     font-size: 9pt;
 `;
 
-export const Link = styled.a`
-    color: #f3f3f3;
-    text-decoration: none;
-    font-weight: bold;
+export const ErrorServer = styled.span`
+    color: #ff0000;
+    font-size: 9pt;
 `;
