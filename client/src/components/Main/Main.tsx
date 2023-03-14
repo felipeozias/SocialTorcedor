@@ -7,7 +7,6 @@ import FeedCommentLike from "../FeedCommentLike";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 
-
 export default function Main(): JSX.Element {
     const { logo } = useContext(DataUserForHeader);
 

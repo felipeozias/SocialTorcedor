@@ -1,15 +1,7 @@
-import { StyledEmotions } from "./style";
+import { StyledEmotions } from "./styles";
 import Emotion from "../../assets/icon_image_white.svg"
-// import { KeyboardEvent } from 'react';
-
 
 export default function IconImage(): JSX.Element {
-
-    // function resizeInput(value: KeyboardEvent<HTMLTextAreaElement>) {
-    //     value.currentTarget.style.height = '35px';
-    //     value.currentTarget.style.height = `${value.currentTarget.scrollHeight}px`;
-    //     console.log(value.currentTarget.scrollHeight)
-    // }
 
     return (
         <StyledEmotions src={Emotion}>
