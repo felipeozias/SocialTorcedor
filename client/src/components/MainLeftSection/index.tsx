@@ -1,14 +1,13 @@
-import {StyledGroupSection, StyledLeftSection, StyledP} from "./styles";
+import {StyledLeftSection} from "./styles";
 import MainUserSection from "../MainUserSection";
+import MainGroupSection from "../MainGroupSection";
 
 export default function MainLeftSection() : JSX.Element {
     
     return (
         <StyledLeftSection>
             <MainUserSection />
-            <StyledGroupSection>
-                <StyledP> Grupos </StyledP>
-            </StyledGroupSection>
+            <MainGroupSection />
         </StyledLeftSection>
     )
 }

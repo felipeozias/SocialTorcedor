@@ -1,13 +1,13 @@
 import Header from "../../components/Header";
 import Main from "../../components/Main/Main";
 import Footer from "../../components/Footer";
-//import GroupModal from "../../components/modals/GroupModal";
+// import GroupModal from "../../components/modals/GroupModal";
 
 //------ Declared context ------
 import DataUserForHeader from "../../components/contexts/DataUserForHeader";
 // import useModal from "../../hooks/useModal";
 
-export default function Name() {
+export default function Home() {
     // const { isOpen, toggle } = useModal();
     return (
         <DataUserForHeader.Provider
