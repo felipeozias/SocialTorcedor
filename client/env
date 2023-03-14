@@ -1,0 +1,2 @@
+REACT_APP_LOGIN=http://localhost:8000/users/authenticate
+REACT_APP_REGISTER=http://localhost:8000/users

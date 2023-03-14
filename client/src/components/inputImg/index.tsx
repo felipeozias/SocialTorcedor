@@ -1,6 +1,11 @@
 import { DivFile, InputImage, LabelFile } from "./style";
 
-export default function InputImg(){
+interface IProps{
+    change:any;
+}
+
+export default function InputImg(props:IProps){
+
 
     return(    
         <DivFile>
@@ -9,6 +14,7 @@ export default function InputImg(){
                 type="file" 
                 accept="image/*"
                 id="fileElem"
+                onChange={props.change}
             ></InputImage>    
         </DivFile>         
         
