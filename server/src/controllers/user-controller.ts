@@ -39,7 +39,7 @@ class UserControlller {
         }
     }
 
-    async getById(req: Request, res: Response) {
+    async get(req: Request, res: Response) {
         /*
             #swagger.tags = ["User"];
             #swagger.description = "Endpoints para recuperar um usuário";
