@@ -1,7 +1,6 @@
 /// Lembrar de fazer alguma pagina de erro
 
 export default async function registerService(userData: any) {
-    console.log(userData);
     try {
         const options = {
             method: "POST",

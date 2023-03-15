@@ -11,9 +11,9 @@ dotenv.config({ path: "./config/.env" });
 const port = process.env.PORT || 8000;
 
 const app = Express();
+app.use(cors());
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-app.use(cors());
 
 const swaggerDocument = require("../config/swagger.json");
 
@@ -30,7 +30,9 @@ app.listen(port, async () => {
     const version = process.env.NODE_ENV || "error";
     if (version === "error") {
         Logger.error("🔰 Variável de ambiente NODE_ENV não definida!");
-        Logger.error("🔰 Adicione o arquivo .env na pasta ./config e declare as variáveis de acordo com o arquivo .env.example");
+        Logger.error(
+            "🔰 Adicione o arquivo .env na pasta ./config e declare as variáveis de acordo com o arquivo .env.example"
+        );
         return;
     }
     Logger.info(`🔰 Ambiente: ${version}`);
