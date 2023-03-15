@@ -38,15 +38,33 @@ export const simulateDbGroups = [
     }
 ]
 
-function apiRequestUsers() {
-    fetch(`http://api.socialtorcedor.shop/users`)
-    .then((res) => {
-        return res.json()
-    })
-    .then((data) => {
-        usersDb = data["data"]
-    })
-}
+export async function apiRequestUsers() {
 
-export let usersDb: IUser[] = [];
-apiRequestUsers();
+    try {
+        const url = process.env.REACT_APP_USERS_LOCAL as string
+        console.log(url)
+        const request = await fetch(url);
+        if ( !request.ok ) {
+        console.error(request.json())
+        return {
+            status: request.status,
+            succesfull: false,
+            error: await request.json()
+        }
+    }
+        const res = await request.json();
+
+        return {
+            status: request.status,
+            succesfull: true,
+            data: res["data"]
+        }
+
+    } catch (error) {
+        console.error(error)
+        return {
+            succesfull: false,
+            error: error
+        }
+    }
+}

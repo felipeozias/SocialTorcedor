@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import {
     StyledModal,
     StyledInputName,
@@ -12,10 +12,10 @@ import {
     StyledButton2,
 } from "./styles";
 import DataList from "../DataList";
-import { simulateDb } from "../DataList";
 import NotificationModal from "../NotificationModal";
 import { Imodal } from "../../../interfaces/Modal";
 import ModalOverlay from "../ModalOverlay";
+import { IUser, apiRequestUsers } from "../../../database";
 
 let usersAdded: Array<string> = [];
 
@@ -23,6 +23,7 @@ export default function GroupModal(props: Imodal) {
     let [fileUrl, setFileUrl] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
+    let [usersDb, setUsersDb] = useState([] as IUser[])
 
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
@@ -30,6 +31,18 @@ export default function GroupModal(props: Imodal) {
             setFileUrl(URL.createObjectURL(event.files[0]));
         }
     }
+
+    async function requestDb() {
+        let res = await apiRequestUsers()
+        if (res.succesfull) {
+            setUsersDb(res.data);
+            // setReqSuccess(res.succesfull);
+        }
+    }
+
+    useEffect(() => {
+        requestDb();
+    }, []);
 
     function sendUserValue() {
         let user = document.querySelector(
@@ -51,8 +64,8 @@ export default function GroupModal(props: Imodal) {
                 setIsOpen(false);
             }, 2000);
         } else if (
-            simulateDb.some(
-                (userList) => userList["user"] === `${user.value}`
+            usersDb.some(
+                (userList) => userList.name === `${user.value}`
             ) === false
         ) {
             // console.log(`Usuário: ${user.value} inexistente...`);
