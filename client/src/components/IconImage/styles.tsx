@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const StyledImg = styled.img`
-    height: 35px;
-    margin: 0 10px;
-    `
+export const StyledEmotions = styled.img`
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    cursor: pointer;
+`;

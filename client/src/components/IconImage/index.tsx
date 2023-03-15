@@ -1,7 +1,11 @@
-import { StyledImg } from "./styles";
+import { StyledEmotions } from "./styles";
+import Emotion from "../../assets/icon_image_white.svg"
 
-export default function IconImage(data: { src: String, alt: String }) {
+export default function IconImage(): JSX.Element {
+
     return (
-        <StyledImg src={data.src.toString()} alt={data.alt.toString()} />
+        <StyledEmotions src={Emotion}>
+
+        </StyledEmotions>
     )
 }

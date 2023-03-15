@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface IProps {
+    textSize: number;
+}
+
 export const Container = styled.div`
     background-color: #657687;
     width: 21vw;
@@ -29,17 +33,17 @@ export const Pcontainer = styled.div`
     width: 64%;
     height: 100%;
 `
-export const P = styled.p`
+export const P = styled.p<IProps>`
     /* width: 64%; */
     /* height: 70%; */
-    font-size: 20px;
+    font-size: ${props => props.textSize}px;
     display: flex;
     align-items: center;
 `
 export const P2 = styled.p`
     /* width: 64%; */
     /* height: 30%; */
-    font-size: 12px;
+    font-size: 11.5px;
 `
 export const ImgContainer2 = styled.div`
     width: 18%;

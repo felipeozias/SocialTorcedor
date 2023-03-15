@@ -6,7 +6,7 @@ export default interface IUser {
     name: string;
     password: string;
     team: string;
-    path_image?: string;
+    pathImage?: string;
     createdAt?: Date;
     updatedAt?: Date;
 }

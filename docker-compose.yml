@@ -34,8 +34,6 @@ services:
         # environment:
         #   - REDIS_DB=redis
         #   - MONGO_DB=mongo
-        # env_file:
-        #     - /server/services/.env
         depends_on:
             - redis
             - mongo
@@ -46,8 +44,6 @@ services:
         restart: always
         ports:
             - "8080:80"
-        # volumes:
-        # - /app/client-data:/share/nginx/html/index.html
         depends_on:
             - back
 
