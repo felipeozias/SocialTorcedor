@@ -2,6 +2,7 @@ import { StyledMain, StyledMainSection, StyledRigthSection } from './styles'
 import MainLeftSection from '../MainLeftSection'
 import FeedNewPublicate from "../FeedNewPublicate";
 import FeedCommentLike from "../FeedCommentLike";
+import ChatComplete from "../ChatComplete";
 
 //------ Using context ------
 import { useContext } from "react";
@@ -37,7 +38,7 @@ export default function Main(): JSX.Element {
             </StyledMainSection>
 
             <StyledRigthSection>
-                Chat em desenvolvimento!
+                <ChatComplete />
             </StyledRigthSection>
         </StyledMain>
     )
