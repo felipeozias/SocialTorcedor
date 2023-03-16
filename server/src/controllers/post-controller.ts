@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import IComent from "../interfaces/icoment";
 import IResult from "../interfaces/iresult";
-import IPost from "../interfaces/iṕost";
+import IPost from "../interfaces/ipost";
 import Logger from "../logger/logger";
 import PostService from "../services/post-service";
 
@@ -73,7 +73,7 @@ class PostController {
         try {
             /* 
             #swagger.tags = ["Post"];
-            #swagger.description = "Endpoints para recupear um post";
+            #swagger.description = "Endpoints para recuperar um post";
             
              #swagger.parameters['id'] = {
                 in: 'path',
