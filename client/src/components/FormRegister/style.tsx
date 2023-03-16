@@ -16,7 +16,7 @@ export const BoxInputs = styled.div`
 
 export const Message = styled.p`
     color: #f3f3f3;
-    font-size: 9pt;
+    font-size: 11pt;
 `;
 
 export const ErrorMessage = styled.span`
