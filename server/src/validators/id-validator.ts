@@ -1,5 +1,5 @@
-import { param } from "express-validator";
+import { check } from "express-validator";
 
 export default function idValidator() {
-    return [param("id").isMongoId().withMessage("O id deve ser um ObjectId válido.")];
+    return [check("id").isMongoId().withMessage("O id deve ser um ObjectId válido.")];
 }

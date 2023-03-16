@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import IComent from "../interfaces/icoment";
 import IResult from "../interfaces/iresult";
-import IPost from "../interfaces/iṕost";
+import IPost from "../interfaces/ipost";
 import { Post } from "../models/post";
 
 export default class PostService {
@@ -63,7 +63,7 @@ export default class PostService {
 
         try {
             const posts = await Post.find()
-                .sort({ createdAt: -1 })
+                .sort({ updatedAt: -1 })
                 .populate("author", "name nickname team pathImage")
                 .populate({ path: "comments.author", select: "name nickname" });
             result.data = posts;

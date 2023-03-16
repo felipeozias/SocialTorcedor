@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import IPost from "../interfaces/iṕost";
+import IPost from "../interfaces/ipost";
 
 const comentSchema = new Schema(
     {
