@@ -1,12 +1,14 @@
-import { StyledChatCOntainer } from "./styles";
+import { StyledChatContainer } from "./styles";
 import ChatHeader from "../ChatHeader";
 import ChatMessages from "../ChatMessages";
+import ChatInput from "../ChatInput";
 
 export default function ChatComplete() {
     return (
-        <StyledChatCOntainer>
+        <StyledChatContainer>
             <ChatHeader title='Grupo da casa' />
             <ChatMessages />
-        </StyledChatCOntainer>
+            <ChatInput/>
+        </StyledChatContainer>
     )
 }

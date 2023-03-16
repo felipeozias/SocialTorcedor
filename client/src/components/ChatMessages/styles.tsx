@@ -1,13 +1,19 @@
 import styled from "styled-components";
 
-export const StyledChatMessages = styled.div`
-    background-color: #dfdfdf;
-    border-radius: 8px;
+export const StyledChatBoxMessages = styled.div`
     width: 100%;
-    top: 0;
+    margin-bottom: 5px;
+    overflow: auto;
+    flex: 1;
 `;
 
 export const StyleMessage = styled.div`
+    width: 100%;
+    margin-bottom: 7px;
+    display: inline-block;
+    background-color: #dfdfdf;
+    border-radius: 5px;
+
     & span{
         font-weight: bold;
         color: #203396;
