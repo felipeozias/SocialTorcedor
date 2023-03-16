@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-export const StyledChatCOntainer = styled.div`
+export const StyledChatContainer = styled.div`
     background-color: #F3F3F3;
-    width: 100%;
-    height: 78vh;
-    border-radius: 10px;
-    /* display: flex; */
-    /* flex-wrap: wrap;
-    justify-content: center; */
+    display: flex;
+    height: 75vh;
+    justify-content: center;
+    flex-direction: column;
     padding: 10px;
+    border-radius: 10px;
 `;
