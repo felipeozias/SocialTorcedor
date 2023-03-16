@@ -2,39 +2,82 @@ export interface IUser {
     _id: string,
     name: string
 }
+interface IGroupUser {
+    user: string
+}
 
 export interface IGroup {
     _id: string,
     name: string,
     owner: string,
-    image: string
+    image: string,
+    users: IGroupUser[]
 }
 
-export const simulateDbGroups = [
+export const simulateLogin = 
+    {
+        _id: "hee1nn2nudnuniunnd2",
+        name: "Rodrigo tebas"
+    }
+
+export const simulateDbGroups: IGroup[] = [
     {
         _id: "eueu2e2uuddddd",
         name: "Grupo foda",
         owner: "Rodrigo tebas",
+        image: "bola",
+        users: [
+            {user: "Xandy aviao"},
+            {user: "Rodolfo"},
+            {user: "Milena"}
+        ]
     },
     {
         _id: "eueu494094dddd",
         name: "Flamenguistas Mengo",
         owner: "Fla bnobmed",
+        image: "escudo",
+        users: [
+            {user: "Rodrigo tebas"},
+            {user: "Chaves"},
+            {user: "Adilson nunes"}
+        ]
     },
     {
         _id: "eueu2e2uudff3f333333d",
         name: "Os fodas",
         owner: "tebas",
+        image: "campo",
+        users: [
+            {user: "Xandy aviao"},
+            {user: "Rodol aha"},
+        ]
     },
     {
         _id: "eueu2e2uudddddji3jj34j3uh43",
         name: "Grupo fodaastico",
-        owner: "Marina alves",
+        owner: "Marina Rodrigo alves",
+        image: "passaro de fogo",
+        users: [
+            {user: "Xandy aviao"},
+            {user: "Rodolfo"},
+            {user: "Rodrigo tebas"},
+            {user: "Milena"},
+            {user: "Chhhha"},
+            {user: "Titio"},
+        ]
     },
     {
-        _id: "eueu2ç2ç2ç2ç2e2uuddddd",
-        name: "Mancos de boia",
-        owner: "Teobaldo",
+        _id: "eueu2e2uudddddji3jj34j3uh43",
+        name: "Grupo de teste",
+        owner: "Rodrigo tebas",
+        image: "passarinho",
+        users: [
+            {user: "Xandy aviao"},
+            {user: "Rodolfoss"},
+            {user: "Cha"},
+            {user: "Titios"},
+        ]
     }
 ]
 

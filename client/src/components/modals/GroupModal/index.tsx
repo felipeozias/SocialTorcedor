@@ -91,11 +91,12 @@ export default function GroupModal(props: Imodal) {
         <>
             {props.isOpen && (
                 <>
-                    <ModalOverlay isOpen={props.isOpen} toggle={() => {}} />
+                    <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1001}/>
                     <NotificationModal
                         message={notifMessage}
                         isOpen={isOpen}
                         toggle={props.toggle}
+                        index={0}
                     />
                     <StyledModal
                         onSubmit={(e) => {
