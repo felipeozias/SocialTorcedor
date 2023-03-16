@@ -16,8 +16,24 @@ export const StyledMainSection = styled.section`
     display: flexbox;
     text-align: center;
     width: 40%;
-    min-height: calc(100vh - 110px);
+    /* min-height: calc(100vh - 110px); */
+    height: 100%;
+    overflow: auto;
     padding-bottom: 80px;
+    ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #657687;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
 `
 export const StyledRigthSection = styled.section`
     position: fixed;
