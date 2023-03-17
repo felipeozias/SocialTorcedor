@@ -13,9 +13,9 @@ dotenv.config({ path: "./config/.env" });
 const port = process.env.PORT || 8000;
 
 const app = Express();
+app.use(cors());
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-app.use(cors());
 
 const swaggerDocument = require("../config/swagger.json");
 

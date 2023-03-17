@@ -3,7 +3,8 @@ import {StyledImg, StyledImgContainer, StyledInput, StyledInputContainer,
 import img from "../../assets/loupe.png";
 import MainUsers from "../MainUsers";
 import { useEffect, useState } from "react";
-import { IUser, apiRequestUsers } from "../../database";
+import { apiRequestUsers, simulateLogin } from "../../database";
+import { IUser } from "../../interfaces/Users";
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
@@ -29,11 +30,17 @@ export default function MainUserSection(): JSX.Element {
     },[reqSuccess]);
 
     function testApi() {
-        let filteredUsers = usersDb.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
+        let removedSelf = usersDb.filter(users => users._id != simulateLogin._id);
+        let filteredUsers = removedSelf.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
         
         for (let i=0; i < filteredUsers.length;i++) {
             if (filteredUsers[i] != undefined) {
-                let tempObj = {name: filteredUsers[i].name, _id: filteredUsers[i]._id}
+                let tempObj = {
+                    name: filteredUsers[i].name, 
+                    _id: filteredUsers[i]._id,
+                    nickname: filteredUsers[i].nickname,
+                    team: filteredUsers[i].team
+                }
                 filteredArray.push(tempObj)
             }
         }
