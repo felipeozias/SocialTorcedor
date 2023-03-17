@@ -2,6 +2,7 @@ import IResult from "../interfaces/iresult";
 import IUser from "../interfaces/iuser";
 import { User } from "../models/user";
 import CryptoJS from "crypto-js";
+import Auth from "../auth/auth";
 
 import { io } from "../server";
 
@@ -14,10 +15,18 @@ export default class UserService {
                 result.status = 400;
                 return result;
             }
-            if (data.password) {
-                data.password = CryptoJS.SHA256(data.password).toString();
+
+            data.password = CryptoJS.SHA256(data.password || "").toString();
+            const user = await User.create(data);
+            const auth = await Auth.createSession(data);
+
+            if (auth.error) {
+                result.errors?.push(auth.message);
+                result.status = 500;
+                return result;
             }
-            let user = await User.create(data);
+
+            result.token = auth.token;
             result.data = user;
             result.status = 201;
             user.password = "********";
@@ -69,7 +78,12 @@ export default class UserService {
             if (!name) {
                 users = await User.find().sort({ name: 1, nickname: 1 });
             } else {
-                users = await User.find({ $or: [{ nickname: new RegExp(name, "i") }, { name: new RegExp(name, "i") }] }).sort({
+                users = await User.find({
+                    $or: [
+                        { nickname: new RegExp(name, "i") },
+                        { name: new RegExp(name, "i") },
+                    ],
+                }).sort({
                     name: 1,
                     nickname: 1,
                 });
@@ -127,7 +141,10 @@ export default class UserService {
         return result;
     }
 
-    async authenticate(nickname: string, password: string): Promise<IResult<IUser>> {
+    async authenticate(
+        nickname: string,
+        password: string
+    ): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
         try {
             password = CryptoJS.SHA256(password).toString();
