@@ -1,6 +1,7 @@
 .env
 000.tsx
 env/
+uploads/
 
 # Logs
 logs
@@ -39,3 +40,4 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+

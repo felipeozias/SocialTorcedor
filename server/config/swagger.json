@@ -15,7 +15,11 @@
     },
     {
       "name": "Post",
-      "description": "Endpoints to manage posts"
+      "description": "Endpoints to manage posts/feed"
+    },
+    {
+      "name": "Group",
+      "description": "Endpoints to manage group/chats"
     }
   ],
   "schemes": [
@@ -293,14 +297,25 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
+          "401": {
+            "description": "Não autorizado"
+          },
           "404": {
             "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -636,6 +651,11 @@
         "description": "Endpoints para criar um post",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "",
             "in": "body",
             "description": "Informações do post",
@@ -665,6 +685,9 @@
           },
           "400": {
             "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
           },
           "422": {
             "description": "Erro de Validação",
@@ -777,7 +800,7 @@
         "tags": [
           "Post"
         ],
-        "description": "Endpoints para recupear um post",
+        "description": "Endpoints para recuperar um post",
         "parameters": [
           {
             "name": "id",
@@ -1194,6 +1217,575 @@
           }
         }
       }
+    },
+    "/groups": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para criar um grupo",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do grupo",
+            "schema": {
+              "$ref": "#/definitions/AddGroup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Group"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 201
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/GroupValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para listar os grupos que o usuário logado pertence do mais recente para o mais antigo",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Group"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "patch": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para editar um grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do grupo",
+            "schema": {
+              "$ref": "#/definitions/AddGroup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Group"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/GroupValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para remover um grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Grupo ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userData": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Group"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para recuperar um grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Grupo ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Group"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/groups/{id}/members/{userId}": {
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para sair de um grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Grupo ID."
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "User ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userData": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/groups/{id}/messages": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para incluir uma mensagem no chat do grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações da mensagem",
+            "schema": {
+              "$ref": "#/definitions/AddMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/GroupValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1393,6 +1985,129 @@
         }
       }
     },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6410b677f77571f9f323740d"
+        },
+        "pathImage": {
+          "type": "string",
+          "example": "/img/6410b677f77571f9f323740d.png"
+        },
+        "title": {
+          "type": "string",
+          "example": "Tricolor Paulista"
+        },
+        "admin": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "640f6af6ad964b6d45a13c35"
+            },
+            "nickname": {
+              "type": "string",
+              "example": "zoro_oliveira"
+            },
+            "name": {
+              "type": "string",
+              "example": "Zoro Oliveira"
+            },
+            "team": {
+              "type": "string",
+              "example": "são paulo"
+            }
+          }
+        },
+        "members": {
+          "type": "array",
+          "example": [
+            "640ab68a27fea004b4b9ce05"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "chat": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Quando será o próximo jogo?"
+              },
+              "author": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "640f6af6ad964b6d45a13c35"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "example": "zoro_oliveira"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Zoro Oliveira"
+                  }
+                }
+              },
+              "_id": {
+                "type": "string",
+                "example": "6410bf1dace5da35c401601c"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2023-03-14T18:38:21.739Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2023-03-14T18:38:21.739Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "AddGroup": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Tricolor Paulista"
+        },
+        "admin": {
+          "type": "string",
+          "example": "640f6af6ad964b6d45a13c35"
+        },
+        "members": {
+          "type": "array",
+          "example": [
+            "640ab68a27fea004b4b9ce05"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "AddMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Quando será o próximo jogo?"
+        },
+        "author": {
+          "type": "string",
+          "example": "640f6af6ad964b6d45a13c35"
+        }
+      }
+    },
     "IResult": {
       "type": "object",
       "properties": {
@@ -1489,6 +2204,37 @@
           "example": [
             "[author]: O código do autor deve ser um ObjectId válido.",
             "[content]: O conteúdo deve ter no máximo 2500 caracteres."
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MessageValidator": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "example": [
+            "[author]: O código do autor deve ser um ObjectId válido.",
+            "[message]: O conteúdo deve ter no máximo 100 caracteres."
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "GroupValidator": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "example": [
+            "[admin]: O código do administrador deve ser um ObjectId válido.",
+            "[title]: O nome do grupo deve ter entre 5 e 50 caracteres.",
+            "[members]: Os códigos dos membros devem ser ObjectIds válidos."
           ],
           "items": {
             "type": "string"

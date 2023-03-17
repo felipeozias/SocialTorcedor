@@ -1,9 +1,9 @@
-import { body } from "express-validator";
+import { check } from "express-validator";
 
 export default function postValidator() {
     return [
-        body("author").isMongoId().withMessage("O código do autor deve ser um ObjectId válido."),
-        body("content")
+        check("author").isMongoId().withMessage("O código do autor deve ser um ObjectId válido."),
+        check("content")
             .trim()
             .escape()
             .notEmpty()

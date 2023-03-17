@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledModal = styled.div`
-    z-index: 1002;
+    z-index: 1005;
     font-size: 16px;
     position: absolute;
     left: 30vw;

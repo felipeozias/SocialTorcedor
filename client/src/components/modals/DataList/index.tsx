@@ -1,31 +1,40 @@
 import { StyledInputName } from "../GroupModal/styles";
-import { useEffect } from "react";
-
-export const simulateDb = [
-    {user: "user1"},
-    {user: "user2"},
-    {user: "Rodrigo Alves"},
-    {user: "Leo p"},
-    {user: "Ednilza mara de araujo"},
-    {user: "augusto 22"},
-]
-
-function createDataOptions() {
-    let list = document.querySelector("#user-list");
-    // console.log(list)
-    simulateDb.forEach(el => {
-        let option = document.createElement('option');
-        option.value = el.user
-        list?.appendChild(option);
-        // console.log(el.user)
-    });
-}
-
+import { useEffect, useState, useContext } from "react";
+import { apiRequestUsers, simulateLogin } from "../../../database";
+import { IUser } from "../../../interfaces/Users"; 
 
 export default function DataList() {
+    let [users, setUsers] = useState([] as IUser[]);
+    let [reqSuccess, setReqSuccess] = useState(false);
+
+    async function requestDb() {
+        let res = await apiRequestUsers()
+        if (res.succesfull) {
+            setUsers(res.data);
+            setReqSuccess(res.succesfull);
+        }
+    }
+
+    async function createDataOptions() {
+        let list = document.querySelector("#user-list");
+        // console.log(list)
+        users.forEach(el => {
+            if (el.nickname != simulateLogin.nickname) {
+                let option = document.createElement('option');
+                option.value = `${el.name} (${el.nickname})`
+                list?.appendChild(option);
+            }
+            // let option = document.createElement('option');
+            //     option.value = `${el.name} (${el.nickname})`
+            //     list?.appendChild(option);
+            // console.log(el)
+        });
+    }
+
     useEffect(() => {
-        createDataOptions()
-    }, []);
+        requestDb();
+        createDataOptions();
+    }, [reqSuccess]);
 
     return (
         <div>

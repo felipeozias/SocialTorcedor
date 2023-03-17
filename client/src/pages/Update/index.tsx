@@ -3,7 +3,7 @@ import TemplateMain from "../../components/TemplateMain";
 import BackgroundFan from "../../components/BackgroundFan";
 import FormUpdate from "../../components/FormUpdate";
 
-export default function Login(): JSX.Element {
+export default function Update(): JSX.Element {
     return (
         <>
             <BackgroundFan />

@@ -3,35 +3,48 @@ import {StyledImg, StyledImgContainer, StyledInput, StyledInputContainer,
 import img from "../../assets/loupe.png";
 import MainUsers from "../MainUsers";
 import { useEffect, useState } from "react";
-import { usersDb, IUser } from "../../database";
+import { apiRequestUsers, simulateLogin } from "../../database";
+import { IUser } from "../../interfaces/Users";
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
-    let [timer, setTimer] = useState(0);
+    let [usersDb, setUsersDb] = useState([] as IUser[]);
+    let [reqSuccess, setReqSuccess] = useState(false);
+
+    console.log("a")
+
+    async function requestDb() {
+        let res = await apiRequestUsers()
+        if (res.succesfull) {
+            setUsersDb(res.data);
+            setReqSuccess(res.succesfull);
+        }
+    }
+    
     let userValue = ""
     let filteredArray: IUser[] = [];
 
-    function timerF() {
-        setTimer(1);
-    }
-    setTimeout(timerF,1000)
-
     useEffect(() => {
+        requestDb();
         testApi();
-    },[timer]);
+    },[reqSuccess]);
 
     function testApi() {
-        console.log(userValue)
-        let filteredUsers = usersDb.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
+        let removedSelf = usersDb.filter(users => users._id != simulateLogin._id);
+        let filteredUsers = removedSelf.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
         
         for (let i=0; i < filteredUsers.length;i++) {
             if (filteredUsers[i] != undefined) {
-                let tempObj = {name: filteredUsers[i].name, _id: filteredUsers[i]._id}
+                let tempObj = {
+                    name: filteredUsers[i].name, 
+                    _id: filteredUsers[i]._id,
+                    nickname: filteredUsers[i].nickname,
+                    team: filteredUsers[i].team
+                }
                 filteredArray.push(tempObj)
             }
         }
 
-        console.log(filteredArray)
         setUsersF(filteredArray);
         let inputUser = document.querySelector("#input-user") as HTMLInputElement;
         inputUser.value = ""

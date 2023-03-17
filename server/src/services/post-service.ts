@@ -1,8 +1,9 @@
 import { Types } from "mongoose";
 import IComent from "../interfaces/icoment";
 import IResult from "../interfaces/iresult";
-import IPost from "../interfaces/iṕost";
+import IPost from "../interfaces/ipost";
 import { Post } from "../models/post";
+import { io } from "../server";
 
 export default class PostService {
     async create(data: IPost): Promise<IResult<IPost>> {
@@ -12,6 +13,10 @@ export default class PostService {
             const post = await Post.create(data);
             result.data = post;
             result.status = 201;
+            const postPopulate = await this.get(post._id.toString());
+            if (postPopulate.data) {
+                io.feed("insert", "post", postPopulate.data);
+            }
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -30,6 +35,7 @@ export default class PostService {
             } else {
                 result.data = post;
                 result.status = 200;
+                io.feed("delete", "post", post);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -63,7 +69,7 @@ export default class PostService {
 
         try {
             const posts = await Post.find()
-                .sort({ createdAt: -1 })
+                .sort({ updatedAt: -1 })
                 .populate("author", "name nickname team pathImage")
                 .populate({ path: "comments.author", select: "name nickname" });
             result.data = posts;
@@ -78,7 +84,7 @@ export default class PostService {
 
     async like(_id: string, _idUser: string): Promise<IResult<Boolean>> {
         let result: IResult<Boolean> = { errors: [] };
-        const post = await Post.findById(_id);
+        let post = await Post.findById(_id);
         try {
             if (!post) {
                 result.errors?.push("Post não encontrado");
@@ -95,7 +101,10 @@ export default class PostService {
             }
             await post.save();
             result.status = 200;
-            return result;
+            const postPopulate = await this.get(_id);
+            if (postPopulate.data) {
+                io.feed("update", "post", postPopulate.data);
+            }
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -115,6 +124,10 @@ export default class PostService {
             }
             result.data = true;
             result.status = 200;
+            const postPopulate = await this.get(_id);
+            if (postPopulate.data) {
+                io.feed("update", "post", postPopulate.data);
+            }
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -135,6 +148,10 @@ export default class PostService {
             }
             result.data = true;
             result.status = 200;
+            const postPopulate = await this.get(_id);
+            if (postPopulate.data) {
+                io.feed("update", "post", postPopulate.data);
+            }
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;

@@ -8,7 +8,7 @@ export default interface IPost {
     pathImage: string;
     author: Types.ObjectId | IUser;
     likes: Types.ObjectId[];
-    comments?: Types.ObjectId[] | IComent[];
+    comments?: IComent[];
     createdAt?: Date;
     updatedAt?: Date;
 }
