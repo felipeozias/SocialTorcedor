@@ -2,14 +2,6 @@ import { check } from "express-validator";
 
 export default function userUpdateValidator() {
     return [
-        check("nickname")
-            .trim()
-            .isString()
-            .toLowerCase()
-            .isLength({ min: 5, max: 25 })
-            .withMessage("O apelido deve ter entre 5 e 25 caracteres")
-            .matches(/^[a-z][a-z0-9-_@.]*[a-z0-9]+$/)
-            .withMessage("O apelido deve começar com letra pode conter números e não pode terminar com caracteres especiais."),
         check("name")
             .trim()
             .isString()

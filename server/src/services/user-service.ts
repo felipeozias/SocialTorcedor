@@ -12,8 +12,9 @@ export default class UserService {
                 result.status = 400;
                 return result;
             }
-
-            data.password = CryptoJS.SHA256(data.password).toString();
+            if (data.password) {
+                data.password = CryptoJS.SHA256(data.password).toString();
+            }
             const user = await User.create(data);
             result.data = user;
             result.status = 201;
@@ -80,7 +81,11 @@ export default class UserService {
     async update(id: string, data: IUser): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
         try {
-            console.log(data);
+            if (data.password && data.password.length > 0) {
+                data.password = CryptoJS.SHA256(data.password).toString();
+            } else {
+                delete data.password;
+            }
             const user = await User.findByIdAndUpdate(id, data, { new: true }); //o new é para trazer ja o objeto atualizado
             if (!user) {
                 result.errors?.push("Usuário não encontrado");
