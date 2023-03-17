@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import {
     StyledModal,
     StyledInputName,
@@ -12,10 +12,10 @@ import {
     StyledButton2,
 } from "./styles";
 import DataList from "../DataList";
-import { simulateDb } from "../DataList";
 import NotificationModal from "../NotificationModal";
 import { Imodal } from "../../../interfaces/Modal";
 import ModalOverlay from "../ModalOverlay";
+import { IUser, apiRequestUsers } from "../../../database";
 
 let usersAdded: Array<string> = [];
 
@@ -23,6 +23,7 @@ export default function GroupModal(props: Imodal) {
     let [fileUrl, setFileUrl] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
+    let [usersDb, setUsersDb] = useState([] as IUser[])
 
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
@@ -31,6 +32,18 @@ export default function GroupModal(props: Imodal) {
         }
     }
 
+    async function requestDb() {
+        let res = await apiRequestUsers()
+        if (res.succesfull) {
+            setUsersDb(res.data);
+            // setReqSuccess(res.succesfull);
+        }
+    }
+
+    useEffect(() => {
+        requestDb();
+    }, []);
+
     function sendUserValue() {
         let user = document.querySelector(
             "#user-list-input"
@@ -38,32 +51,32 @@ export default function GroupModal(props: Imodal) {
 
         if (user.value === "") {
             // console.log("String vazia...");
-            setNotifMessage("String vazia...");
+            setNotifMessage("Campo vazio, digite/escolha um usuário...");
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else if (usersAdded.includes(user.value)) {
             // console.log(`Usuário: ${user.value} já adicionado!`);
-            setNotifMessage(`Usuário: ${user.value} já adicionado!`);
+            setNotifMessage(`Usuário: "${user.value}" já adicionado!`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else if (
-            simulateDb.some(
-                (userList) => userList["user"] === `${user.value}`
+            usersDb.some(
+                (userList) => userList.name === `${user.value}`
             ) === false
         ) {
             // console.log(`Usuário: ${user.value} inexistente...`);
-            setNotifMessage(`Usuário: ${user.value} inexistente...`);
+            setNotifMessage(`Usuário: "${user.value}" inexistente...`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else {
             usersAdded.push(user.value);
-            console.log(`${user.value} Adicionado com sucesso!`);
+            // console.log(`${user.value} Adicionado com sucesso!`);
             user.value = "";
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
@@ -78,11 +91,12 @@ export default function GroupModal(props: Imodal) {
         <>
             {props.isOpen && (
                 <>
-                    <ModalOverlay isOpen={props.isOpen} toggle={() => {}} />
+                    <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1001}/>
                     <NotificationModal
                         message={notifMessage}
                         isOpen={isOpen}
                         toggle={props.toggle}
+                        index={0}
                     />
                     <StyledModal
                         onSubmit={(e) => {

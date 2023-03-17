@@ -15,6 +15,7 @@ export const StyledGroupSection = styled.section`
 
   ::-webkit-scrollbar-track {
     background: #3D6287;
+    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {

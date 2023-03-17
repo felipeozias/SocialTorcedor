@@ -4,6 +4,7 @@ import Button from "../Button";
 import InputUser from "../InputUser";
 import SelectType from "../SelectType";
 import { BoxInputs, ErrorMessage, ErrorServer, Form, Message } from "./style";
+import { useState } from "react";
 
 interface IProps {
     submit: (e: any) => void;
@@ -16,6 +17,12 @@ export default function FormRegister(props: IProps): JSX.Element {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const [selectedTimeId, setSelectedTimeId] = useState<number | string>("");
+
+    function handleTimeChange(timeId: number) {
+        setSelectedTimeId(timeId);
+    }
 
     return (
         <Form onSubmit={handleSubmit(props.submit)}>
@@ -62,14 +69,10 @@ export default function FormRegister(props: IProps): JSX.Element {
                         conter letras
                     </ErrorMessage>
                 )}
-                <SelectType
-                    name="team"
-                    validates={{
-                        ...register("team", {
-                            required: true,
-                        }),
-                    }}
-                />
+                
+                <Message>time do coração:</Message>
+                <SelectType onChange={handleTimeChange} selectedTimeId={selectedTimeId}/>
+
                 <InputUser
                     type="password"
                     name="password"
@@ -117,3 +120,5 @@ export default function FormRegister(props: IProps): JSX.Element {
         </Form>
     );
 }
+
+
