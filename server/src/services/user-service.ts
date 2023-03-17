@@ -3,6 +3,8 @@ import IUser from "../interfaces/iuser";
 import { User } from "../models/user";
 import CryptoJS from "crypto-js";
 
+import { io } from "../server";
+
 export default class UserService {
     async create(data: IUser): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
@@ -12,11 +14,15 @@ export default class UserService {
                 result.status = 400;
                 return result;
             }
-
-            data.password = CryptoJS.SHA256(data.password).toString();
-            const user = await User.create(data);
+            if (data.password) {
+                data.password = CryptoJS.SHA256(data.password).toString();
+            }
+            let user = await User.create(data);
             result.data = user;
             result.status = 201;
+            user.password = "********";
+            console.log(user);
+            io.feed("insert", "user", user);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -80,7 +86,11 @@ export default class UserService {
     async update(id: string, data: IUser): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
         try {
-            console.log(data);
+            if (data.password && data.password.length > 0) {
+                data.password = CryptoJS.SHA256(data.password).toString();
+            } else {
+                delete data.password;
+            }
             const user = await User.findByIdAndUpdate(id, data, { new: true }); //o new é para trazer ja o objeto atualizado
             if (!user) {
                 result.errors?.push("Usuário não encontrado");
@@ -88,6 +98,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
+                io.feed("update", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -107,6 +118,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
+                io.feed("delete", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);

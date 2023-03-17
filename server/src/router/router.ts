@@ -2,6 +2,7 @@ import { Router } from "express";
 import { post } from "../controllers/post-controller";
 import { user } from "../controllers/user-controller";
 import { group } from "../controllers/group-controller";
+import { test } from "../controllers/teste-controller";
 
 import handleValidation from "../validators/handle-validation";
 import idValidator from "../validators/id-validator";
@@ -38,3 +39,5 @@ router.get("/groups/:id", idValidator(), handleValidation, group.get);
 router.get("/groups", group.list);
 router.delete("/groups/:id/members/:userId", idValidator(), userIdValidator(), handleValidation, group.removeMember);
 router.post("/groups/:id/messages", idValidator(), messageValidator(), handleValidation, group.addMessage);
+
+//router.get("/websocket", test.teste);
