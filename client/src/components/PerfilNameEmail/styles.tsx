@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledContainer = styled.div`
     font-family:'Inter', sans-serif;
     `
-export const StyledName = styled.span`
+export const StyledName = styled.p`
     display: block;
     font-size: 14px;
     `

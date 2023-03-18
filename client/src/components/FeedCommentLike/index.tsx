@@ -14,6 +14,7 @@ import IconComment from "../../assets/icon_comment.svg";
 import FeedNewPublicate from "../FeedNewPublicate"
 import IconImage from "../ImagePerfil";
 import PerfilNameEmail from "../PerfilNameEmail";
+import { ICommentFeed } from "../../interfaces/DataForFeed";
 
 //------ Using context ------
 import { useContext } from "react";
@@ -25,7 +26,7 @@ interface IProps {
     time_publication: String,
     comment_post?: String,
     img_post?: String,
-    comments?: String[],
+    comments?: ICommentFeed[],
     likes?: String
 }
 
@@ -40,10 +41,10 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
 
             <StyledCommetPost>{props.comment_post}</StyledCommetPost>
 
-            <StyledImgPost src={props.img_post?.toString()}></StyledImgPost>
+            <StyledImgPost src={props.img_post?.toString()} alt='Imagem da publicação'></StyledImgPost>
 
             <StyledCommentLike>
-                <StyledNumLikes>{props.likes ? props.likes : 0} Curtidas</StyledNumLikes>
+                <StyledNumLikes>{props.likes ? (props.likes == '1' ? '1 curtida' : props.likes + ' curtidas') : '0 curtidas'}</StyledNumLikes>
                 <StyledContainerLikesComment>
                     <StyledLikeComment>
                         <img src={IconLike} alt="Icone like" />
