@@ -5,7 +5,7 @@ export const StyledContainer = styled.div`
     position: relative;
     align-items: center;
     width: 85%;
-    margin: 15px 0;
+    margin-top: 15px;
     background-color: #3D3D3D;
     border-radius: 8px;
     padding: 5px 0 5px 8px;
