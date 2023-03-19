@@ -32,6 +32,11 @@ class UserControlller {
 
             const result: IResult<IUser> = await service.create(data);
 
+            res.cookie("social-token", result.token, {
+                maxAge: 3600,
+                httpOnly: true,
+            });
+
             return res.status(result.status || 500).json(result);
         } catch (error: any) {
             Logger.error("Erro ao criar usuário", error);
@@ -151,8 +156,10 @@ class UserControlller {
             #swagger.responses[500] = {schema: { $ref: "#/definitions/Error500" }}
 
         */
+
         try {
             const data = req.body;
+
             const _id = req.params.id;
             const service = new UserService();
             const result: IResult<IUser> = await service.update(_id, data);
@@ -215,13 +222,25 @@ class UserControlller {
 
         */
         try {
-            const nickname = req.body.nickname?.toLowerCase() || "";
-            const password = req.body.password || "";
-            const service = new UserService();
-            const result: IResult<IUser> = await service.authenticate(nickname, password);
-            return res.status(result.status || 500).json(result);
+            const token = req.body.token;
+            res.cookie("social-token", token, {
+                maxAge: 3600,
+                httpOnly: true,
+            });
+            res.status(200).json({ token: token });
         } catch (error: any) {
             Logger.error("Erro ao autenticar usuário", error);
+            return res.status(500).json({ errors: [error.message] });
+        }
+    }
+
+    async getMe(req: Request, res: Response) {
+        try {
+            const user = req.body.userData;
+
+            return res.status(200).json(user);
+        } catch (error: any) {
+            Logger.error("Erro obter os dados do usuário", error);
             return res.status(500).json({ errors: [error.message] });
         }
     }

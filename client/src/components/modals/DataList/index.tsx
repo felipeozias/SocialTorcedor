@@ -1,10 +1,7 @@
 import { StyledInputName } from "../GroupModal/styles";
-import { useEffect, useState, useContext } from "react";
-import { IUser, apiRequestUsers } from "../../../database";
-
-function UseDb() {
-    
-}
+import { useEffect, useState } from "react";
+import { apiRequestUsers, simulateLogin } from "../../../database";
+import { IUser } from "../../../interfaces/Users"; 
 
 export default function DataList() {
     let [users, setUsers] = useState([] as IUser[]);
@@ -22,10 +19,15 @@ export default function DataList() {
         let list = document.querySelector("#user-list");
         // console.log(list)
         users.forEach(el => {
-            let option = document.createElement('option');
-            option.value = el.name
-            list?.appendChild(option);
-            // console.log(el.user)
+            if (el.nickname !== simulateLogin.nickname) {
+                let option = document.createElement('option');
+                option.value = `${el.name} (${el.nickname})`
+                list?.appendChild(option);
+            }
+            // let option = document.createElement('option');
+            //     option.value = `${el.name} (${el.nickname})`
+            //     list?.appendChild(option);
+            // console.log(el)
         });
     }
 

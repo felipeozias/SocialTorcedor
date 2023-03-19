@@ -1,22 +1,35 @@
 import IconEmotion from "../IconEmotion";
 import IconImage from "../IconImage";
 import { StyledContainer, StyledInput, StyledSpanPublic, StyledIconsOptions } from "./style";
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, MouseEvent, useRef } from 'react';
 
+interface IPropsFeedBarInput {
+    click?: (e: MouseEvent<HTMLDivElement>, value?: String) => void,
+    place_hoder: String,
+    action: String,
+    emotion?: boolean,
+    image?: boolean
+}
 
-export default function FeedBarInput(props: { place_hoder: String, action: String, emotion?: boolean, image?: boolean }): JSX.Element {
+export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
+    const inputRef = useRef<HTMLTextAreaElement>(null);
 
     function resizeInput(e: KeyboardEvent<HTMLTextAreaElement>) {
         e.currentTarget.style.height = '35px';
         e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-        console.log(e.currentTarget.scrollHeight)
+    }
+
+    function submitFeed(e: MouseEvent<HTMLDivElement>) {
+        if (props.click) {
+            props.click(e, inputRef.current?.value.toString());
+        }
     }
 
     if (props.image && props.emotion) {
         return (
             <StyledContainer>
-                <StyledInput placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-                <StyledSpanPublic>{props.action}</StyledSpanPublic>
+                <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+                <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions id="box_emotion_image">
                     <IconEmotion />
                     <IconImage />
@@ -28,20 +41,20 @@ export default function FeedBarInput(props: { place_hoder: String, action: Strin
     if (props.image) {
         return (
             <StyledContainer>
-                <StyledInput placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-                <StyledSpanPublic>{props.action}</StyledSpanPublic>
+                <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+                <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions>
                     <IconImage />
                 </StyledIconsOptions>
             </StyledContainer>
         )
     }
-    
+
     if (props.emotion) {
         return (
             <StyledContainer>
-                <StyledInput placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-                <StyledSpanPublic>{props.action}</StyledSpanPublic>
+                <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+                <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions>
                     <IconEmotion />
                 </StyledIconsOptions>
@@ -51,8 +64,8 @@ export default function FeedBarInput(props: { place_hoder: String, action: Strin
 
     return (
         <StyledContainer>
-            <StyledInput placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-            <StyledSpanPublic>{props.action}</StyledSpanPublic>
+            <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+            <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
         </StyledContainer>
     )
 }
