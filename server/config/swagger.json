@@ -288,27 +288,6 @@
         }
       }
     },
-    "/files/{file}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "file",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      }
-    },
     "/users/logout": {
       "delete": {
         "description": "",
@@ -1774,6 +1753,13 @@
             }
           }
         }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
       }
     }
   },

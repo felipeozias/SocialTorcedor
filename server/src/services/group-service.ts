@@ -80,7 +80,6 @@ export default class GroupService {
     async update(id: string, data: IGroup): Promise<IResult<IGroup>> {
         let result: IResult<IGroup> = { errors: [] };
         try {
-            console.log(data);
             const user = await Group.findByIdAndUpdate(id, data, { new: true }); //o new é para trazer ja o objeto atualizado
             if (!user) {
                 result.errors?.push("Grupo não encontrado");

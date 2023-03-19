@@ -156,10 +156,7 @@ class PostController {
         try {
             const service = new PostService();
 
-            const result: IResult<Boolean> = await service.like(
-                req.params.id,
-                req.params.userId
-            );
+            const result: IResult<Boolean> = await service.like(req.params.id, req.params.userId);
 
             return res.status(result.status || 500).json(result);
         } catch (error: any) {
@@ -240,10 +237,7 @@ class PostController {
         try {
             const service = new PostService();
 
-            const result: IResult<Boolean> = await service.removeComment(
-                req.params.id,
-                req.params.commentId
-            );
+            const result: IResult<Boolean> = await service.removeComment(req.params.id, req.params.commentId);
 
             return res.status(result.status || 500).json(result);
         } catch (error: any) {
