@@ -2,7 +2,6 @@ import { ChangeEvent, useState, useEffect } from "react";
 import {
     StyledModal,
     StyledInputName,
-    StyledTextArea,
     StyledSectionLeft,
     StyledSectionRight,
     StyledInputFile,
@@ -20,7 +19,7 @@ import Context from "../../../hooks/useContext";
 import { IUser } from "../../../interfaces/Users";
 import createGroup from "../../../services/createGroup";
 import { IRegisterGroup } from "../../../interfaces/Groups";
-import { simulateLogin, simulateLogin2 } from "../../../database";
+import { simulateLogin } from "../../../database";
 
 let usersAdded: Array<string> = [];
 
@@ -56,7 +55,7 @@ export default function GroupModal(props: Imodal) {
         ) as HTMLInputElement;
         let userNick = ""
         let userId = ""
-        if (user.value != "") {
+        if (user.value !== "") {
             let userDivide = user.value.split("(");
             if (userDivide.length > 1) {
                 userNick = userDivide[1].replace(")", "")
@@ -64,8 +63,8 @@ export default function GroupModal(props: Imodal) {
                     let userObj = usersDb.filter(name => name.nickname.includes(userNick))
                     userId = userObj[0]._id
                 }
-                console.log(userNick)
-                console.log(userId)
+                // console.log(userNick)
+                // console.log(userId)
             } else {
                 userNick = user.value
             }

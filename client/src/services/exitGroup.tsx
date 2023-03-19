@@ -2,7 +2,7 @@
 
 
 export default async function exitGroup(userData: {groupId: string, userId: string}) {
-    console.log(userData);
+    // console.log(userData);
     try {
         const options = {
             method: "DELETE",
@@ -18,7 +18,7 @@ export default async function exitGroup(userData: {groupId: string, userId: stri
         }
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

@@ -1,5 +1,5 @@
 import { StyledInputName } from "../GroupModal/styles";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { apiRequestUsers, simulateLogin } from "../../../database";
 import { IUser } from "../../../interfaces/Users"; 
 
@@ -19,7 +19,7 @@ export default function DataList() {
         let list = document.querySelector("#user-list");
         // console.log(list)
         users.forEach(el => {
-            if (el.nickname != simulateLogin.nickname) {
+            if (el.nickname !== simulateLogin.nickname) {
                 let option = document.createElement('option');
                 option.value = `${el.name} (${el.nickname})`
                 list?.appendChild(option);

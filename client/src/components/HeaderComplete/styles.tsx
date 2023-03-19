@@ -12,5 +12,10 @@ export const StyledHeader = styled.header`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    `
-    
+
+    @media (max-width: 700px) {
+        h1{
+            display: none;
+        }
+    }
+`

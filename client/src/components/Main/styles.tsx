@@ -1,26 +1,31 @@
 import styled from "styled-components";
 
 export const StyledMain = styled.main`
-    position:absolute;
-    scroll-behavior: smooth;
-    margin: 50px 0 0;
-    scroll-behavior: auto;
-    left: 0;
-    width: 100%;
-    height: 81.9vh;
-    color: #ffffff;
-    display: flex;
-    flex-wrap: wrap;
+  position:absolute;
+  scroll-behavior: smooth;
+  margin: 50px 0 0;
+  scroll-behavior: auto;
+  left: 0;
+  width: 100%;
+  height: 81.9vh;
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
 `
 export const StyledMainSection = styled.section`
-    display: flexbox;
-    text-align: center;
-    width: 40%;
-    /* min-height: calc(100vh - 110px); */
-    height: 100%;
-    overflow: auto;
-    padding-bottom: 80px;
-    ::-webkit-scrollbar {
+  display: flexbox;
+  text-align: center;
+  width: 40%;
+  height: 100%;
+  overflow: auto;
+  padding-bottom: 80px;
+
+  
+  @media (max-width: 700px) {
+    width: 100vw;
+  }
+
+  ::-webkit-scrollbar {
     width: 15px;
   }
 
@@ -43,4 +48,8 @@ export const StyledRigthSection = styled.section`
     margin: 50px 0 150px 0;
     padding: 20px;
     height: 100vh;
+
+    @media (max-width: 700px) {
+      display: none;
+    }
 `;
