@@ -1,10 +1,10 @@
 import { StyledContainer, StyledName, StyledEmail } from "./styles";
 
-export default function NameEndEmail(data: { name: String, email: String }) {
+export default function NameEndEmail(data: { name: String; nickname: String }) {
     return (
         <StyledContainer>
             <StyledName>{data.name}</StyledName>
-            <StyledEmail>{data.email}</StyledEmail>
+            <StyledEmail>{data.nickname}</StyledEmail>
         </StyledContainer>
-    )
+    );
 }

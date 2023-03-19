@@ -297,25 +297,14 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
-          "401": {
-            "description": "Não autorizado"
-          },
           "404": {
             "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
           }
         }
       }

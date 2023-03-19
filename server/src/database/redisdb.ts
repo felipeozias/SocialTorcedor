@@ -5,10 +5,17 @@ export default class RedisDb {
     constructor() {}
 
     static client() {
-        const client = createClient({ url: process.env.REDIS_URI });
+        const PORT: number = parseInt(process.env.REDIS_PORT || "");
+        const client = createClient({
+            socket: {
+                host: process.env.REDIS_HOST,
+                port: PORT,
+            },
+            password: process.env.REDIS_PASSWORD,
+        });
         client.connect().catch(console.error);
         client.on("error", (err) => {
-            Logger.error(`Erro ao acessar o Redis: ${err}`);
+            Logger.error(`🔰 Erro ao se conectar com o Redis: ${err}`);
         });
 
         return client;

@@ -1,5 +1,12 @@
-import {StyledImg, StyledImgContainer, StyledInput, StyledInputContainer, 
-    StyledP, StyledUserSection, UsersContainer} from "./styles";
+import {
+    StyledImg,
+    StyledImgContainer,
+    StyledInput,
+    StyledInputContainer,
+    StyledP,
+    StyledUserSection,
+    UsersContainer,
+} from "./styles";
 import img from "../../assets/loupe.png";
 import MainUsers from "../MainUsers";
 import { useEffect, useState } from "react";
@@ -11,67 +18,80 @@ export default function MainUserSection(): JSX.Element {
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
 
-    console.log("a")
-
     async function requestDb() {
-        let res = await apiRequestUsers()
+        let res = await apiRequestUsers();
         if (res.succesfull) {
             setUsersDb(res.data);
             setReqSuccess(res.succesfull);
         }
     }
-    
-    let userValue = ""
+
+    let userValue = "";
     let filteredArray: IUser[] = [];
 
     useEffect(() => {
         requestDb();
         testApi();
-    },[reqSuccess]);
+    }, [reqSuccess]);
 
     function testApi() {
-        let removedSelf = usersDb.filter(users => users._id != simulateLogin._id);
-        let filteredUsers = removedSelf.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
-        
-        for (let i=0; i < filteredUsers.length;i++) {
+        let removedSelf = usersDb.filter(
+            (users) => users._id != simulateLogin._id
+        );
+        let filteredUsers = removedSelf.filter((users) =>
+            users.name.toLowerCase().includes(`${userValue.toLowerCase()}`)
+        );
+
+        for (let i = 0; i < filteredUsers.length; i++) {
             if (filteredUsers[i] != undefined) {
                 let tempObj = {
-                    name: filteredUsers[i].name, 
+                    name: filteredUsers[i].name,
                     _id: filteredUsers[i]._id,
                     nickname: filteredUsers[i].nickname,
-                    team: filteredUsers[i].team
-                }
-                filteredArray.push(tempObj)
+                    team: filteredUsers[i].team,
+                };
+                filteredArray.push(tempObj);
             }
         }
 
         setUsersF(filteredArray);
-        let inputUser = document.querySelector("#input-user") as HTMLInputElement;
-        inputUser.value = ""
+        let inputUser = document.querySelector(
+            "#input-user"
+        ) as HTMLInputElement;
+        inputUser.value = "";
     }
 
     function updateValue() {
-        let inputUser = document.querySelector("#input-user") as HTMLInputElement;
-        userValue = inputUser.value
+        let inputUser = document.querySelector(
+            "#input-user"
+        ) as HTMLInputElement;
+        userValue = inputUser.value;
     }
-    
+
     return (
         <StyledUserSection>
             <StyledP> Usuários </StyledP>
             <StyledInputContainer>
-                <StyledInput id="input-user" type="text" placeholder='Usuários' onKeyUp={(e) => {if (e.key == "Enter") {testApi()}}} onChange={updateValue}/>
+                <StyledInput
+                    id="input-user"
+                    type="text"
+                    placeholder="Usuários"
+                    onKeyUp={(e) => {
+                        if (e.key == "Enter") {
+                            testApi();
+                        }
+                    }}
+                    onChange={updateValue}
+                />
                 <StyledImgContainer>
-                    <StyledImg src={img} alt="loupe image" onClick={testApi}/>
+                    <StyledImg src={img} alt="loupe image" onClick={testApi} />
                 </StyledImgContainer>
             </StyledInputContainer>
             <UsersContainer>
-                {(usersF.map((users) => (
-                    <MainUsers
-                        key={users._id} 
-                        name={users.name} 
-                    />
-                )))}
+                {usersF.map((users) => (
+                    <MainUsers key={users._id} name={users.name} />
+                ))}
             </UsersContainer>
         </StyledUserSection>
-    )
+    );
 }
