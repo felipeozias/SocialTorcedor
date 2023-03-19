@@ -15,10 +15,24 @@ export default class Websocket {
     }
 
     start() {
+        this.io.use((socket, next) => {
+            const token = socket.handshake.auth.token;
+            if (!token) {
+                return next(new Error("token não informado"));
+            }
+
+            if (token !== "aaaa") {
+                return next(new Error("invalid username"));
+            }
+
+            next();
+        });
+
         this.io.on("connection", (socket) => {
-            console.log("🔰 Socket conectado: " + socket.id);
+            console.log("id", socket.id, "auth", socket.handshake.auth);
+            this.io.to(socket.id).emit("feed", `Seja bem vindo token: ${socket.handshake.auth.token}`);
             socket.on("disconnect", () => {
-                console.log("🔰 Socket desconectado: " + socket.id);
+                console.log(`🔰 Socket conectado: ${socket.id} - user: ${socket.handshake.auth} `);
             });
         });
         Logger.info("🔰 Websocket rodando!");
@@ -26,5 +40,6 @@ export default class Websocket {
 
     feed(action: string, target: string, data: any) {
         this.io.emit("feed", { action, target, data });
+        // this.io.to
     }
 }
