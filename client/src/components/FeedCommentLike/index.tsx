@@ -44,7 +44,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledImgPost src={props.img_post?.toString()} alt='Imagem da publicação'></StyledImgPost>
 
             <StyledCommentLike>
-                <StyledNumLikes>{props.likes ? (props.likes == '1' ? '1 curtida' : props.likes + ' curtidas') : '0 curtidas'}</StyledNumLikes>
+                <StyledNumLikes>{props.likes ? (props.likes.toString() === '1' ? '1 curtida' : props.likes + ' curtidas') : '0 curtidas'}</StyledNumLikes>
                 <StyledContainerLikesComment>
                     <StyledLikeComment>
                         <img src={IconLike} alt="Icone like" />

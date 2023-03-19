@@ -33,13 +33,13 @@ const SelectType: React.FC<TimeSelectProps> = ({ onChange, selectedTimeId }) => 
       let times = await result.map(({ time_id, nome_popular }: any) => ({ time_id, nome_popular }));
       setTimes(times);
 
-      console.log(times);
+      // console.log(times);
     }
     fetchTimes();
   }, []);
 
   async function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(event.target.value);
+    // console.log(event.target.value);
   }
 
   return (

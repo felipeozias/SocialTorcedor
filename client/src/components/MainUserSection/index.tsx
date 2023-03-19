@@ -11,7 +11,7 @@ export default function MainUserSection(): JSX.Element {
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
 
-    console.log("a")
+    // console.log("a")
 
     async function requestDb() {
         let res = await apiRequestUsers()
@@ -30,11 +30,11 @@ export default function MainUserSection(): JSX.Element {
     },[reqSuccess]);
 
     function testApi() {
-        let removedSelf = usersDb.filter(users => users._id != simulateLogin._id);
+        let removedSelf = usersDb.filter(users => users._id !== simulateLogin._id);
         let filteredUsers = removedSelf.filter(users => users.name.toLowerCase().includes(`${userValue.toLowerCase()}`));
         
         for (let i=0; i < filteredUsers.length;i++) {
-            if (filteredUsers[i] != undefined) {
+            if (filteredUsers[i] !== undefined) {
                 let tempObj = {
                     name: filteredUsers[i].name, 
                     _id: filteredUsers[i]._id,
@@ -59,7 +59,7 @@ export default function MainUserSection(): JSX.Element {
         <StyledUserSection>
             <StyledP> Usuários </StyledP>
             <StyledInputContainer>
-                <StyledInput id="input-user" type="text" placeholder='Usuários' onKeyUp={(e) => {if (e.key == "Enter") {testApi()}}} onChange={updateValue}/>
+                <StyledInput id="input-user" type="text" placeholder='Usuários' onKeyUp={(e) => {if (e.key === "Enter") {testApi()}}} onChange={updateValue}/>
                 <StyledImgContainer>
                     <StyledImg src={img} alt="loupe image" onClick={testApi}/>
                 </StyledImgContainer>
