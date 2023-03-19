@@ -23,7 +23,7 @@ router.post("/users", userCreateValidator(), handleValidation, user.create);
 router.post("/users/authenticate", Auth.authLogin, user.authenticate);
 router.get("/users/exists/:nickname", user.exists);
 
-router.get("/files/:file", Auth.verifyAuth, file.get);
+router.get("/files/:file", file.get);
 router.delete("/users/logout", Auth.verifyAuth, Auth.logout);
 router.get("/user/me", Auth.verifyAuth, user.getMe);
 router.get(
@@ -82,12 +82,52 @@ router.delete(
     post.removeComment
 );
 
-router.post("/groups", Auth.verifyAuth, Storage.upload, groupValidator(), handleValidation, group.create);
-router.patch("/groups/:id", Auth.verifyAuth, idValidator(), groupValidator(), handleValidation, group.update);
-router.delete("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, group.remove);
-router.get("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, group.get);
+router.post(
+    "/groups",
+    Auth.verifyAuth,
+    Storage.upload,
+    groupValidator(),
+    handleValidation,
+    group.create
+);
+router.patch(
+    "/groups/:id",
+    Auth.verifyAuth,
+    idValidator(),
+    groupValidator(),
+    handleValidation,
+    group.update
+);
+router.delete(
+    "/groups/:id",
+    Auth.verifyAuth,
+    idValidator(),
+    handleValidation,
+    group.remove
+);
+router.get(
+    "/groups/:id",
+    Auth.verifyAuth,
+    idValidator(),
+    handleValidation,
+    group.get
+);
 router.get("/groups", Auth.verifyAuth, group.list);
-router.delete("/groups/:id/members/:userId", Auth.verifyAuth, idValidator(), userIdValidator(), handleValidation, group.removeMember);
-router.post("/groups/:id/messages", Auth.verifyAuth, idValidator(), messageValidator(), handleValidation, group.addMessage);
+router.delete(
+    "/groups/:id/members/:userId",
+    Auth.verifyAuth,
+    idValidator(),
+    userIdValidator(),
+    handleValidation,
+    group.removeMember
+);
+router.post(
+    "/groups/:id/messages",
+    Auth.verifyAuth,
+    idValidator(),
+    messageValidator(),
+    handleValidation,
+    group.addMessage
+);
 
 //router.get("/websocket", test.teste);

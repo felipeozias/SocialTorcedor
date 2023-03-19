@@ -20,7 +20,10 @@ export default async function loginService(formData: any) {
         }
 
         const data = await res.json();
-        console.log(data);
+
+        document.cookie = `token=${data.token}; expires=${new Date(
+            new Date().getTime() + 24 * 60 * 60 * 1000
+        )}; path=/;`;
 
         return { auth: true, status: res.status, data: data };
     } catch (err) {

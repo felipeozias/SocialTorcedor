@@ -4,7 +4,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import Login from "../pages/Login";
-import Home from "../pages/Home";
+import Home, { homeLoader } from "../pages/Home";
 import Register from "../pages/Register";
 import { useEffect } from "react";
 
@@ -31,6 +31,7 @@ export default function Routes() {
         {
             path: "/home",
             element: <Home />,
+            loader: homeLoader,
         },
         {
             path: "/register",

@@ -1,3 +1,5 @@
+import { getToken } from "../utils/cookies";
+
 export const simulateLogin = {
     _id: "640f6af6ad964b6d45a13c35",
     name: "Zoro Oliveira",
@@ -14,9 +16,14 @@ export const simulateLogin2 = {
 
 export async function apiRequestUsers() {
     try {
+        const header = {
+            headers: {
+                authorization: getToken || "",
+            },
+        };
         const url = process.env.REACT_APP_USERS_LOCAL as string;
 
-        const request = await fetch(url);
+        const request = await fetch(url, header);
         if (!request.ok) {
             console.error(request.json());
             return {

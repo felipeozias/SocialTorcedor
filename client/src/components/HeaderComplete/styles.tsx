@@ -2,20 +2,15 @@ import styled from "styled-components";
 
 export const StyledHeader = styled.header`
     z-index: 100;
-    background-color: #1A2A3A;
-    position:fixed;
+    background-color: #1a2a3a;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100vw;
-    height: 50px;
-    color: #FFF;
+    height: 60px;
+    color: #fff;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-
-    @media (max-width: 700px) {
-        h1{
-            display: none;
-        }
-    }
-`
+    padding: 0px 60px 0px 40px;
+`;
