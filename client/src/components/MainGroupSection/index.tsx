@@ -1,7 +1,7 @@
 import { StyledGroupSection, StyledImg, StyledP, StyledTitleSection, ImgContainer } from "./styles"
 import MainGroups from "../MainGroups"
 import addGroupIcon from "../../assets/group-add.png"
-import { apiRequestGroups, simulateLogin, simulateLogin2 } from "../../database"
+import { apiRequestGroups, simulateLogin } from "../../database"
 import GroupModal from "../../components/modals/GroupModal";
 import useModal from "../../hooks/useModal";
 import { useState, useEffect } from "react";
@@ -16,7 +16,7 @@ export default function MainGroupSection() {
 
     async function requestDb() {
         let res = await apiRequestGroups();
-        console.log(res)
+        // console.log(res)
         if (res.succesfull) {
             setReqGroups(res.data);
             setReqSuccess(res.succesfull);
@@ -58,7 +58,7 @@ export default function MainGroupSection() {
                 const groupObj = document.querySelector("#groupSection") as HTMLElement
                 const scrollTop = groupObj.scrollTop;
                 // console.log(scrollTop)
-                if (scrollTop == 0) {
+                if (scrollTop === 0) {
                     setPositionPopUp(80)
                 } else {
                     setPositionPopUp(80 + (scrollTop * 2))

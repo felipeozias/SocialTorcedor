@@ -36,14 +36,14 @@ export default function MainUserSection(): JSX.Element {
 
     function testApi() {
         let removedSelf = usersDb.filter(
-            (users) => users._id != simulateLogin._id
+            (users) => users._id !== simulateLogin._id
         );
         let filteredUsers = removedSelf.filter((users) =>
             users.name.toLowerCase().includes(`${userValue.toLowerCase()}`)
         );
 
         for (let i = 0; i < filteredUsers.length; i++) {
-            if (filteredUsers[i] != undefined) {
+            if (filteredUsers[i] !== undefined) {
                 let tempObj = {
                     name: filteredUsers[i].name,
                     _id: filteredUsers[i]._id,
@@ -77,7 +77,7 @@ export default function MainUserSection(): JSX.Element {
                     type="text"
                     placeholder="Usuários"
                     onKeyUp={(e) => {
-                        if (e.key == "Enter") {
+                        if (e.key === "Enter") {
                             testApi();
                         }
                     }}

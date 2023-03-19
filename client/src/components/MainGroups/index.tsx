@@ -13,8 +13,7 @@ import {
 import logoIcon from "../../assets/logo.png";
 import exitIcon from "../../assets/exit.png"
 import editIcon from "../../assets/edit.png"
-import { useContext, useState } from "react";
-import Context from "../../hooks/useContext";
+import { useState } from "react";
 import exitGroup from "../../services/exitGroup";
 import { simulateLogin } from "../../database";
 import NotificationModal from "../modals/NotificationModal";
@@ -42,7 +41,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
             groupId: props.groupId,
             userId: simulateLogin._id
         }
-        console.log(userData);
+        // console.log(userData);
         exitGroup(userData);
         setNotifMessage(`Você saiu do grupo!`);
         setIsOpenNotif(true);
@@ -51,10 +50,10 @@ export default function MainGroups(props: Iprops): JSX.Element {
         }, 2000);
     }
     function editGroup() {
-        console.log("editar grupo")
+        // console.log("editar grupo")
     }
     function activateBorder() {
-        console.log("a")
+        // console.log("a")
         setBorderActive("solid")
     }
 

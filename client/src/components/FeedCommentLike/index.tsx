@@ -52,7 +52,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledCommentLike>
                 <StyledNumLikes>
                     {props.likes
-                        ? props.likes == "1"
+                        ? props.likes.toString() === "1"
                             ? "1 curtida"
                             : props.likes + " curtidas"
                         : "0 curtidas"}

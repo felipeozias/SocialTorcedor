@@ -1,6 +1,6 @@
 
 export default async function createGroup(userData: any) {
-    console.log(userData);
+    // console.log(userData);
     try {
         const options = {
             method: "POST",
@@ -17,7 +17,7 @@ export default async function createGroup(userData: any) {
         }
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

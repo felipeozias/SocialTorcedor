@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Icon from "../../assets/icon_emotion_black.png";
 
 export const StyledChatContainer = styled.div`
     width: 100%;
