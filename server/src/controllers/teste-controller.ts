@@ -6,7 +6,7 @@ class TesteController {
     async teste(req: Request, res: Response) {
         const msg = req.body.message;
 
-        io.feed("add", "teste", msg);
+        io.pubFeed("add", "teste", msg);
 
         res.status(200).json({ message: `Mensagem enviada` });
     }

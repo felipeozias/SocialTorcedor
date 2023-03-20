@@ -15,7 +15,7 @@ export default class PostService {
             result.status = 201;
             const postPopulate = await this.get(post._id.toString());
             if (postPopulate.data) {
-                io.feed("insert", "post", postPopulate.data);
+                io.pubFeed("insert", "post", postPopulate.data);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -35,7 +35,7 @@ export default class PostService {
             } else {
                 result.data = post;
                 result.status = 200;
-                io.feed("delete", "post", post);
+                io.pubFeed("delete", "post", post);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -103,7 +103,7 @@ export default class PostService {
             result.status = 200;
             const postPopulate = await this.get(_id);
             if (postPopulate.data) {
-                io.feed("update", "post", postPopulate.data);
+                io.pubFeed("update", "post", postPopulate.data);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -126,7 +126,7 @@ export default class PostService {
             result.status = 200;
             const postPopulate = await this.get(_id);
             if (postPopulate.data) {
-                io.feed("update", "post", postPopulate.data);
+                io.pubFeed("update", "post", postPopulate.data);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -150,7 +150,7 @@ export default class PostService {
             result.status = 200;
             const postPopulate = await this.get(_id);
             if (postPopulate.data) {
-                io.feed("update", "post", postPopulate.data);
+                io.pubFeed("update", "post", postPopulate.data);
             }
         } catch (error: any) {
             result.errors?.push(error.message);

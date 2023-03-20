@@ -30,7 +30,7 @@ export default class UserService {
             result.data = user;
             result.status = 201;
             user.password = "********";
-            io.feed("insert", "user", user);
+            io.pubFeed("insert", "user", user);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -108,7 +108,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
-                io.feed("update", "user", user);
+                io.pubFeed("update", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -128,7 +128,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
-                io.feed("delete", "user", user);
+                io.pubFeed("delete", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
