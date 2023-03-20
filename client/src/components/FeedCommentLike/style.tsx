@@ -7,7 +7,7 @@ export const StyledUserContainer = styled.div`
         font-size: 7pt;
         font-style: italic;
         position: relative;
-        top: -4px;
+        top: 0;
     }
 
     & span, p{
@@ -81,12 +81,9 @@ export const StyledLikeComment = styled.p`
 `;
 
 export const StyledComment = styled.div`
-    #box_emotion_image{
-        background-color: red;
-    }
-    
     > div {
         width: 100%;
+        margin: 0;
     }
     
     #icon_perfio {

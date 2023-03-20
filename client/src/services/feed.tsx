@@ -24,6 +24,8 @@ export async function fetchFeed() {
         }
 
         let data = (await res.json()).data;
+        console.log(data);
+        
 
         return data;
     } catch (err) {

@@ -17,7 +17,7 @@ async function createComponentsFeed(): Promise<JSX.Element[]> {
 
     return data.map((feed: IGetFeed) =>
         <FeedCommentLike
-            src={feed.author.pathImage ? feed.author.pathImage : 'https://udayananetworking.unud.ac.id/assets/frontend/images/user-m.png'}
+            src={feed.author.pathImage !== undefined ? 'https://api.socialtorcedor.shop/assets/' + feed.author.pathImage : 'https://api.socialtorcedor.shop/assets/user_default.jpg'}
             user_name={feed.author.name}
             time_publication={formatTime(new Date(`${feed.createdAt}`)).toString()}
             comment_post={feed.content}

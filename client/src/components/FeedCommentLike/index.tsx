@@ -16,6 +16,8 @@ import IconImage from "../ImagePerfil";
 import PerfilNameEmail from "../PerfilNameEmail";
 import { ICommentFeed } from "../../interfaces/DataForFeed";
 
+import CommentsFeed from "../CommentsFeed";
+
 //------ Using context ------
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
@@ -26,7 +28,7 @@ interface IProps {
     time_publication: String;
     comment_post?: String;
     img_post?: String;
-    comments?: ICommentFeed[];
+    comments: ICommentFeed[];
     likes?: String;
 }
 
@@ -45,7 +47,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledCommetPost>{props.comment_post}</StyledCommetPost>
 
             <StyledImgPost
-                src={props.img_post?.toString()}
+                src={`https://api.socialtorcedor.shop/assets/` + props.img_post?.toString()}
                 alt="Imagem da publicação"
             ></StyledImgPost>
 
@@ -69,6 +71,8 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                     </StyledLikeComment>
                 </StyledContainerLikesComment>
             </StyledCommentLike>
+
+            {CommentsFeed(props.comments)}
 
             <StyledComment>
                 <FeedNewPublicate
