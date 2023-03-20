@@ -44,7 +44,7 @@ export default class Auth {
 
             if (!user) return res.status(401).json({ error: "Token de sessão inválido" });
 
-            req.body.userData = user;
+            req.body.userAuth = user;
             next();
         } catch (err) {
             Logger.error("Houve um erro ao recuperar token de sessão", err);
