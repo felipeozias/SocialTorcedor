@@ -1,10 +1,10 @@
 import Footer from "../../components/Footer";
 import TemplateMain from "../../components/TemplateMain";
 import BackgroundFan from "../../components/BackgroundFan";
-import FormLogin from "../../components/FormLogin";
 import loginService from "../../services/login";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import FormLogin from "../../components/FormLogin";
 
 export default function Login(): JSX.Element {
     const navigate = useNavigate();
@@ -35,3 +35,4 @@ export default function Login(): JSX.Element {
         </>
     );
 }
+
