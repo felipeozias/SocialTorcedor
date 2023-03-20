@@ -29,14 +29,3 @@ export default function CommentsFeed(comments: ICommentFeed[]): JSX.Element {
         CreateComments()
     )
 }
-
-// _id: String,
-// content: String,
-// createdAt: String,
-// updatedAt: String,
-// author: {
-//     _id: String,
-//     nickname: String,
-//     name: String,
-//     pathImage: String
-// },
