@@ -1,27 +1,28 @@
 export interface IGetFeed {
-    pathImage?: String,
-    content?: String,
-    _id: String,
-    createdAt: String,
-    updatedAt?: String,
-    comments?: ICommentFeed[],
-    likes?: String[],
+    pathImage?: string,
+    content?: string,
+    _id: string,
+    createdAt: string,
+    updatedAt?: string,
+    comments: ICommentFeed[],
+    likes?: string[],
     author: {
-        pathImage?: String,
-        _id: String | undefined,
-        nickname: String,
-        name: String,
+        pathImage?: string,
+        _id: string | undefined,
+        nickname: string,
+        name: string,
     },
 }
 
 export interface ICommentFeed {
-    content: String,
-    _id: String,
-    createdAt: String,
-    updatedAt: String,
+    _id: string,
+    content: string,
+    createdAt: string,
+    updatedAt: string,
     author: {
-        _id: String,
-        nickname: String,
-        name: String,
+        _id: string,
+        nickname: string,
+        name: string,
+        pathImage: string
     },
 }
