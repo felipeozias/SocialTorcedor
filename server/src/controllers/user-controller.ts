@@ -236,7 +236,7 @@ class UserControlller {
 
     async getMe(req: Request, res: Response) {
         try {
-            const user = req.body.userData;
+            const user = req.body.userAuth;
 
             return res.status(200).json(user);
         } catch (error: any) {

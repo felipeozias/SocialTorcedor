@@ -55,68 +55,129 @@
         </style>
     </head>
     <body>
+        User:<input id="user" />Senha:<input id="password" />
+        <button id="login">Login</button>
         <ul id="messages"></ul>
-        <form id="form" action="">
-            User:<input id="user" autocomplete="off" />Para:<input id="enviar" autocomplete="off" /><input id="input" autocomplete="off" /><button>
-                Send
-            </button>
-        </form>
+        <!-- <form id="form" action=""><input id="input" autocomplete="off" /><button>Send</button></form>  -->
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
         <script>
-            let id = "aaaa";
             let uri = "http://localhost:3000/";
-            uri = "https://api.socialtorcedor.shop/";
-            uri = "http://34.30.23.91:8000/";
-            var socket = io(uri, {
-                auth: {
-                    token: id,
-                },
-            });
-            //console.log("Id:", socket.id);
-            // console.log(socket);
-            /*socket.on("connect_error", (err) => {
-                console.log(err);
-            });*/
+            //uri = "https://api.socialtorcedor.shop/";
+            //uri = "http://34.30.23.91:8000/";
 
-            socket.on("connect", () => {
-                console.log("Conectado");
-                console.log(socket.id);
-            });
+            const messages = document.getElementById("messages");
+            const form = document.getElementById("form");
+            const input = document.getElementById("input");
+            const txtUser = document.getElementById("user");
+            const txtPassword = document.getElementById("password");
+            const btnLogin = document.querySelector("#login");
+            let token = "";
+            let socket;
 
-            var messages = document.getElementById("messages");
-            var form = document.getElementById("form");
-            var input = document.getElementById("input");
-            var user = document.getElementById("user");
-            var enviar = document.getElementById("enviar");
+            btnLogin.onclick = login;
 
-            user.oninput = function () {
-                if (user.value) {
-                    local = user.value;
+            async function login() {
+                const user = txtUser.value;
+                const password = txtPassword.value;
+                try {
+                    const options = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ nickname: user, password: password }),
+                    };
+
+                    const url = uri + "users/authenticate";
+                    const res = await fetch(url, options);
+
+                    if (!res.ok) {
+                        if (res.status === 404) return { auth: false, isNoAuth: true, status: res.status };
+
+                        console.error("Erro ao fazer requisição", await res.json());
+                        return { auth: false, isNoAuth: false, status: res.status };
+                    }
+
+                    const data = await res.json();
+                    token = data.token;
+                    addMessage("Autenticação OK! ");
+                    addMessage("Token: " + token);
+                    connect(token);
+                } catch (err) {
+                    /// Lembrar de fazer alguma pagina de erro
+                    alert("Houve um erro ao entrar. Tente novamente!");
+                    console.error(err);
                 }
-                socket.on(local, function (msg) {
-                    var item = document.createElement("li");
-                    item.textContent = msg;
-                    messages.appendChild(item);
-                    window.scrollTo(0, document.body.scrollHeight);
+            }
+
+            function connect(token) {
+                socket = io(uri, {
+                    auth: {
+                        token,
+                    },
                 });
-            };
 
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-                if (input.value) {
-                    socket.emit("feed", { who: enviar.value, msg: input.value });
-                    input.value = "";
-                }
-            });
+                socket.on("connect", () => {
+                    console.log("Conectado");
+                    console.log(socket.id);
+                });
 
-            socket.on("feed", function (msg) {
-                console.log(socket.id);
-                var item = document.createElement("li");
+                socket.on("feed", addMessage);
+            }
+
+            function addMessage(msg) {
+                const item = document.createElement("li");
                 item.textContent = JSON.stringify(msg);
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
-            });
+            }
+
+            /*let id = "aaaa";
+
+                    var socket = io(uri, {
+                        auth: {
+                            token: id,
+                        },
+                    });
+                    //console.log("Id:", socket.id);
+                    // console.log(socket);
+                    //socket.on("connect_error", (err) => {
+                        console.log(err);
+                    });
+
+                    socket.on("connect", () => {
+                        console.log("Conectado");
+                        console.log(socket.id);
+                    });
+
+
+
+                    user.oninput = function () {
+                        if (user.value) {
+                            local = user.value;
+                        }
+                        socket.on(local, function (msg) {
+                            var item = document.createElement("li");
+                            item.textContent = msg;
+                            messages.appendChild(item);
+                            window.scrollTo(0, document.body.scrollHeight);
+                        });
+                    };
+
+                    form.addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        if (input.value) {
+                            socket.emit("feed", { who: enviar.value, msg: input.value });
+                            input.value = "";
+                        }
+                    });
+
+                    socket.on("feed", function (msg) {
+                        console.log(socket.id);
+                        var item = document.createElement("li");
+                        item.textContent = JSON.stringify(msg);
+                        messages.appendChild(item);
+                        window.scrollTo(0, document.body.scrollHeight);
+                    });*/
         </script>
     </body>
 </html>

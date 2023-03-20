@@ -153,7 +153,7 @@ class GroupController {
         */
         try {
             const service = new GroupService();
-            const userAuth = req.body.userAuth || "640f6af6ad964b6d45a13c35"; //TODO: Remover
+            const userAuth = req.body.userAuth._id || "";
             const result: IResult<IGroup[]> = await service.list(userAuth);
 
             return res.status(result.status || 500).json(result);
