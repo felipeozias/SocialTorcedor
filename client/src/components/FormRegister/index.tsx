@@ -71,7 +71,13 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 
                 <Message>time do coração:</Message>
-                <SelectType onChange={handleTimeChange} selectedTimeId={selectedTimeId}/>
+                <SelectType name="team" 
+                    selectedTimeId={selectedTimeId}
+                    validates={{
+                        ...register("password", {
+                            required: true,
+                        }),
+                    }}/>
 
                 <InputUser
                     type="password"
@@ -120,5 +126,4 @@ export default function FormRegister(props: IProps): JSX.Element {
         </Form>
     );
 }
-
 

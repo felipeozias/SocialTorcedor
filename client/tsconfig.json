@@ -16,5 +16,7 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src/components", "types.d.ts", "src"]
+    "include": ["src/components", "types.d.ts", "src"],
+    "importHelpers": true,
+    "allowSynteticDefaultImports": true,
 }
