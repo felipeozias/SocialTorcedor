@@ -11,6 +11,7 @@ export const StyledMain = styled.main`
   color: #ffffff;
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
 `
 export const StyledMainSection = styled.section`
   display: flexbox;

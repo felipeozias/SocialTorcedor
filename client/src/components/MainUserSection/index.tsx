@@ -10,13 +10,18 @@ import {
 import img from "../../assets/loupe.png";
 import MainUsers from "../MainUsers";
 import { useEffect, useState } from "react";
-import { apiRequestUsers, simulateLogin } from "../../database";
+import { apiRequestUsers } from "../../database";
 import { IUser } from "../../interfaces/Users";
+import { useContext } from "react";
+import DataUserForHeader from "../contexts/DataUserForHeader";
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
+    const { id } = useContext(DataUserForHeader);
+
+    const userId = id.toString();
 
     async function requestDb() {
         let res = await apiRequestUsers();
@@ -36,7 +41,7 @@ export default function MainUserSection(): JSX.Element {
 
     function testApi() {
         let removedSelf = usersDb.filter(
-            (users) => users._id !== simulateLogin._id
+            (users) => users._id !== userId
         );
         let filteredUsers = removedSelf.filter((users) =>
             users.name.toLowerCase().includes(`${userValue.toLowerCase()}`)

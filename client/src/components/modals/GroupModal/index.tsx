@@ -1,7 +1,8 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useContext } from "react";
 import {
     StyledModal,
     StyledInputName,
+    StyledUsersContainer,
     StyledSectionLeft,
     StyledSectionRight,
     StyledInputFile,
@@ -19,7 +20,7 @@ import Context from "../../../hooks/useContext";
 import { IUser } from "../../../interfaces/Users";
 import createGroup from "../../../services/createGroup";
 import { IRegisterGroup } from "../../../interfaces/Groups";
-import { simulateLogin } from "../../../database";
+import DataUserForHeader from "../../contexts/DataUserForHeader";
 
 let usersAdded: Array<string> = [];
 
@@ -29,6 +30,8 @@ export default function GroupModal(props: Imodal) {
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [groupName, setGroupName] = useState("");
+    const { id } = useContext(DataUserForHeader);
+    const userId = id.toString();
 
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
@@ -55,7 +58,7 @@ export default function GroupModal(props: Imodal) {
         ) as HTMLInputElement;
         let userNick = ""
         let userId = ""
-        if (user.value !== "") {
+        if (user.value != "") {
             let userDivide = user.value.split("(");
             if (userDivide.length > 1) {
                 userNick = userDivide[1].replace(")", "")
@@ -63,8 +66,8 @@ export default function GroupModal(props: Imodal) {
                     let userObj = usersDb.filter(name => name.nickname.includes(userNick))
                     userId = userObj[0]._id
                 }
-                // console.log(userNick)
-                // console.log(userId)
+                console.log(userNick)
+                console.log(userId)
             } else {
                 userNick = user.value
             }
@@ -112,6 +115,11 @@ export default function GroupModal(props: Imodal) {
         setGroupName(inputUser.value)
     }
 
+    function cancelCreation() {
+        props.toggle();
+        usersAdded = [];
+    }
+
     return (
         <>
             {props.isOpen && (
@@ -122,13 +130,15 @@ export default function GroupModal(props: Imodal) {
                         isOpen={isOpen}
                         toggle={props.toggle}
                         index={0}
+                        leftPosition={30}
+                        bottomPosition={70}
                     />
                     <StyledModal
                         onSubmit={(e) => {
                             
                             let sendGroupApi: IRegisterGroup = {
                                 title: groupName,
-                                admin: simulateLogin._id,
+                                admin: userId,
                                 members: usersAdded
                             }
                             // console.log(sendGroupApi)
@@ -156,12 +166,8 @@ export default function GroupModal(props: Imodal) {
                                 required
                                 onChange={updateValue}
                             />
-                            {/* <StyledTextArea
-                                placeholder="Descrição do Grupo"
-                                rows={4}
-                                minLength={10}
-                                maxLength={100}
-                                // required
+                            {/* <StyledUsersContainer
+                                
                             /> */}
                             <DataList />
                             <StyledButton2
@@ -170,6 +176,13 @@ export default function GroupModal(props: Imodal) {
                             >
                                 {" "}
                                 Adicionar{" "}
+                            </StyledButton2>
+                            <StyledButton2
+                                onClick={cancelCreation}
+                                type="button"
+                            >
+                                {" "}
+                                Cancelar{" "}
                             </StyledButton2>
                         </StyledSectionLeft>
                         <StyledSectionRight>

@@ -5,6 +5,8 @@ const DataUserForHeader = createContext({
     alt: String,
     name: String,
     nickname: String,
+    team: String,
+    id: String
 });
 
 export default DataUserForHeader;

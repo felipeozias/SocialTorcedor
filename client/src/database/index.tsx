@@ -51,8 +51,14 @@ export async function apiRequestUsers() {
 export async function apiRequestGroups() {
     try {
         const url = process.env.REACT_APP_GROUP_LOCAL as string;
+        const options = {
+            method: "GET",
+            headers: {
+                authorization: getToken || "",
+            }
+        }
 
-        const request = await fetch(url);
+        const request = await fetch(url , options);
         if (!request.ok) {
             console.error(request.json());
             return {
@@ -62,7 +68,7 @@ export async function apiRequestGroups() {
             };
         }
         const res = await request.json();
-
+        console.log(res)
         return {
             status: request.status,
             succesfull: true,
