@@ -6,6 +6,26 @@ export const StyledContainer = styled.div`
     display: flex;
     align-items: center;
     margin: 5px;
+
+    label{
+        display: flex;
+        width: 25px;
+        height: 25px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    input{
+        display: none;
+    } 
+
+    #imgForInputPublication{
+        position: absolute;
+        left: 65px;
+        bottom: 0;
+        font-size: 8pt;
+        font-style: italic;
+    }
 `;
 
 export const StyledInput = styled.textarea`
