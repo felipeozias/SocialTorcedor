@@ -25,7 +25,7 @@ router.get("/users/exists/:nickname", user.exists);
 
 //router.get("/files/:file", file.get);
 router.delete("/users/logout", Auth.verifyAuth, Auth.logout);
-router.get("/user/me", Auth.verifyAuth, user.getMe);
+router.get("/users/me", Auth.verifyAuth, user.getMe);
 router.get("/users/:id", Auth.verifyAuth, idValidator(), handleValidation, user.get);
 router.get("/users", Auth.verifyAuth, user.list);
 

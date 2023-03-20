@@ -7,7 +7,6 @@ import MongoDB from "./database/mongodb";
 import Logger from "./logger/logger";
 import cors from "cors";
 import Websocket from "./websocket/websocket";
-import RedisDb from "./database/redisdb";
 
 dotenv.config({ path: "./config/.env" });
 
@@ -50,8 +49,6 @@ server.listen(port, async () => {
 
     const mongo = new MongoDB(uri, user, password, database);
     await mongo.connect();
-    RedisDb.client();
-    Logger.info("🔰 Conectado ao Redis!");
     io.start();
     Logger.info(`🔰 Servidor rodando na porta ${port}!`);
 });

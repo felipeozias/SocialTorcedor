@@ -323,7 +323,7 @@
         }
       }
     },
-    "/user/me": {
+    "/users/me": {
       "get": {
         "description": "",
         "parameters": [
