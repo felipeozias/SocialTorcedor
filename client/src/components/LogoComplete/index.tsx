@@ -6,5 +6,5 @@ export default function LogoAndName() {
             <StyledImg src="./favicon.png" alt="Logo" />
             <StyledH1>Social Torcedor</StyledH1>
         </StyledContainer>
-    )
+    );
 }

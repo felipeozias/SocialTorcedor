@@ -1,44 +1,44 @@
-interface User {
-  id: string;
-  name: string;
-  team: number;
-  password: string;
-  photo?: File;
-}
+import { getCookie } from "../utils/cookies";
 
 const updateUser = async (userData: any): Promise<any> => {
-  const forms = document.querySelector(".form-update-user") as HTMLFormElement;
-  const formData = new FormData(forms);
- 
-  console.log(formData);  
+    const forms = document.querySelector(
+        ".form-update-user"
+    ) as HTMLFormElement;
+    const formData = new FormData(forms);
+    const url: string = process.env.REACT_APP_UPDATE as string;
 
-  const url: string = process.env.REACT_APP_UPDATE as string;
-  console.log(url);
+    console.log("O forms está assim: ", formData);
 
-  try{
-    const response = await fetch(`${url}640ab68a27fea004b4b9ce05`,  {
-      
-      method: "PATCH",
-      headers: { 
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IjY0MGFiNjhhMjdmZWEwMDRiNGI5Y2UwNSIsImlhdCI6MTY3OTMyMjY4NywiZXhwIjoxNjc5MzI2Mjg3fQ.rS4AUSUAIyQ-6oD7Y7ilgph7uUXkCpzBzv_8PsCdTjU"
-      },
-      body: formData,
-                  
-    });
-  
-    const data = await response.json();
-    if (!response.ok) {
-      console.log(data);
-      
-      throw new Error(data.message || "Something went wrong!");
+    try {
+        const res = await fetch(process.env.REACT_APP_USER_ME as string, {
+            headers: { authorization: getCookie("token") as string },
+        });
+        if (!res.ok) {
+            console.error(res.json());
+        }
+
+        const user = await res.json();
+        const id = user._id;
+
+        const response = await fetch(`${url}${id}`, {
+            method: "PATCH",
+            headers: {
+                authorization: getCookie("token") as string,
+            },
+            body: formData,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            return { ok: false, data };
+        }
+
+        return { ok: true, data };
+    } catch (error) {
+        console.log(error);
     }
-      return data;
-    }
-    
-  catch (error) {
-    console.log(error);
-  }
-}
+};
 
-export default  updateUser;
-
+export default updateUser;

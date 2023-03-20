@@ -24,12 +24,12 @@ export default function Home() {
     return (
         <DataUserForHeader.Provider
             value={{
-                id: user.data._id || "",
+                id: user.data._id,
                 logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
-                name: user.data.name || "Torcedor",
-                nickname: user.data.nickname || "torcedor.com",
-                team: user.data.team || "",
+                name: user.data.name,
+                nickname: user.data.nickname,
+                team: user.data.team,
             }}
         >
             <Header complete={true} />

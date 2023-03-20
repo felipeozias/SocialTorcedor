@@ -5,6 +5,11 @@ export const StyledContainer = styled.div`
     align-items: center;
     justify-content: center;
     height: 100%;
-    //padding: 0 5px;
     gap: 0.5rem;
+    cursor: pointer;
+`;
+
+export const LogoExpand = styled.img`
+    margin-top: -15px;
+    width: 10px;
 `;

@@ -4,9 +4,11 @@ import {
     useNavigate,
 } from "react-router-dom";
 import Login from "../pages/Login";
+import Update from "../pages/Update";
 import Home, { homeLoader } from "../pages/Home";
 import Register from "../pages/Register";
 import { useEffect } from "react";
+import React from "react";
 
 function Root() {
     const navigate = useNavigate();
@@ -36,6 +38,10 @@ export default function Routes() {
         {
             path: "/register",
             element: <Register />,
+        },
+        {
+            path: "/update-user",
+            element: <Update />,
         },
     ]);
 
