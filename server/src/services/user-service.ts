@@ -2,6 +2,9 @@ import IResult from "../interfaces/iresult";
 import IUser from "../interfaces/iuser";
 import { User } from "../models/user";
 import CryptoJS from "crypto-js";
+import Auth from "../auth/auth";
+
+import { io } from "../server";
 
 export default class UserService {
     async create(data: IUser): Promise<IResult<IUser>> {
@@ -13,11 +16,21 @@ export default class UserService {
                 return result;
             }
 
-            data.password = CryptoJS.SHA256(data.password).toString();
+            data.password = CryptoJS.SHA256(data.password || "").toString();
             const user = await User.create(data);
+            const auth = await Auth.createSession(data);
+
+            if (auth.error) {
+                result.errors?.push(auth.message);
+                result.status = 500;
+                return result;
+            }
+
+            result.token = auth.token;
             result.data = user;
-            //#swagger.responses[201]
             result.status = 201;
+            user.password = "********";
+            io.feed("insert", "user", user);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -64,7 +77,9 @@ export default class UserService {
             if (!name) {
                 users = await User.find().sort({ name: 1, nickname: 1 });
             } else {
-                users = await User.find({ $or: [{ nickname: new RegExp(name, "i") }, { name: new RegExp(name, "i") }] }).sort({
+                users = await User.find({
+                    $or: [{ nickname: new RegExp(name, "i") }, { name: new RegExp(name, "i") }],
+                }).sort({
                     name: 1,
                     nickname: 1,
                 });
@@ -81,7 +96,11 @@ export default class UserService {
     async update(id: string, data: IUser): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
         try {
-            console.log(data);
+            if (data.password && data.password.length > 0) {
+                data.password = CryptoJS.SHA256(data.password).toString();
+            } else {
+                delete data.password;
+            }
             const user = await User.findByIdAndUpdate(id, data, { new: true }); //o new é para trazer ja o objeto atualizado
             if (!user) {
                 result.errors?.push("Usuário não encontrado");
@@ -89,6 +108,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
+                io.feed("update", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -108,6 +128,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
+                io.feed("delete", "user", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);

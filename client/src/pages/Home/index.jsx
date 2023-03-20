@@ -1,27 +1,39 @@
 import Header from "../../components/Header";
 import Main from "../../components/Main/Main";
 import Footer from "../../components/Footer";
-// import GroupModal from "../../components/modals/GroupModal";
+import { homeService } from "../../services/home";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 //------ Declared context ------
 import DataUserForHeader from "../../components/contexts/DataUserForHeader";
-// import useModal from "../../hooks/useModal";
+import { useEffect } from "react";
+
+export async function homeLoader() {
+    const user = await homeService();
+    return { user };
+}
 
 export default function Home() {
-    // const { isOpen, toggle } = useModal();
+    const { user } = useLoaderData();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user.auth) navigate("/login");
+    }, [navigate]);
+
     return (
         <DataUserForHeader.Provider
             value={{
+                id: user.data._id || "",
                 logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
-                name: "Torcedor",
-                email: "torcedor@mail.com",
+                name: user.data.name || "Torcedor",
+                nickname: user.data.nickname || "torcedor.com",
+                team: user.data.team || "",
             }}
         >
             <Header complete={true} />
             <Main />
-            {/* <button onClick={toggle}> Open Modal</button> */}
-            {/* <GroupModal isOpen={isOpen} toggle={toggle} /> */}
             <Footer />
         </DataUserForHeader.Provider>
     );

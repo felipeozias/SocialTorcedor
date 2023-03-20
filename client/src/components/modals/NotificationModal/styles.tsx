@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const StyledModal = styled.div`
-    z-index: 1001;
+    z-index: 1005;
     font-size: 16px;
-    position: fixed;
-    left: 50vw;
-    margin-top: 8vh;
+    position: absolute;
+    left: 30vw;
+    bottom: 70vh;
     border-radius: 10px;
     display: flex;
     box-shadow: 0.5px 0.5px 0.5px 0.5px;

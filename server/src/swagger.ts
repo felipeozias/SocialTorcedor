@@ -22,6 +22,14 @@ const doc = {
             name: "User",
             description: "Endpoints to manage users",
         },
+        {
+            name: "Post",
+            description: "Endpoints to manage posts/feed",
+        },
+        {
+            name: "Group",
+            description: "Endpoints to manage group/chats",
+        },
     ],
     definitions: {
         User: {
@@ -43,6 +51,73 @@ const doc = {
             $nickname: "zoro_oliveira",
             $name: "Zoro Oliveira",
             $team: "São Paulo",
+        },
+        Post: {
+            _id: "6410b677f77571f9f323740d",
+            pathImage: "/img/6410b677f77571f9f323740d.png",
+            content: "Esse Ano seremos campeão!!!",
+            author: {
+                _id: "640f6af6ad964b6d45a13c35",
+                nickname: "zoro_oliveira",
+                name: "Zoro Oliveira",
+                team: "são paulo",
+            },
+            likes: ["640ab68a27fea004b4b9ce05"],
+            comments: [
+                {
+                    content: "Perdemos de novo. Rumo a lanterna",
+                    author: {
+                        _id: "640f6af6ad964b6d45a13c35",
+                        nickname: "zoro_oliveira",
+                        name: "Zoro Oliveira",
+                    },
+                    _id: "6410bf1dace5da35c401601c",
+                    createdAt: "2023-03-14T18:38:21.739Z",
+                    updatedAt: "2023-03-14T18:38:21.739Z",
+                },
+            ],
+        },
+        AddPost: {
+            content: "Esse Ano seremos campeão!!!",
+            author: "640f6af6ad964b6d45a13c35",
+        },
+        AddComment: {
+            content: "Perdemos de novo. Rumo à lanterna =(",
+            author: "640f6af6ad964b6d45a13c35",
+        },
+        Group: {
+            _id: "6410b677f77571f9f323740d",
+            pathImage: "/img/6410b677f77571f9f323740d.png",
+            title: "Tricolor Paulista",
+            admin: {
+                _id: "640f6af6ad964b6d45a13c35",
+                nickname: "zoro_oliveira",
+                name: "Zoro Oliveira",
+                team: "são paulo",
+            },
+            members: ["640ab68a27fea004b4b9ce05"],
+            chat: [
+                {
+                    message: "Quando será o próximo jogo?",
+                    author: {
+                        _id: "640f6af6ad964b6d45a13c35",
+                        nickname: "zoro_oliveira",
+                        name: "Zoro Oliveira",
+                    },
+                    _id: "6410bf1dace5da35c401601c",
+                    createdAt: "2023-03-14T18:38:21.739Z",
+                    updatedAt: "2023-03-14T18:38:21.739Z",
+                },
+            ],
+        },
+        AddGroup: {
+            title: "Tricolor Paulista",
+            admin: "640f6af6ad964b6d45a13c35",
+            members: ["640ab68a27fea004b4b9ce05"],
+        },
+        AddMessage: {
+            message: "Quando será o próximo jogo?",
+            author: "640f6af6ad964b6d45a13c35",
         },
         IResult: {
             errors: ["aconteceu um erro"],
@@ -74,6 +149,19 @@ const doc = {
         },
         IdValidator: {
             errors: ["[id]: O id deve ser um ObjectId válido."],
+        },
+        PostValidator: {
+            errors: ["[author]: O código do autor deve ser um ObjectId válido.", "[content]: O conteúdo deve ter no máximo 2500 caracteres."],
+        },
+        MessageValidator: {
+            errors: ["[author]: O código do autor deve ser um ObjectId válido.", "[message]: O conteúdo deve ter no máximo 100 caracteres."],
+        },
+        GroupValidator: {
+            errors: [
+                "[admin]: O código do administrador deve ser um ObjectId válido.",
+                "[title]: O nome do grupo deve ter entre 5 e 50 caracteres.",
+                "[members]: Os códigos dos membros devem ser ObjectIds válidos.",
+            ],
         },
     },
 };

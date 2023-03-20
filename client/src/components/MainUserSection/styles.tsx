@@ -11,7 +11,8 @@ export const StyledUserSection = styled.section`
 `
 export const StyledP = styled.p`
     color: #BBFD00;
-    font-size: 2vw;
+    /* font-size: 2vw; */
+    font-size: clamp(18px, 2vw, 30px);
     font-weight: 700;
     /* background-color: red; */
     padding: 10px;
@@ -30,7 +31,7 @@ export const StyledInput = styled.input`
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
     border: none;
-    font-size: 1.5vw;
+    font-size: clamp( 12px, 1.5vw, 25px);
     padding-left: 0.5vw;
     :focus {
         outline: none;
@@ -52,7 +53,8 @@ export const StyledImg = styled.img`
     }
 `
 export const UsersContainer = styled.div`
-    overflow: auto;
+    overflow-y: scroll;
+    margin-left: 1.3vw;
   ::-webkit-scrollbar {
     width: 15px;
   }

@@ -8,4 +8,8 @@ export const StyledLeftSection = styled.section`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    
+    @media (max-width: 700px) {
+      display: none;
+    }
 `

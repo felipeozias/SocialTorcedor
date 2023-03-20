@@ -1,32 +1,40 @@
 import Express from "express";
+import { createServer } from "http";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import { router } from "./router/router";
 import MongoDB from "./database/mongodb";
 import Logger from "./logger/logger";
 import cors from "cors";
+import Websocket from "./websocket/websocket";
+import RedisDb from "./database/redisdb";
 
 dotenv.config({ path: "./config/.env" });
 
 const port = process.env.PORT || 8000;
 
 const app = Express();
+app.use(cors());
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-app.use(cors());
 
 const swaggerDocument = require("../config/swagger.json");
-
-app.use(router);
 
 const options = {
     customCss: ".swagger-ui .topbar { display: none }",
     customSiteTitle: "Social Torcedor API",
     customfavIcon: "/assets/favicon.ico",
 };
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use("/assets", Express.static("uploads"));
+app.use("/logs", Express.static("logs"));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use(router);
 
-app.listen(port, async () => {
+const server = createServer(app);
+
+export const io = new Websocket(server);
+
+server.listen(port, async () => {
     const version = process.env.NODE_ENV || "error";
     if (version === "error") {
         Logger.error("🔰 Variável de ambiente NODE_ENV não definida!");
@@ -42,5 +50,8 @@ app.listen(port, async () => {
 
     const mongo = new MongoDB(uri, user, password, database);
     await mongo.connect();
+    RedisDb.client();
+    Logger.info("🔰 Conectado ao Redis!");
+    io.start();
     Logger.info(`🔰 Servidor rodando na porta ${port}!`);
 });

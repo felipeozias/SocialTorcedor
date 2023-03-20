@@ -38,11 +38,13 @@ const FormUpdate = ( props: IProps) => {
         const file = event.target.files?.[0];
         console.log(file);
         setImage(file);
+
+             
         
     }
 
     return (
-        <Form onSubmit={handleSubmit(props.submit)}>
+        <Form onSubmit={handleSubmit(props.submit)} className="form-update-user">
             <BoxInputs>
                 <InputUser type="text"
                     name="name"

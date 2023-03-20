@@ -1,84 +1,44 @@
 interface User {
-    id: string;
-    name: string;
-    team: number;
-    password: string;
-    photo?: File;
+  id: string;
+  name: string;
+  team: number;
+  password: string;
+  photo?: File;
 }
 
-const updateUser = async (userData: User): Promise<any> => {
-    const formData = new FormData();
-    formData.append("name", userData.name);
-    formData.append("team", userData.team.toString());
-    formData.append("password", userData.password);
-    if (userData.photo) {
-      formData.append("photo", userData.photo);
-    }
+const updateUser = async (userData: any): Promise<any> => {
+  const forms = document.querySelector(".form-update-user") as HTMLFormElement;
+  const formData = new FormData(forms);
+ 
+  console.log(formData);  
 
+  const url: string = process.env.REACT_APP_UPDATE as string;
+  console.log(url);
 
-    const url: string = process.env.REACT_APP_UPDATE as string;
-    console.log(url);
-
-    const response = await fetch(`${url}/${userData.id}`,  {
-        
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-                    
+  try{
+    const response = await fetch(`${url}640ab68a27fea004b4b9ce05`,  {
+      
+      method: "PATCH",
+      headers: { 
+        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IjY0MGFiNjhhMjdmZWEwMDRiNGI5Y2UwNSIsImlhdCI6MTY3OTMyMjY4NywiZXhwIjoxNjc5MzI2Mjg3fQ.rS4AUSUAIyQ-6oD7Y7ilgph7uUXkCpzBzv_8PsCdTjU"
+      },
+      body: formData,
+                  
     });
-    
+  
     const data = await response.json();
     if (!response.ok) {
+      console.log(data);
+      
       throw new Error(data.message || "Something went wrong!");
     }
-    return data;
-  };
-
-
-  export default  updateUser;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export default async function updateService(userData: any) {
-//     console.log(userData);
-//     try {
-//         const options = {
-//             method: "PATCH",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(userData),
-//         };
-
-//         const id = userData.id;       
+      return data;
+    }
     
+  catch (error) {
+    console.log(error);
+  }
+}
 
-//         const url: string = process.env.REACT_APP_UPDATE + id as string;
-//         console.log(url);
-//         const res = await fetch(url, options);
+export default  updateUser;
 
-//         if (!res.ok) {
-//             console.error("Erro ao fazer requisição", await res.json());
-//             return { auth: false, isNoAuth: true, status: res.status };
-//         }
-
-//         const data = await res.json();
-//         console.log(data);
-
-//         return { auth: true, status: res.status, data: data };
-//     } catch (err) {
-//         /// Lembrar de fazer alguma pagina de erro
-//         alert(
-//             "Houve um erro ao atualizar. Por favor tente novamente!"
-//         );
-//         console.error(err);
-//     }
-// }

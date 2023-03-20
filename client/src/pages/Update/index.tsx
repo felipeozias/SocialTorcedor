@@ -13,10 +13,14 @@ interface User {
     photo?: File;
 }
 
+// cookie
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IjY0MGFiNjhhMjdmZWEwMDRiNGI5Y2UwNSIsImlhdCI6MTY3OTMxODk3NiwiZXhwIjoxNjc5MzIyNTc2fQ.u9KEGeNnwyGNlog3qxFXrst1gG49U43jyiqkP3Qz0xc
+
 
 export default function Update(): JSX.Element {
 
     const submitUpdate = async (userData: User) => {
+        
         try {
         const response = await updateUser(userData);
           console.log(response);

@@ -4,9 +4,9 @@ export default interface IUser {
     _id?: Types.ObjectId;
     nickname: string;
     name: string;
-    password: string;
+    password?: string;
     team: string;
-    path_image?: string;
+    pathImage?: string;
     createdAt?: Date;
     updatedAt?: Date;
 }

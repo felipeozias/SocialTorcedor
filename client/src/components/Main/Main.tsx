@@ -2,13 +2,42 @@ import { StyledMain, StyledMainSection, StyledRigthSection } from './styles'
 import MainLeftSection from '../MainLeftSection'
 import FeedNewPublicate from "../FeedNewPublicate";
 import FeedCommentLike from "../FeedCommentLike";
+import ChatComplete from "../ChatComplete";
+
+import { IGetFeed } from "../../interfaces/DataForFeed";
+import { fetchFeed } from '../../services/feed'
+import formatTime from "../../utils/formatTime";
 
 //------ Using context ------
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+
+async function createComponentsFeed(): Promise<JSX.Element[]> {
+    const data = await fetchFeed();
+
+    return data.map((feed: IGetFeed) =>
+        <FeedCommentLike
+            src={feed.author.pathImage ? feed.author.pathImage : 'https://udayananetworking.unud.ac.id/assets/frontend/images/user-m.png'}
+            user_name={feed.author.name}
+            time_publication={formatTime(new Date(`${feed.createdAt}`)).toString()}
+            comment_post={feed.content}
+            img_post={feed.pathImage}
+            comments={feed.comments}
+            likes={`${feed.likes ? feed.likes.length : 0}`} />);
+}
 
 export default function Main(): JSX.Element {
     const { logo } = useContext(DataUserForHeader);
+    const [components, setComponents] = useState<JSX.Element[]>([]);
+
+    useEffect(() => {
+        async function fetchAndSetComponents() {
+            const newComponents = await createComponentsFeed();
+            setComponents(newComponents);
+        }
+
+        fetchAndSetComponents();
+    }, []);
 
     const props_new_publication = {
         place_hoder: 'Adicione um feed aqui!',
@@ -18,26 +47,17 @@ export default function Main(): JSX.Element {
         image: true
     }
 
-    const props_comment_like = {
-        src: 'https://cdn-icons-png.flaticon.com/512/219/219969.png',
-        user_name: 'Torcedor Oficial',
-        time_publication: 'Hoje às 7:00',
-        comment_post: 'Vou te falar viu...',
-        img_post: 'https://p2.trrsf.com/image/fget/cf/1200/900/middle/images.terra.com/2017/05/04/590b489a49218.jpeg',
-        comments: ['Comentario 1', 'Comentário 2']
-    }
-
     return (
         <StyledMain>
             <MainLeftSection />
 
             <StyledMainSection>
                 <FeedNewPublicate {...props_new_publication} />
-                <FeedCommentLike  {...props_comment_like} />
+                {components}
             </StyledMainSection>
 
             <StyledRigthSection>
-                Chat em desenvolvimento!
+                <ChatComplete />
             </StyledRigthSection>
         </StyledMain>
     )

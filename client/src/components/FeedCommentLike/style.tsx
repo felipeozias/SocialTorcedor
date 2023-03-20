@@ -3,6 +3,16 @@ import styled from "styled-components";
 export const StyledUserContainer = styled.div`
     display: flex;
     text-align: left;
+    & span{
+        font-size: 7pt;
+        font-style: italic;
+        position: relative;
+        top: -4px;
+    }
+
+    & span, p{
+        margin-left: 5px;
+    }
 `;
 
 export const StyledContainer = styled.div`
@@ -10,7 +20,7 @@ export const StyledContainer = styled.div`
     position: relative;
     align-items: center;
     width: 85%;
-    margin: 15px 0;
+    margin-top: 16px;
     background-color: #3D3D3D;
     border-radius: 8px;
     padding: 7px; 

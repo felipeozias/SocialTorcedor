@@ -4,6 +4,6 @@ import { StyledModalOverlay } from "./styles";
 export default function ModalOverlay(props: Imodal) {
 
     return(
-        <StyledModalOverlay onClick={props.toggle}/>
+        <StyledModalOverlay onClick={props.toggle} index={props.index}/>
     )
 }
