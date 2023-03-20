@@ -9,7 +9,7 @@
         "swagger-autogen": "tsnd ./src/swagger.ts",
         "prestart": "npm run build && npm run swagger-autogen",
         "start": "node .",
-        "predev": "clear && npm run swagger-autogen",
+        "predev": "clear && rm -rf ./logs && npm run swagger-autogen",
         "dev": "tsnd --respawn ./src/server.ts"
     },
     "keywords": [],

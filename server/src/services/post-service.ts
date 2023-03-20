@@ -71,7 +71,7 @@ export default class PostService {
             const posts = await Post.find()
                 .sort({ updatedAt: -1 })
                 .populate("author", "name nickname team pathImage")
-                .populate({ path: "comments.author", select: "name nickname" });
+                .populate({ path: "comments.author", select: "name nickname pathImage" });
             result.data = posts;
             result.status = 200;
         } catch (error: any) {

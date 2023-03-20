@@ -64,16 +64,31 @@
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
         <script>
-            var socket = io("http://localhost:3000/");
-            console.log(socket);
+            let id = "aaaa";
+            let uri = "http://localhost:3000/";
+            uri = "https://api.socialtorcedor.shop/";
+            uri = "http://34.30.23.91:8000/";
+            var socket = io(uri, {
+                auth: {
+                    token: id,
+                },
+            });
+            //console.log("Id:", socket.id);
+            // console.log(socket);
+            /*socket.on("connect_error", (err) => {
+                console.log(err);
+            });*/
+
+            socket.on("connect", () => {
+                console.log("Conectado");
+                console.log(socket.id);
+            });
 
             var messages = document.getElementById("messages");
             var form = document.getElementById("form");
             var input = document.getElementById("input");
             var user = document.getElementById("user");
             var enviar = document.getElementById("enviar");
-
-            let local = "a";
 
             user.oninput = function () {
                 if (user.value) {
@@ -90,12 +105,13 @@
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 if (input.value) {
-                    socket.emit("chat message", { who: enviar.value, msg: input.value });
+                    socket.emit("feed", { who: enviar.value, msg: input.value });
                     input.value = "";
                 }
             });
 
             socket.on("feed", function (msg) {
+                console.log(socket.id);
                 var item = document.createElement("li");
                 item.textContent = JSON.stringify(msg);
                 messages.appendChild(item);
