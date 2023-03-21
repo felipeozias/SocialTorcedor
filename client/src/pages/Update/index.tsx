@@ -1,10 +1,10 @@
 import Footer from "../../components/Footer";
-import TemplateMain from "../../components/TemplateMain";
 import BackgroundFan from "../../components/BackgroundFan";
 import FormUpdate from "../../components/FormUpdate";
 import updateUser from "../../services/update";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TemplateUpdate from "../../components/TemplateUpdate";
 
 interface User {
     id: string;
@@ -35,9 +35,9 @@ export default function Update(): JSX.Element {
     return (
         <>
             <BackgroundFan />
-            <TemplateMain smallLogo={true}>
+            <TemplateUpdate smallLogo={true}>
                 <FormUpdate submit={(e: any) => submitUpdate(e)} />
-            </TemplateMain>
+            </TemplateUpdate>
             <Footer />
         </>
     );

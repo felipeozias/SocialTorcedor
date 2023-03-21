@@ -1,4 +1,4 @@
-import { getCookie, getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export const simulateLogin = {
     _id: "640f6af6ad964b6d45a13c35",

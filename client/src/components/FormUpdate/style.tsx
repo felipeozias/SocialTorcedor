@@ -1,17 +1,19 @@
 import styled from "styled-components";
 
 export const Form = styled.form`
+    height: 100%;
+    width: 240px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 1.0rem;
 `;
 
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.2rem;
 `;
 
 export const Message = styled.p`
@@ -25,20 +27,11 @@ export const Link = styled.a`
     font-weight: bold;
 `;
 
-export const DivAlign = styled.div`
-    display: flex;
-    align-items: flex-end;
-    
-    
-`;
 
 export const DivWrap = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    
-    margin-right: 10px;
-    
+    align-items: center; 
 `;
 
 export const ErrorMessage = styled.span`

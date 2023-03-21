@@ -15,7 +15,6 @@ interface IPropsFeednewPublication {
 
 function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string) {
     if (content) {
-        console.log('Content: ', content, 'Image: ', image, 'UserId: ', userId);
         postFeed(content, image, userId);
     }
 }

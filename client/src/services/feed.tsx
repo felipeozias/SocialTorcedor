@@ -53,7 +53,7 @@ export async function postFeed(content: string, image: any, userId: string) {
             body: formData
         };
 
-        const res = await fetch('https://api.socialtorcedor.shop/posts', options);
+        const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);
 
         if (!res.ok) {
             console.error("Erro ao fazer a publicação", await res.json());

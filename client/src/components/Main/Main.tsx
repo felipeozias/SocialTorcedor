@@ -20,7 +20,7 @@ async function createComponentsFeed(): Promise<JSX.Element[]> {
             src={
                 feed.author.pathImage !== undefined
                     ? "https://api.socialtorcedor.shop/assets/" +
-                      feed.author.pathImage
+                    feed.author.pathImage
                     : "https://api.socialtorcedor.shop/assets/user_default.jpg"
             }
             user_name={feed.author.name}

@@ -4,7 +4,6 @@ import SelectType from "../SelectType";
 import {
     BoxInputs,
     Form,
-    DivAlign,
     DivWrap,
     Message,
     ErrorMessage,
@@ -22,6 +21,8 @@ interface IProps {
 }
 
 const FormUpdate = (props: IProps) => {
+
+    const MAX_SIZE = 5000000; // 5 MB
     const {
         register,
         handleSubmit,
@@ -29,26 +30,71 @@ const FormUpdate = (props: IProps) => {
     } = useForm();
 
     const [selectedTimeId, setSelectedTimeId] = useState<number | string>("");
-
     function handleTimeChange(timeId: number) {
         setSelectedTimeId(timeId);
     }
 
-    const [image, setImage] = useState<File | undefined>();
-
+    const [error, setError] = useState('');
+    const [image, setImage] = useState<File | null>(null);
     function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
         console.log("file");
 
         const file = event.target.files?.[0];
         console.log(file);
+        if (!file) return;
+    
+        if (!isValidExtension(file.name)) {
+        setError('Por favor, selecione um arquivo com formato JPG ou PNG.');
+        setImage(null);
+        } else if (!isValidSize(file.size)) {
+        setError('Por favor, selecione um arquivo com tamanho menor que 5 MB.');
+        setImage(null);
+        } else {
         setImage(file);
+        setError('');
+        }
     }
+
+    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+
+    const isValidExtension = (fileName: string) => {
+    const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+    return allowedExtensions.includes(extension);
+    };
+
+    const isValidSize = (size: number) => {
+    return size <= MAX_SIZE;
+    };
 
     return (
         <Form
             onSubmit={handleSubmit(props.submit)}
             className="form-update-user"
         >
+
+            <DivWrap>
+                {image ? (
+                    <StyledUpdateImg
+                        src={URL.createObjectURL(image)}
+                        alt="Imagem"
+                    />
+                ) : (
+                    <StyledUpdateImg
+                        src={imageUpload}
+                        alt={"foto"}
+                    ></StyledUpdateImg>
+                )}
+                <InputImg
+                    change={handleImageChange}
+                    validates={{
+                        ...register("photo", {
+                            required: false,
+                        }),
+                    }}
+                />
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+            </DivWrap>
+
             <BoxInputs>
                 <InputUser
                     type="text"
@@ -82,6 +128,9 @@ const FormUpdate = (props: IProps) => {
                         }),
                     }}
                 />
+                {errors.team && errors.team.type === "required" && (
+                    <ErrorMessage>Preencha o campo time</ErrorMessage>
+                )}
 
                 <InputUser
                     type="password"
@@ -115,33 +164,12 @@ const FormUpdate = (props: IProps) => {
                 )}
             </BoxInputs>
 
-            <DivAlign>
-                <DivWrap>
-                    {image ? (
-                        <StyledUpdateImg
-                            src={URL.createObjectURL(image)}
-                            alt="Imagem"
-                        />
-                    ) : (
-                        <StyledUpdateImg
-                            src={imageUpload}
-                            alt={"foto"}
-                        ></StyledUpdateImg>
-                    )}
-                    <InputImg
-                        change={handleImageChange}
-                        validates={{
-                            ...register("photo", {
-                                required: false,
-                            }),
-                        }}
-                    />
-                </DivWrap>
-
-                <Button>ATUALIZAR</Button>
-            </DivAlign>
+           
+            <Button  disabled={!image}>ATUALIZAR</Button>
+            
         </Form>
     );
 };
 
 export default FormUpdate;
+
