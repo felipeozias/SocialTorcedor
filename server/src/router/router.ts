@@ -45,7 +45,7 @@ router.delete("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, g
 router.get("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, group.get);
 router.get("/groups", Auth.verifyAuth, group.list);
 router.delete("/groups/:id/members/:userId", Auth.verifyAuth, idValidator(), userIdValidator(), handleValidation, group.removeMember);
-router.post("/groups/:id/messages", Auth.verifyAuth, idValidator(), messageValidator(), handleValidation, group.addMessage);
+//router.post("/groups/:id/messages", Auth.verifyAuth, idValidator(), messageValidator(), handleValidation, group.addMessage);
 
 //router.get("/websocket", test.teste);
 

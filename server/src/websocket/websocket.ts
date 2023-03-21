@@ -5,6 +5,8 @@ import { redis } from "../database/redisdb";
 import IGroup from "../interfaces/igroup";
 import { Group } from "../models/group";
 import IMessage from "../interfaces/imessage";
+import GroupService from "../services/group-service";
+import { Types } from "mongoose";
 
 export default class Websocket {
     io: Server;
@@ -33,14 +35,19 @@ export default class Websocket {
         });
 
         this.io.on("connection", (socket) => {
-            redis.sadd(socket.handshake.query.username as string, socket.id);
-            this.io.to(socket.id).emit("feed", `Seja bem vindo: ${socket.handshake.query.username}`);
-            console.info(`🔰 Socket connected : ${socket.id} - user: ${socket.handshake.query.username} `);
+            const idUser = socket.handshake.query.username as string;
+            redis.sadd(idUser, socket.id);
+            this.io.to(socket.id).emit("feed", `Seja bem vindo: ${idUser}`);
+
+            socket.on("send message", (data) => {
+                this.sendMessage(idUser, data);
+            });
+
             socket.on("disconnect", () => {
                 redis.srem(socket.handshake.query.username as string, socket.id);
-                console.info(`🔰 Socket disconnected : ${socket.id} - user: ${socket.handshake.query.username} `);
             });
         });
+
         redis.callbackFeed = this.subFeed.bind(this);
         redis.callbackGroup = this.subGroup.bind(this);
         redis.callbackChat = this.subChat.bind(this);
@@ -94,7 +101,6 @@ export default class Websocket {
     private async subChat(message: any) {
         const members = [...message.group.members];
         members.push(message.group.admin);
-        console.log(message);
         for (const member of members) {
             const listSocket = await redis.smembers(member as string);
             if (listSocket) {
@@ -103,5 +109,13 @@ export default class Websocket {
                 }
             }
         }
+    }
+
+    private async sendMessage(idUser: string, data: any) {
+        const { id, message } = data;
+        const author = new Types.ObjectId(idUser);
+        const imessage: IMessage = { message, author };
+        const service = new GroupService();
+        await service.addMessage(id, imessage);
     }
 }

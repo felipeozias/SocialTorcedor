@@ -58,7 +58,7 @@
         User:<input id="user" />Senha:<input id="password" />
         <button id="login">Login</button>
         <ul id="messages"></ul>
-        <!-- <form id="form" action=""><input id="input" autocomplete="off" /><button>Send</button></form>  -->
+        <form id="form" action="">Grupo:<input id="group" /><input id="input" autocomplete="off" /><button>Send</button></form>
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
         <script>
@@ -69,6 +69,7 @@
             const messages = document.getElementById("messages");
             const form = document.getElementById("form");
             const input = document.getElementById("input");
+            const group = document.getElementById("group");
             const txtUser = document.getElementById("user");
             const txtPassword = document.getElementById("password");
             const btnLogin = document.querySelector("#login");
@@ -132,6 +133,14 @@
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             }
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                if (input.value) {
+                    socket.emit("send message", { id: group.value, message: input.value });
+                    input.value = "";
+                }
+            });
 
             /*let id = "aaaa";
 
