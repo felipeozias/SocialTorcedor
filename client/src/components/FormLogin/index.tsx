@@ -59,8 +59,10 @@ export default function FormLogin(props: IProps): JSX.Element {
             {props.noAuth && (
                 <NoAuthMessage>Apelido e senha estão incorretos</NoAuthMessage>
             )}
-
+            
             <Button type="submit">ENTRAR</Button>
+            
+            
 
             <Message>
                 Ainda não possúi conta?{" "}

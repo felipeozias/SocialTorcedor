@@ -15,7 +15,7 @@ export const Template = styled.div`
     background-color: #1a2a3a;
     position: fixed;
     right: 0;
-    gap: 0.2rem;
+    gap: 0.5rem;
     @media (max-width: 1000px) {
         width: 40vw;
     }
@@ -24,8 +24,13 @@ export const Template = styled.div`
     }
 `;
 
+export const Arrow = styled.img<IProps>`
+    height: ${(props) => (props.small ? "3vh" : "7vh")};
+    content: url(${(props) => props.image});
+`;
+
 export const Logo = styled.img<IProps>`
-    height: ${(props) => (props.small ? "10vh" : "15vh")};
+    height: ${(props) => (props.small ? "7vh" : "13vh")};
     content: url(${(props) => props.image});
 `;
 
@@ -42,10 +47,10 @@ export const BoxLogo = styled.div`
     width: 30vw;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-around;
+    flex-direction: row;
     position: fixed;
-    top: 3vh;
+    top: 6vh;
     @media (max-width: 1000px) {
         width: 40vw;
     }
@@ -55,5 +60,5 @@ export const BoxLogo = styled.div`
 `;
 
 export const BoxChild = styled.div`
-    margin-top: 20%;
+    margin-top: 5%;
 `;
