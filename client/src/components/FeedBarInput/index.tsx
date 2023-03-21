@@ -12,7 +12,35 @@ interface IPropsFeedBarInput {
 }
 
 export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
+
+    function openImage(e: any) {
+        const file = e.target.files[0]
+        const viewImage: Element | null = document.getElementById('viewImageInput');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', (e) => {
+                const file2 = e.target;
+
+                const resetElement = document.getElementById('imgForInputPublication');
+                if (resetElement) { resetElement.remove() }
+
+                const info = document.createElement('div');
+                info.id = 'imgForInputPublication';
+
+                if (file2?.result) { info.textContent = 'Imagem: ' + file.name }
+                viewImage?.appendChild(info);
+            })
+            reader.readAsDataURL(file);
+        } else {
+            const resetElement = document.getElementById('imgForInputPublication');
+            if (resetElement) { resetElement.remove() }
+        }
+    }
+
     const inputRef = useRef<HTMLTextAreaElement>(null);
+    const imageRef = useRef<HTMLInputElement>(null);
 
     function resizeInput(e: KeyboardEvent<HTMLTextAreaElement>) {
         e.currentTarget.style.height = '35px';
@@ -21,7 +49,9 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
 
     function submitFeed(e: MouseEvent<HTMLDivElement>) {
         if (props.click) {
-            props.click(e, inputRef.current?.value.toString());
+            // console.log(imageRef.current);
+
+            // props.click(e, inputRef.current?.value.toString());
         }
     }
 
@@ -44,8 +74,12 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                 <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
                 <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions>
-                    <IconImage />
+                    <label htmlFor="inputFile">
+                        <IconImage />
+                    </label>
                 </StyledIconsOptions>
+                <input ref={imageRef} id='inputFile' type='file' accept="image/*" onChange={openImage} />
+                <div id='viewImageInput' />
             </StyledContainer>
         )
     }
