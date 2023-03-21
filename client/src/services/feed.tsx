@@ -1,13 +1,13 @@
 /// Lembrar de fazer alguma pagina de erro
 
-import { getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export async function fetchFeed() {
     try {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
         };
 
@@ -26,7 +26,6 @@ export async function fetchFeed() {
         let data = (await res.json()).data;
         // console.log(data);
 
-
         return data;
     } catch (err) {
         /// Lembrar de fazer alguma pagina de erro
@@ -39,19 +38,20 @@ export async function fetchFeed() {
 
 export async function postFeed(content: String) {
     try {
-
         const form = new FormData();
         form.append("content", `${content}`);
         form.append("author", "640ab68a27fea004b4b9ce05");
         form.append("photo", "C:\\Users\\ozias\\Desktop\\MyPhoto.jpg");
 
         const options = {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-                authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IjY0MGFiNjhhMjdmZWEwMDRiNGI5Y2UwNSIsImlhdCI6MTY3OTMxMDkwNSwiZXhwIjoxNjc5MzE0NTA1fQ.1vr4wkuyquKKSBFFEGiSrKASvquVx6oC4FH2AoqHXuo'
+                "Content-Type":
+                    "multipart/form-data; boundary=---011000010111000001101001",
+                authorization:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IjY0MGFiNjhhMjdmZWEwMDRiNGI5Y2UwNSIsImlhdCI6MTY3OTMxMDkwNSwiZXhwIjoxNjc5MzE0NTA1fQ.1vr4wkuyquKKSBFFEGiSrKASvquVx6oC4FH2AoqHXuo",
             },
-            body: form
+            body: form,
         };
 
         // const options = {
