@@ -4,19 +4,18 @@ import IconImage from "../ImagePerfil";
 import { MouseEvent } from "react";
 import { postFeed } from '../../services/feed'
 
-
 interface IPropsFeednewPublication {
-    place_hoder: String,
-    src: String,
-    alt: String,
-    action: String,
+    place_hoder: string,
+    src: string,
+    alt: string,
+    action: string,
     image?: boolean,
     emotion?: boolean
 }
 
-function handleClick(e: MouseEvent<HTMLDivElement>, content?: String) {
+function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string) {
     if (content) {
-        postFeed(content);
+        postFeed(content, image, userId);
     }
 }
 

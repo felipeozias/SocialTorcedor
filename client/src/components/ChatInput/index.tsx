@@ -1,10 +1,32 @@
-import { StyledChatContainer } from "./styles";
+import { BoxInput, ButtonChat, InputBox, StyledChatContainer } from "./styles";
 import FeedBarInput from "../FeedBarInput";
+import { useContext, useState } from "react";
+import DataUserForHeader from "../contexts/DataUserForHeader";
 
 export default function ChatInput() {
+    const { id } = useContext(DataUserForHeader);
+    const [value, setValue] = useState("");
+
+    const postChat = () => {
+        alert(`Id => ${id} e Valor => ${value}`);
+    };
+
     return (
         <StyledChatContainer>
-            <FeedBarInput place_hoder='Escreva sua mensagem!' action='Enviar' emotion={true} />
+            <BoxInput>
+                <InputBox
+                    placeholder="Escreva sua mensagem!"
+                    onChange={(e) => {
+                        setValue(e.target.value);
+                    }}
+                />
+                <ButtonChat onClick={postChat}>Enviar</ButtonChat>
+            </BoxInput>
+            {/* <FeedBarInput
+                place_hoder="Escreva sua mensagem!"
+                action="Enviar"
+                emotion={false}
+            /> */}
         </StyledChatContainer>
-    )
+    );
 }

@@ -5,7 +5,7 @@ export async function homeService() {
         const options = {
             method: "GET",
             headers: {
-                authorization: getCookie("token") || "",
+                authorization: getCookie("token") as string,
             },
         };
 
@@ -29,6 +29,6 @@ export async function homeService() {
         /// Lembrar de fazer alguma pagina de erro
         alert("Houve um erro ao entrar. Tente novamente!");
         console.error(err);
-        return { auth: false, isNoAuth: false, status: 500 };
+        return { auth: false, isNoAuth: false, status: 500, data: [] };
     }
 }

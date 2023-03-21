@@ -28,7 +28,7 @@ class RedisDb {
         try {
             await this.client.set(key, JSON.stringify(value), "EX", this.expire);
         } catch (error) {
-            Logger.error("Error setting Redis key", error);
+            Logger.error("Error setting Redis key", { key, value }, error);
             throw error;
         }
     }
@@ -42,7 +42,7 @@ class RedisDb {
             await this.client.expire(key, this.expire);
             return JSON.parse(value);
         } catch (error) {
-            Logger.error("Error getting Redis key", error);
+            Logger.error("Error getting Redis key", key, error);
             throw error;
         }
     }
@@ -51,7 +51,7 @@ class RedisDb {
         try {
             return await this.client.del(key);
         } catch (error) {
-            Logger.error("Error deleting Redis key", error);
+            Logger.error("Error deleting Redis key", key, error);
             throw error;
         }
     }
@@ -61,7 +61,7 @@ class RedisDb {
             await this.client.sadd(key, JSON.stringify(value));
             await this.client.expire(key, this.expire);
         } catch (error) {
-            Logger.error("Error setting Redis key", error);
+            Logger.error("Error setting Redis key", { key, value }, error);
             throw error;
         }
     }
@@ -71,7 +71,7 @@ class RedisDb {
             await this.client.srem(key, JSON.stringify(value));
             await this.client.expire(key, this.expire);
         } catch (error) {
-            Logger.error("Error setting Redis key", error);
+            Logger.error("Error setting Redis key", key, error);
             throw error;
         }
     }
@@ -85,7 +85,7 @@ class RedisDb {
             await this.client.expire(key, this.expire);
             return value.map((v) => JSON.parse(v));
         } catch (error) {
-            Logger.error("Error getting Redis key", error);
+            Logger.error("Error getting Redis members key", key, error);
             throw error;
         }
     }

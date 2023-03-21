@@ -40,12 +40,12 @@ router.post("/posts/:id/comments", Auth.verifyAuth, postValidator(), handleValid
 router.delete("/posts/:id/comments/:commentId", Auth.verifyAuth, post.removeComment);
 
 router.post("/groups", Auth.verifyAuth, Storage.upload, groupValidator(), handleValidation, group.create);
-router.patch("/groups/:id", Auth.verifyAuth, idValidator(), groupValidator(), handleValidation, group.update);
+router.patch("/groups/:id", Auth.verifyAuth, idValidator(), Storage.upload, groupValidator(), handleValidation, group.update);
 router.delete("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, group.remove);
 router.get("/groups/:id", Auth.verifyAuth, idValidator(), handleValidation, group.get);
 router.get("/groups", Auth.verifyAuth, group.list);
 router.delete("/groups/:id/members/:userId", Auth.verifyAuth, idValidator(), userIdValidator(), handleValidation, group.removeMember);
-router.post("/groups/:id/messages", Auth.verifyAuth, idValidator(), messageValidator(), handleValidation, group.addMessage);
+//router.post("/groups/:id/messages", Auth.verifyAuth, idValidator(), messageValidator(), handleValidation, group.addMessage);
 
 //router.get("/websocket", test.teste);
 
