@@ -4,6 +4,7 @@ import IResult from "../interfaces/iresult";
 import IGroup from "../interfaces/igroup";
 import { Group } from "../models/group";
 import { io } from "../server";
+import { User } from "../models/user";
 
 export default class GroupService {
     async create(data: IGroup): Promise<IResult<IGroup>> {
@@ -13,7 +14,7 @@ export default class GroupService {
             const group = await Group.create(data);
             result.data = group;
             result.status = 201;
-             io.pubGroup("insert", group);
+            io.pubGroup("insert", group);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -129,6 +130,12 @@ export default class GroupService {
         let result: IResult<Boolean> = { errors: [], data: false };
 
         try {
+            const group = await Group.findOne({ _id }).select("-chat");
+            if (!group) {
+                result.errors?.push("Group não encontrado");
+                result.status = 404;
+                return result;
+            }
             const res = await Group.updateOne({ _id }, { $push: { chat: message } });
             if (res.modifiedCount === 0) {
                 result.errors?.push("Grupo não encontrado");
@@ -137,6 +144,12 @@ export default class GroupService {
             }
             result.data = true;
             result.status = 200;
+            const author_id = message.author.toString();
+            const author = await User.findById(author_id);
+            if (author) {
+                message.author = author;
+            }
+            io.pubChat(group, message);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;

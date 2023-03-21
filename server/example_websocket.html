@@ -99,8 +99,8 @@
 
                     const data = await res.json();
                     token = data.token;
-                    addMessage("Autenticação OK! ");
-                    addMessage("Token: " + token);
+                    console.log("Autenticação OK! ");
+                    console.log("Token: " + token);
                     connect(token);
                 } catch (err) {
                     /// Lembrar de fazer alguma pagina de erro
@@ -123,6 +123,7 @@
 
                 socket.on("feed", addMessage);
                 socket.on("group", addMessage);
+                socket.on("chat", addMessage);
             }
 
             function addMessage(msg) {
