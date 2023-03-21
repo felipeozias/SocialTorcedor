@@ -7,6 +7,7 @@ import MongoDB from "./database/mongodb";
 import Logger from "./logger/logger";
 import cors from "cors";
 import Websocket from "./websocket/websocket";
+import { Group } from "./models/group";
 
 dotenv.config({ path: "./config/.env" });
 

@@ -1342,6 +1342,9 @@
             },
             "description": "OK"
           },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
           "401": {
             "description": "Não autorizado"
           },
