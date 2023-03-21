@@ -16,15 +16,21 @@ export default function ChatComplete(props: IProps) {
 
     async function getGroups() {
         const dataGroups = await chat(props.groupId as string);
-
-        //console.log("Dados do grupo estão assim => ", dataGroups);
-
         setGroups(dataGroups?.data);
         setFail(true);
 
         setMembers(dataGroups.data.members);
         return dataGroups;
     }
+
+    const membersName = () => {
+        let names = "";
+        for (const memb of groups.data.members) {
+            names += ` ${memb.name},`;
+        }
+
+        return names.slice(0, -1);
+    };
 
     useEffect(() => {
         getGroups();
@@ -33,9 +39,10 @@ export default function ChatComplete(props: IProps) {
     return (
         <StyledChatContainer>
             <ChatHeader
-                title={/* groups ? groups.data.title :  */ "Chat"}
-                admin={/* groups ? groups.data.admin.name :  */ ""}
-                empty={false}
+                title={groups ? groups.data.title : "Chat"}
+                admin={groups ? groups.data.admin.name : ""}
+                members={groups && membersName()}
+                empty={!props.groupId}
             />
             <ChatMessages />
             <ChatInput />

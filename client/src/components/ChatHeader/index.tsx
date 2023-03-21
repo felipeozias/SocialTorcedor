@@ -8,10 +8,11 @@ interface IPropsChat {
 }
 
 export default function ChatHeader(props: IPropsChat) {
+    console.log("log de member no header => ", props.members);
     return (
         <StyledChatContainer>
             <StyledTitleSpan>{props.title}</StyledTitleSpan>
-            {props.empty && (
+            {!props.empty && (
                 <>
                     <InfoChat>Criado por: {props.admin}</InfoChat>
                     <InfoChat>Participantes: {props.members}</InfoChat>

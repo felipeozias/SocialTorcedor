@@ -55,8 +55,8 @@ export async function apiRequestGroups() {
             method: "GET",
             headers: {
                 authorization: getCookie("token") as string,
-            }
-        }
+            },
+        };
 
         const request = await fetch(url, options);
         if (!request.ok) {
@@ -68,7 +68,7 @@ export async function apiRequestGroups() {
             };
         }
         const res = await request.json();
-        console.log(res)
+        console.log(res);
         return {
             status: request.status,
             succesfull: true,
