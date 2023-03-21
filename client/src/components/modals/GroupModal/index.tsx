@@ -141,32 +141,32 @@ export default function GroupModal(props: Imodal) {
                     <StyledModal id="forms"
                         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                             
-                            const forms = document.querySelector("#forms") as HTMLFormElement;
-                            console.log(forms);
-                            const formData = new FormData(forms);
-                            console.log(formData);
+                            const formData = new FormData(e.target as HTMLFormElement);
+                            // console.log(formData);
                             const data = Object.fromEntries(formData.entries());
-                            console.log(data);
-
-                            // let sendGroupApi: IRegisterGroup = {
-                            //     title: groupName,
-                            //     admin: userId,
-                            //     members: usersAdded,
-                            //     photo: data["photo"]
-                            // }
+                            // console.log(data);
+                            
+                            // console.log(formData);
+                            let sendGroupApi: IRegisterGroup = {
+                                title: groupName,
+                                admin: userId,
+                                members: usersAdded,
+                                photo: data["photo"]
+                            }
                             
                             
                             // console.log(sendGroupApi)
                             
-                            createGroup(formData);
+                            createGroup(sendGroupApi);
                             
-                            // setNotifMessage(`Grupo criado com sucesso!`);
-                            // setIsOpen(true);
-                            // setTimeout(() => {
-                            //     setIsOpen(false);
-                            //     props.toggle();
-                            // }, 2000);
-
+                            setNotifMessage(`Grupo criado com sucesso!`);
+                            setIsOpen(true);
+                            setTimeout(() => {
+                                setIsOpen(false);
+                                props.toggle();
+                                setFileUrl(logoDefault);
+                            }, 2000);
+                            
                             e.preventDefault();
                             usersAdded = [];
                         }}
@@ -182,7 +182,6 @@ export default function GroupModal(props: Imodal) {
                                 required
                                 onChange={updateValue}
                             />
-                            <input type="text" name="admin" value={userId} hidden/>
                             {/* <StyledUsersContainer
                                 
                             /> */}

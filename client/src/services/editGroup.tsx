@@ -1,4 +1,5 @@
-import { getToken } from "../utils/cookies";
+import { IUpdateGroup } from "../interfaces/Groups";
+import { getCookie } from "../utils/cookies";
 
 
 export async function editGroupService(userData: {groupId: string}) {
@@ -9,7 +10,7 @@ export async function editGroupService(userData: {groupId: string}) {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             }
         }
         const res = await fetch(url, options);
@@ -31,16 +32,23 @@ export async function editGroupService(userData: {groupId: string}) {
     }
 }
 
-export async function updateGroupService(userData: any) {
-    // console.log(userData);
+export async function updateGroupService(userData: IUpdateGroup) {
+    console.log(userData);
+
     try {
 
+        const formData = new FormData();
+        formData.append("admin", userData.admin);
+        formData.append("members", userData.members as any);
+        formData.append("title", userData.title);
+        console.log(formData)
+        
         const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "PATCH",
-            headers: { 
-                "Content-Type": "application/json",
-                authorization: getToken || ""
+            headers: {
+                authorization: getCookie("token") as string,
+                "Content-Type": "application/json"
              },
             body: JSON.stringify(userData),
         }
