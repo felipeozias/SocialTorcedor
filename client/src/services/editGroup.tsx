@@ -1,17 +1,16 @@
 import { getToken } from "../utils/cookies";
 
-
-export async function editGroupService(userData: {groupId: string}) {
+export async function editGroupService(userData: { groupId: string }) {
     // console.log(userData);
     try {
-
-        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
+        const url: string =
+            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "GET",
             headers: {
                 authorization: getToken || "",
-            }
-        }
+            },
+        };
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -20,7 +19,6 @@ export async function editGroupService(userData: {groupId: string}) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
@@ -34,16 +32,16 @@ export async function editGroupService(userData: {groupId: string}) {
 export async function updateGroupService(userData: any) {
     // console.log(userData);
     try {
-
-        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
+        const url: string =
+            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "PATCH",
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                authorization: getToken || ""
-             },
+                authorization: getToken || "",
+            },
             body: JSON.stringify(userData),
-        }
+        };
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -56,9 +54,7 @@ export async function updateGroupService(userData: any) {
 
         return { status: res.status, data: data };
     } catch (err) {
-        alert(
-            "Houve um erro ao tentar atualizar. Por favor tente novamente!"
-        );
+        alert("Houve um erro ao tentar atualizar. Por favor tente novamente!");
         console.error(err);
     }
 }

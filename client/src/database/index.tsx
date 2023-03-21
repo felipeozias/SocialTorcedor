@@ -68,7 +68,7 @@ export async function apiRequestGroups() {
             };
         }
         const res = await request.json();
-        console.log(res);
+
         return {
             status: request.status,
             succesfull: true,

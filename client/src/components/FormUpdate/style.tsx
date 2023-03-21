@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface IProps {
+    path: string;
+}
+
 export const Form = styled.form`
     height: 100%;
     width: 240px;
@@ -7,7 +11,7 @@ export const Form = styled.form`
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    gap: 1.0rem;
+    gap: 1rem;
 `;
 
 export const BoxInputs = styled.div`
@@ -27,14 +31,24 @@ export const Link = styled.a`
     font-weight: bold;
 `;
 
-
 export const DivWrap = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
 `;
 
 export const ErrorMessage = styled.span`
     color: #ff0000;
     font-size: 9pt;
+`;
+
+export const DivImage = styled.div<IProps>`
+    background-image: url(${(props) => props.path});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 90px;
+    width: 75px;
+    margin-bottom: 5px;
+    //border-radius: 10px;
 `;

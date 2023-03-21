@@ -1,19 +1,20 @@
 import { getToken } from "../utils/cookies";
 
-
-
-export default async function exitGroup(userData: {groupId: string | undefined, userId: string}) {
-    console.log(userData);
+export default async function exitGroup(userData: {
+    groupId: string | undefined;
+    userId: string;
+}) {
     try {
         const options = {
             method: "DELETE",
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                authorization: getToken || "" 
-            }
+                authorization: getToken || "",
+            },
         };
 
-        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}/members/${userData.userId}` as string;
+        const url: string =
+            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}/members/${userData.userId}` as string;
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -22,7 +23,6 @@ export default async function exitGroup(userData: {groupId: string | undefined, 
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

@@ -8,7 +8,6 @@ interface IPropsChat {
 }
 
 export default function ChatHeader(props: IPropsChat) {
-    console.log("log de member no header => ", props.members);
     return (
         <StyledChatContainer>
             <StyledTitleSpan>{props.title}</StyledTitleSpan>

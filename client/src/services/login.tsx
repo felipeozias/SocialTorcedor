@@ -1,5 +1,3 @@
-/// Lembrar de fazer alguma pagina de erro
-
 export default async function loginService(formData: any) {
     try {
         const options = {
