@@ -1,10 +1,13 @@
 import IconEmotion from "../IconEmotion";
 import IconImage from "../IconImage";
 import { StyledContainer, StyledInput, StyledSpanPublic, StyledIconsOptions } from "./style";
-import { KeyboardEvent, MouseEvent, useRef } from 'react';
+import { KeyboardEvent, MouseEvent, useRef, useState } from 'react';
+
+import DataUserForHeader from "../contexts/DataUserForHeader";
+import { useContext } from "react";
 
 interface IPropsFeedBarInput {
-    click?: (e: MouseEvent<HTMLDivElement>, value?: String) => void,
+    click?: (e: MouseEvent<HTMLButtonElement>, image: string, content: string, id: string) => void,
     place_hoder: String,
     action: String,
     emotion?: boolean,
@@ -12,9 +15,15 @@ interface IPropsFeedBarInput {
 }
 
 export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
+    const { id } = useContext(DataUserForHeader);
+    const [image, setImage] = useState('');
 
     function openImage(e: any) {
-        const file = e.target.files[0]
+        e.preventDefault();
+
+        const file = e.target.files[0];
+        setImage(file);
+
         const viewImage: Element | null = document.getElementById('viewImageInput');
 
         if (file) {
@@ -47,11 +56,26 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
     }
 
-    function submitFeed(e: MouseEvent<HTMLDivElement>) {
+    function submitFeed(e: MouseEvent<HTMLButtonElement>) {
         if (props.click) {
-            // console.log(imageRef.current);
+            e.preventDefault()
 
-            // props.click(e, inputRef.current?.value.toString());
+            // ADICIONAR O MODAL DE ALERTA!!!
+            if (image) {
+                let content = '.....';
+                if (inputRef.current && inputRef.current.value !== '') {
+                    content = inputRef.current.value
+                }
+
+                props.click(
+                    e,
+                    image,
+                    content,
+                    id
+                );
+            } else {
+                alert("Insira uma foto!")
+            }
         }
     }
 
@@ -59,7 +83,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         return (
             <StyledContainer>
                 <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-                <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
+                <StyledSpanPublic onClick={e => submitFeed(e)}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions id="box_emotion_image">
                     <IconEmotion />
                     <IconImage />
@@ -71,14 +95,14 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
     if (props.image) {
         return (
             <StyledContainer>
-                <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+                <StyledInput name="content" ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
                 <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
                 <StyledIconsOptions>
                     <label htmlFor="inputFile">
                         <IconImage />
                     </label>
                 </StyledIconsOptions>
-                <input ref={imageRef} id='inputFile' type='file' accept="image/*" onChange={openImage} />
+                <input name="photo" ref={imageRef} id='inputFile' type='file' accept=".jpg,.png" onChange={e => openImage(e)} />
                 <div id='viewImageInput' />
             </StyledContainer>
         )

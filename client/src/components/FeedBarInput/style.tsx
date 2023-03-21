@@ -7,6 +7,15 @@ export const StyledContainer = styled.div`
     align-items: center;
     margin: 5px;
 
+    & button{
+        display: flex;
+        /* position: relative; */
+        background-color: #3D3D3D;
+        box-shadow: none;
+        border: none;
+        color: #fff;
+    }
+
     label{
         display: flex;
         width: 25px;
@@ -44,7 +53,7 @@ export const StyledInput = styled.textarea`
     margin-bottom: 25px;
 `;
 
-export const StyledSpanPublic = styled.span`
+export const StyledSpanPublic = styled.button`
     font-family: Inter, sans-serif;
     font-size: 11pt;
     color: #FFF;
