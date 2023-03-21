@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IGetGroups, IUpdateGroup } from "../../../interfaces/Groups";
 import { IEditModal } from "../../../interfaces/Modal";
 import ModalOverlay from "../ModalOverlay";
@@ -9,26 +9,25 @@ import {
     UsersContainer,
     SectionLeft,
     SectionRight,
-    StyledInputFile,
-    StyledLabelFile,
-    StyledButton,
-    StyledImg,
+    InputFile,
+    LabelFile,
+    Img,
     ButtonAdd,
 } from "./styles";
 import { IUser } from "../../../interfaces/Users";
 import { apiRequestUsers } from "../../../database";
 import NotificationModal from "../NotificationModal";
+import logoDefault from "../../../assets/logo.png"
 import { updateGroupService } from "../../../services/editGroup";
-import exitGroup from "../../../services/exitGroup";
 
 let usersAdded: string[] = [];
 
 export default function EditGroupModal(props: IEditModal) {
+    let [fileUrl, setFileUrl] = useState(props.group?.pathImage!);
     let [groupName, setGroupName] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
-    let [render, setRender] = useState(0);
     // let [usersAdded, setUsersAdded] = useState(props.group?.members);
 
     props.group?.members.map(user => {
@@ -38,6 +37,14 @@ export default function EditGroupModal(props: IEditModal) {
             usersAdded.push(user._id)
         }
     })
+
+    function changeImg(e: ChangeEvent) {
+        let event = e.target as HTMLInputElement;
+        if (event.files && event.files[0]) {
+            setFileUrl(URL.createObjectURL(event.files[0]));
+        }
+        // console.log(event.files);
+    }
     
     function updateValue() {
         let inputUser = document.querySelector("#input-name-group") as HTMLInputElement;
@@ -133,13 +140,15 @@ export default function EditGroupModal(props: IEditModal) {
                         onSubmit={(event) => {
 
                         let sendUpdateGroup: IUpdateGroup= {
-                            admin: props.group?.admin._id,
-                            groupId: props.group?._id,
-                            title: groupName == "" ? props.group?.title: groupName,
+                            admin: props.group?.admin._id!,
+                            groupId: props.group?._id!,
+                            title: groupName == "" ? props.group?.title! : groupName,
                             members: usersAdded,
+                            photo: props.group?.pathImage
                         }
-                        console.log(sendUpdateGroup)
-                        // console.log(groupName)
+                        // console.log(sendUpdateGroup)
+                        // console.log(props.group?.pathImage)
+                        // console.log(fileUrl)
 
                         updateGroupService(sendUpdateGroup);
                             
@@ -171,27 +180,6 @@ export default function EditGroupModal(props: IEditModal) {
                                 onChange={updateValue}
                             />
                             <UsersContainer>
-                                {/* <div>{
-                                props.group?.members.map(users => 
-                                <div>
-                                    {users.name}({users.nickname}) 
-                                <div onClick={() => {
-                                    const index = usersAdded.indexOf(users._id);
-                                    if (index > -1) {
-                                        usersAdded.splice(index,1);
-                                    }
-                                    console.log("sair")
-                                    // setNotifMessage(`Usuário ${users.nickname} removido`);
-                                    // setIsOpen(true);
-                                    // setTimeout(() => {
-                                    //     setIsOpen(false);
-                                    //     // props.toggle();
-                                    // }, 1500);
-                                }}>(X)</div>
-                                </div>)
-                                
-                                }
-                                </div> */}
                                 <div>
                                 {
                                 usersAdded.map(users => usersDb.map(userlist => <div>{userlist._id.includes(users) ? `${userlist.name} (${userlist.nickname})`: ""}</div>))
@@ -213,7 +201,18 @@ export default function EditGroupModal(props: IEditModal) {
                             </ButtonAdd>
                         </SectionLeft>
                         <SectionRight>
-                        <ButtonAdd 
+                        {/* <LabelFile htmlFor="fileImage">
+                                Selecionar Imagem{" "}
+                            </LabelFile>
+                            <InputFile
+                                id="fileImage"
+                                name="photo"
+                                type="file"
+                                accept="image/*"
+                                onChange={changeImg}
+                            />
+                            <Img src={props.group?.pathImage == undefined ? logoDefault : `${process.env.REACT_APP_API}assets/${fileUrl}`} alt="preview image" /> */}
+                            <ButtonAdd 
                                 type="submit"
                             >
                                 Atualizar Grupo

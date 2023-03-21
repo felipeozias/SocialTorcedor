@@ -9,6 +9,7 @@ import Context from "../../hooks/useContext";
 import { IGetGroups } from "../../interfaces/Groups";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import logoIcon from "../../assets/logo.png";
 
 export default function MainGroupSection() {
     const { isOpen, toggle } = useModal();
@@ -34,9 +35,9 @@ export default function MainGroupSection() {
     }
     
     let filteredGroupsOwner = reqGroups.filter(group => group.admin._id.includes(userId));
-    console.log(filteredGroupsOwner)
+    // console.log(filteredGroupsOwner)
     let filteredGroupsIn = reqGroups.map(group => group.members.filter(users => users._id.includes(userId)));
-    console.log(filteredGroupsIn)
+    // console.log(filteredGroupsIn)
     let positionArray: Array<number> = [];
     let c = 0;
     filteredGroupsIn.forEach(el => {
@@ -86,7 +87,7 @@ export default function MainGroupSection() {
                             displayExit="none"
                             position={positionPopUp}
                             groupId={groups._id}
-                            pathImage={groups.pathImage}
+                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}assets/${groups.pathImage}` : logoIcon}
                         />
                 )))}
                 {(groupsIn.map((groups) => (
@@ -100,7 +101,7 @@ export default function MainGroupSection() {
                             displayExit="block"
                             position={positionPopUp}
                             groupId={groups._id}
-                            pathImage={groups.pathImage}
+                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}assets/${groups.pathImage}` : logoIcon}
                         />
                 )))}
             </StyledGroupSection>

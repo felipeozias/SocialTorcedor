@@ -1,19 +1,5 @@
 import { getCookie } from "../utils/cookies";
 
-export const simulateLogin = {
-    _id: "640f6af6ad964b6d45a13c35",
-    name: "Zoro Oliveira",
-    nickname: "zoro_oliveira",
-    team: "são paulo",
-};
-
-export const simulateLogin2 = {
-    _id: "640ff195438d50338971dec8",
-    name: "Shinobu Sensui",
-    nickname: "sensui123",
-    team: "Outro",
-};
-
 export async function apiRequestUsers() {
     try {
         const header = {
@@ -54,10 +40,10 @@ export async function apiRequestGroups() {
         const options = {
             method: "GET",
             headers: {
-                authorization: getCookie("token") as string,
-            },
-        };
-
+                authorization: getCookie("token") as string
+            }
+        }
+        
         const request = await fetch(url, options);
         if (!request.ok) {
             console.error(request.json());

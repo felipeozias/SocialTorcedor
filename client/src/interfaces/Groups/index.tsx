@@ -6,10 +6,11 @@ export interface IRegisterGroup {
 }
 
 export interface IUpdateGroup {
-    admin: string | undefined
-    groupId: string | undefined
-    title: string | undefined,
-    members: string[]
+    admin: string,
+    groupId: string,
+    title: string,
+    members: string[],
+    photo: any
 }
 
 export interface IUsersGroup {
