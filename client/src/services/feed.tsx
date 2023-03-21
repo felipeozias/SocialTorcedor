@@ -34,7 +34,6 @@ export async function fetchFeed() {
     }
 }
 
-// export async function postFeed(content: String, image:String) {
 export async function postFeed(content: string, image: any, userId: string) {
     try {
         const formData = new FormData();
@@ -43,7 +42,7 @@ export async function postFeed(content: string, image: any, userId: string) {
         formData.append("author", `${userId}`);
         formData.append("photo", image);
 
-        
+
 
         const options = {
             method: "POST",
@@ -72,6 +71,41 @@ export async function postFeed(content: string, image: any, userId: string) {
         /// Lembrar de fazer alguma pagina de erro
         alert(
             "Houve um erro ao enviar a publicação. Tente novamente ou contacte um administrador!"
+        );
+        console.error(err);
+    }
+}
+
+export async function postCommentFeed(content: string, userId: string, postId: string) {
+    try {
+        const options = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: getCookie("token") as string
+            },
+            body: `{"content":"${content}","author":"${userId}"}`
+        };
+
+        const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/comments`, options);
+
+        if (!res.ok) {
+            console.error("Erro ao fazer comentário", await res.json());
+            return {
+                failure: true,
+                error: "Ocorreu um erro ao fazer o comentário",
+                status: res.status,
+            };
+        }
+
+        let data = (await res.json()).data;
+        alert("Comentário realizado com sucesso!");
+
+        return data;
+    } catch (err) {
+        /// Lembrar de fazer alguma pagina de erro
+        alert(
+            "Houve um erro ao enviar comentário. Tente novamente ou contacte um administrador!"
         );
         console.error(err);
     }

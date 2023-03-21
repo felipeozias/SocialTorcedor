@@ -9,6 +9,7 @@ interface IPropsFeednewPublication {
     src: string,
     alt: string,
     action: string,
+    img_post?: string
     image?: boolean,
     emotion?: boolean
 }
@@ -25,7 +26,7 @@ export default function Feed(props: IPropsFeednewPublication): JSX.Element {
             <BoxIconImage>
                 <IconImage src={props.src} alt={props.alt} />
             </BoxIconImage>
-            <FeedBarInput click={handleClick} place_hoder={props.place_hoder} action='Publicar' image={props.image ? true : false} emotion={props.emotion ? true : false} />
+            <FeedBarInput img_post={props.img_post} click={handleClick} place_hoder={props.place_hoder} action='Publicar' image={props.image ? true : false} emotion={props.emotion ? true : false} />
         </StyledContainer >
     )
 }
