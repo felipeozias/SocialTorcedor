@@ -122,6 +122,7 @@
                 });
 
                 socket.on("feed", addMessage);
+                socket.on("group", addMessage);
             }
 
             function addMessage(msg) {

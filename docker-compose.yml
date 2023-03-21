@@ -28,9 +28,9 @@ services:
         container_name: server
         restart: always
         ports:
-            - "8000:8000"
-        # volumes:
-        #   - /app/server-data:/app
+            - "8888:8000"
+        volumes:
+          - /app/server-data/uploads:/app/uploads
         # environment:
         #   - REDIS_DB=redis
         #   - MONGO_DB=mongo

@@ -34,6 +34,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                         ...register("nickname", {
                             required: true,
                             pattern: /^[a-z][a-z0-9-_@.]*[a-z0-9]+$/,
+                            minLength: 4,
                         }),
                     }}
                 >
@@ -48,6 +49,11 @@ export default function FormRegister(props: IProps): JSX.Element {
                         caracteres: _-@
                     </ErrorMessage>
                 )}
+                {errors.nickname && errors.nickname.type === "minLength" && (
+                    <ErrorMessage>
+                        O Apelido precisa conter mais de 3 letras
+                    </ErrorMessage>
+                )}
                 <InputUser
                     type="text"
                     name="name"
@@ -55,6 +61,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                         ...register("name", {
                             required: true,
                             pattern: /^[a-zA-Zà-úÀ-Ú ]+$/,
+                            minLength: 5,
                         }),
                     }}
                 >
@@ -69,9 +76,25 @@ export default function FormRegister(props: IProps): JSX.Element {
                         conter letras
                     </ErrorMessage>
                 )}
-                
+                {errors.name && errors.name.type === "minLength" && (
+                    <ErrorMessage>
+                        O Apelido precisa conter no mínimo 5 letras
+                    </ErrorMessage>
+                )}
+
                 <Message>time do coração:</Message>
-                <SelectType onChange={handleTimeChange} selectedTimeId={selectedTimeId}/>
+                <SelectType
+                    name="team"
+                    selectedTimeId={selectedTimeId}
+                    validates={{
+                        ...register("team", {
+                            required: true,
+                        }),
+                    }}
+                />
+                {errors.team && errors.team.type === "required" && (
+                    <ErrorMessage>Escolha o seu time</ErrorMessage>
+                )}
 
                 <InputUser
                     type="password"
@@ -90,7 +113,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 <InputUser
                     type="password"
-                    name="confirm-password"
+                    name="password"
                     password={true}
                     validates={{
                         ...register("password", {
@@ -102,6 +125,9 @@ export default function FormRegister(props: IProps): JSX.Element {
                 </InputUser>
                 {errors.password && errors.password.type === "required" && (
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
+                )}
+                {errors.p && (
+                    <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
                 )}
             </BoxInputs>
             {props.noAuth && (
@@ -120,5 +146,3 @@ export default function FormRegister(props: IProps): JSX.Element {
         </Form>
     );
 }
-
-

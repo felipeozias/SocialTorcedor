@@ -6,7 +6,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 
 //------ Declared context ------
 import DataUserForHeader from "../../components/contexts/DataUserForHeader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export async function homeLoader() {
     const user = await homeService();
@@ -19,17 +19,19 @@ export default function Home() {
     console.log(user)
     useEffect(() => {
         if (!user.auth) navigate("/login");
-    }, [navigate]);
+    }, [navigate, user.auth]);
 
     return (
         <DataUserForHeader.Provider
             value={{
-                id: user.data._id || "",
-                logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                id: user.data._id,
+                logo: user.data.pathImage
+                    ? `http://localhost:8000/assets/${user.data.pathImage}`
+                    : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
-                name: user.data.name || "Torcedor",
-                nickname: user.data.nickname || "torcedor.com",
-                team: user.data.team || "",
+                name: user.data.name,
+                nickname: user.data.nickname,
+                team: user.data.team,
             }}
         >
             <Header complete={true} />

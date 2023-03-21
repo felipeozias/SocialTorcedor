@@ -40,3 +40,8 @@ export const DivWrap = styled.div`
     margin-right: 10px;
     
 `;
+
+export const ErrorMessage = styled.span`
+    color: #ff0000;
+    font-size: 9pt;
+`;

@@ -12,5 +12,9 @@ export const StyledImg = styled.img`
 export const StyledH1 = styled.h1`
     color: #fff;
     font-family: "Lobster", cursive;
-    font-size: 4vh;
+    font-size: 18pt;
+
+    @media (max-width: 700px) {
+        display: none;
+    }
 `;
