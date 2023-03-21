@@ -4,6 +4,7 @@ import chatIcon from "../../assets/chat.png"
 
 interface Iprops {
     name: string,
+    teamUrl: string
 }
 
 export default function MainUsers(props: Iprops): JSX.Element {
@@ -15,7 +16,7 @@ export default function MainUsers(props: Iprops): JSX.Element {
     return (
         <Container>
             <ImgContainer>
-                <Img src={userIcon} />
+                <Img src={`https://api.socialtorcedor.shop/assets/${props.teamUrl}`} />
             </ImgContainer>
             <P> {props.name} </P>
             <ImgContainer2>

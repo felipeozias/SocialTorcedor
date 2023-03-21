@@ -13,6 +13,8 @@ interface IUserContext {
     alt: String,
     name: String,
     nickname: String,
+    team: String,
+    id: String
 }); */
 
 const DataUserForHeader = createContext({

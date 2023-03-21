@@ -1,7 +1,8 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useContext } from "react";
 import {
     StyledModal,
     StyledInputName,
+    StyledUsersContainer,
     StyledSectionLeft,
     StyledSectionRight,
     StyledInputFile,
@@ -19,22 +20,26 @@ import Context from "../../../hooks/useContext";
 import { IUser } from "../../../interfaces/Users";
 import createGroup from "../../../services/createGroup";
 import { IRegisterGroup } from "../../../interfaces/Groups";
-import { simulateLogin } from "../../../database";
+import DataUserForHeader from "../../contexts/DataUserForHeader";
+import logoDefault from "../../../assets/logo.png"
 
 let usersAdded: Array<string> = [];
 
 export default function GroupModal(props: Imodal) {
-    let [fileUrl, setFileUrl] = useState("");
+    let [fileUrl, setFileUrl] = useState(logoDefault);
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [groupName, setGroupName] = useState("");
+    const { id } = useContext(DataUserForHeader);
+    const userId = id.toString();
 
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
         if (event.files && event.files[0]) {
             setFileUrl(URL.createObjectURL(event.files[0]));
         }
+        console.log(event.files);
     }
 
     async function requestDb() {
@@ -55,7 +60,7 @@ export default function GroupModal(props: Imodal) {
         ) as HTMLInputElement;
         let userNick = ""
         let userId = ""
-        if (user.value !== "") {
+        if (user.value != "") {
             let userDivide = user.value.split("(");
             if (userDivide.length > 1) {
                 userNick = userDivide[1].replace(")", "")
@@ -63,8 +68,8 @@ export default function GroupModal(props: Imodal) {
                     let userObj = usersDb.filter(name => name.nickname.includes(userNick))
                     userId = userObj[0]._id
                 }
-                // console.log(userNick)
-                // console.log(userId)
+                console.log(userNick)
+                console.log(userId)
             } else {
                 userNick = user.value
             }
@@ -83,6 +88,7 @@ export default function GroupModal(props: Imodal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else if (
             usersDb.some(
                 (userList) => userList.nickname === `${userNick}`
@@ -94,15 +100,16 @@ export default function GroupModal(props: Imodal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else {
             usersAdded.push(userId);
             // console.log(`${user.value} Adicionado com sucesso!`);
-            user.value = "";
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         }
         // console.log(usersAdded);
     }
@@ -110,6 +117,12 @@ export default function GroupModal(props: Imodal) {
     function updateValue() {
         let inputUser = document.querySelector("#input-name-group") as HTMLInputElement;
         setGroupName(inputUser.value)
+    }
+
+    function cancelCreation() {
+        props.toggle();
+        usersAdded = [];
+        setFileUrl(logoDefault);
     }
 
     return (
@@ -122,25 +135,37 @@ export default function GroupModal(props: Imodal) {
                         isOpen={isOpen}
                         toggle={props.toggle}
                         index={0}
+                        leftPosition={30}
+                        bottomPosition={70}
                     />
-                    <StyledModal
-                        onSubmit={(e) => {
+                    <StyledModal id="forms"
+                        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                             
-                            let sendGroupApi: IRegisterGroup = {
-                                title: groupName,
-                                admin: simulateLogin._id,
-                                members: usersAdded
-                            }
+                            const forms = document.querySelector("#forms") as HTMLFormElement;
+                            console.log(forms);
+                            const formData = new FormData(forms);
+                            console.log(formData);
+                            const data = Object.fromEntries(formData.entries());
+                            console.log(data);
+
+                            // let sendGroupApi: IRegisterGroup = {
+                            //     title: groupName,
+                            //     admin: userId,
+                            //     members: usersAdded,
+                            //     photo: data["photo"]
+                            // }
+                            
+                            
                             // console.log(sendGroupApi)
                             
-                            createGroup(sendGroupApi);
+                            createGroup(formData);
                             
-                            setNotifMessage(`Grupo criado com sucesso!`);
-                            setIsOpen(true);
-                            setTimeout(() => {
-                                setIsOpen(false);
-                                props.toggle();
-                            }, 2000);
+                            // setNotifMessage(`Grupo criado com sucesso!`);
+                            // setIsOpen(true);
+                            // setTimeout(() => {
+                            //     setIsOpen(false);
+                            //     props.toggle();
+                            // }, 2000);
 
                             e.preventDefault();
                             usersAdded = [];
@@ -149,6 +174,7 @@ export default function GroupModal(props: Imodal) {
                         <StyledSectionLeft>
                             <StyledInputName
                                 id="input-name-group"
+                                name="title"
                                 type="text"
                                 placeholder="Nome"
                                 minLength={5}
@@ -156,12 +182,9 @@ export default function GroupModal(props: Imodal) {
                                 required
                                 onChange={updateValue}
                             />
-                            {/* <StyledTextArea
-                                placeholder="Descrição do Grupo"
-                                rows={4}
-                                minLength={10}
-                                maxLength={100}
-                                // required
+                            <input type="text" name="admin" value={userId} hidden/>
+                            {/* <StyledUsersContainer
+                                
                             /> */}
                             <DataList />
                             <StyledButton2
@@ -171,6 +194,13 @@ export default function GroupModal(props: Imodal) {
                                 {" "}
                                 Adicionar{" "}
                             </StyledButton2>
+                            <StyledButton2
+                                onClick={cancelCreation}
+                                type="button"
+                            >
+                                {" "}
+                                Cancelar{" "}
+                            </StyledButton2>
                         </StyledSectionLeft>
                         <StyledSectionRight>
                             <StyledLabelFile htmlFor="fileImage">
@@ -178,6 +208,7 @@ export default function GroupModal(props: Imodal) {
                             </StyledLabelFile>
                             <StyledInputFile
                                 id="fileImage"
+                                name="photo"
                                 type="file"
                                 accept="image/*"
                                 onChange={changeImg}

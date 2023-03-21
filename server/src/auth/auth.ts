@@ -46,7 +46,8 @@ export default class Auth {
 
             req.body.userAuth = user;
             next();
-        } catch (err) {
+        } catch (err: any) {
+           
             Logger.error("Houve um erro ao recuperar token de sessão", err);
             res.status(500).json({
                 errors: ["Houve um erro interno"],
