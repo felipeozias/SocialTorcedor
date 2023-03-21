@@ -17,7 +17,7 @@ export default function MainUsers(props: Iprops): JSX.Element {
     return (
         <Container>
             <ImgContainer>
-                <Img src={`${process.env.REACT_APP_API}assets/${props.teamUrl}`} />
+                <Img src={`${process.env.REACT_APP_API}/assets/${props.teamUrl}`} />
             </ImgContainer>
             <P> {props.name} </P>
             <ImgContainer2>
