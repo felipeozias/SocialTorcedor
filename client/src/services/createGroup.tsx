@@ -1,10 +1,14 @@
+import { getToken } from "../utils/cookies";
 
 export default async function createGroup(userData: any) {
-    // console.log(userData);
+    console.log(userData);
     try {
         const options = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                authorization: getToken || ""
+             },
             body: JSON.stringify(userData),
         };
 
@@ -17,7 +21,7 @@ export default async function createGroup(userData: any) {
         }
 
         const data = await res.json();
-        // console.log(data);
+        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

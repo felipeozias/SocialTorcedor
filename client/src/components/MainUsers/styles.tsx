@@ -36,7 +36,7 @@ export const P = styled.p`
 export const ImgContainer2 = styled.div`
     width: 18%;
     height: 100%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     border-radius: 8px;

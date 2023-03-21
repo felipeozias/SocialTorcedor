@@ -16,7 +16,7 @@ export async function homeLoader() {
 export default function Home() {
     const { user } = useLoaderData();
     const navigate = useNavigate();
-
+    console.log(user)
     useEffect(() => {
         if (!user.auth) navigate("/login");
     }, [navigate, user.auth]);

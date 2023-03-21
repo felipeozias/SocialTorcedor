@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledModal = styled.form`
+export const ModalContainer = styled.form`
 z-index: 1001;
 height: 45vh;
 width: 40.5vw;
@@ -9,7 +9,7 @@ position: fixed;
 /* left: 10%; */
 /* bottom: 30%; */
 left: 30%;
-bottom: 40%;
+bottom: 35%;
 border-radius: 10px;
 display: flex;
 box-shadow: 0.5px 0.5px 5px 2px;
@@ -18,7 +18,7 @@ background-color: #3D6287;
 `
 // #343232
 // #054a18
-export const StyledSectionLeft = styled.section`
+export const SectionLeft = styled.section`
     height: 45vh;
     width: 24vw;
     border-radius: 10px;
@@ -27,7 +27,7 @@ export const StyledSectionLeft = styled.section`
     justify-content: space-evenly;
     padding-left: 0.5vw;
 `
-export const StyledSectionRight = styled.section`
+export const SectionRight = styled.section`
     height: 45vh;
     width: 16vw;
     border-radius: 10px;
@@ -36,7 +36,7 @@ export const StyledSectionRight = styled.section`
     justify-content: space-evenly;
 `
 
-export const StyledInputName = styled.input`
+export const InputName = styled.input`
     border-radius: 10px;
     border: none;
     width: 15vw;
@@ -50,7 +50,7 @@ export const StyledInputName = styled.input`
     background-color: #f3f3f3;
     color: #343232;
 `
-export const StyledUsersContainer = styled.div`
+export const UsersContainer = styled.div`
     border: none;
     border-radius: 10px;
     font-size: 1.2vw;
@@ -61,6 +61,22 @@ export const StyledUsersContainer = styled.div`
     height: 15vh;
     background-color: #f3f3f3;
     color: #343232;
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-track {
+    /* background: #3D6287; */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
 `
 
 export const StyledInputFile = styled.input`
@@ -108,7 +124,7 @@ export const StyledButton = styled.button`
     height: 5vh;
     font-size: 1.4vw;
 `
-export const StyledButton2 = styled.button`
+export const ButtonAdd = styled.button`
     :hover {
         cursor: pointer;
         border: none;
