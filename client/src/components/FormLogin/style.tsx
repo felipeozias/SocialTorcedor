@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const Form = styled.form`
+    height: 100%;
+    width: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,12 +13,12 @@ export const Form = styled.form`
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.6rem;
 `;
 
 export const Message = styled.p`
     color: #f3f3f3;
-    font-size: 9pt;
+    font-size: 8pt;
 `;
 
 export const ErrorMessage = styled.span`
@@ -29,3 +31,5 @@ export const NoAuthMessage = styled.span`
     font-size: 12pt;
     margin-top: -30px;
 `;
+
+

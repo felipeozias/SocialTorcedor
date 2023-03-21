@@ -24,5 +24,4 @@ export const LabelFile = styled.label`
     white-space: nowrap;    
     border-radius: 5px;
 
-
 `;
