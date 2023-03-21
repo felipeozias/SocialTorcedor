@@ -47,7 +47,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledCommetPost>{props.comment_post}</StyledCommetPost>
 
             <StyledImgPost
-                src={`https://api.socialtorcedor.shop/assets/` + props.img_post?.toString()}
+                src={`${process.env.REACT_APP_API}/assets/` + props.img_post?.toString()}
                 alt="Imagem da publicação"
             ></StyledImgPost>
 
@@ -65,7 +65,12 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                         Curtir
                     </StyledLikeComment>
 
-                    <StyledLikeComment>
+                    <StyledLikeComment onClick={(e) => {
+                        const meuElemento: HTMLInputElement | null = document.getElementById("inputOfComponent") as HTMLInputElement;
+                        if (meuElemento) {
+                            meuElemento.focus();
+                        }
+                    }}>
                         <img src={IconComment} alt="Icone comentario" />
                         <span>Comentar</span>
                     </StyledLikeComment>
@@ -80,7 +85,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                     src={logo.toString()}
                     alt="Image de perfil"
                     action="Publicar"
-                    emotion={true}
+                // emotion={true}
                 />
             </StyledComment>
         </StyledContainer>

@@ -1,4 +1,4 @@
-import { getCookie, getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export const simulateLogin = {
     _id: "640f6af6ad964b6d45a13c35",
@@ -54,11 +54,11 @@ export async function apiRequestGroups() {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             }
         }
 
-        const request = await fetch(url , options);
+        const request = await fetch(url, options);
         if (!request.ok) {
             console.error(request.json());
             return {
