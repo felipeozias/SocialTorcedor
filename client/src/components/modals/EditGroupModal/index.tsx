@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IGetGroups } from "../../../interfaces/Groups";
+import { IGetGroups, IUpdateGroup } from "../../../interfaces/Groups";
 import { IEditModal } from "../../../interfaces/Modal";
 import ModalOverlay from "../ModalOverlay";
 import DataList from "../DataList";
@@ -18,24 +18,31 @@ import {
 import { IUser } from "../../../interfaces/Users";
 import { apiRequestUsers } from "../../../database";
 import NotificationModal from "../NotificationModal";
+import { updateGroupService } from "../../../services/editGroup";
+import exitGroup from "../../../services/exitGroup";
+
+let usersAdded: string[] = [];
 
 export default function EditGroupModal(props: IEditModal) {
     let [groupName, setGroupName] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
+    let [render, setRender] = useState(0);
     // let [usersAdded, setUsersAdded] = useState(props.group?.members);
-    let usersAdded: string[] = [];
-    props.group?.members.map(user => usersAdded.push(user._id))
+
+    props.group?.members.map(user => {
+        if (usersAdded.includes(user._id)) {
+            // console.log("a")
+        } else {
+            usersAdded.push(user._id)
+        }
+    })
+    
     function updateValue() {
         let inputUser = document.querySelector("#input-name-group") as HTMLInputElement;
         setGroupName(inputUser.value)
-    }
-
-    function closeModal() {
-        // props.toggle()
-        // usersAdded.push("a")
-        console.log(usersAdded)
+        console.log(groupName)
     }
 
     async function requestDb() {
@@ -84,6 +91,7 @@ export default function EditGroupModal(props: IEditModal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else if (
             usersDb.some(
                 (userList) => userList.nickname === `${userNick}`
@@ -95,17 +103,23 @@ export default function EditGroupModal(props: IEditModal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else {
             usersAdded.push(userId);
             // console.log(`${user.value} Adicionado com sucesso!`);
-            user.value = "";
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         }
         // console.log(usersAdded);
+    }
+
+    function cancelUpdateGroupTemp() {
+        props.toggle();
+        usersAdded = [];
     }
 
     return (
@@ -113,7 +127,32 @@ export default function EditGroupModal(props: IEditModal) {
             {props.isOpen && (
                 <>
                     <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1001}/>
-                    <ModalContainer onClick={closeModal}>
+                    <ModalContainer onClick={() => {
+                        // console.log(usersAdded)
+                    }}
+                        onSubmit={(event) => {
+
+                        let sendUpdateGroup: IUpdateGroup= {
+                            admin: props.group?.admin._id,
+                            groupId: props.group?._id,
+                            title: groupName == "" ? props.group?.title: groupName,
+                            members: usersAdded,
+                        }
+                        console.log(sendUpdateGroup)
+                        // console.log(groupName)
+
+                        updateGroupService(sendUpdateGroup);
+                            
+                        setNotifMessage(`Grupo atualizado com sucesso!`);
+                        setIsOpen(true);
+                        setTimeout(() => {
+                            setIsOpen(false);
+                            props.toggle();
+                        }, 2000);
+
+                        event.preventDefault();
+                        usersAdded = [];
+                    }}>
                     <NotificationModal
                         message={notifMessage}
                         isOpen={isOpen}
@@ -129,11 +168,35 @@ export default function EditGroupModal(props: IEditModal) {
                                 placeholder={props.group?.title}
                                 minLength={5}
                                 maxLength={20}
-                                required
                                 onChange={updateValue}
                             />
                             <UsersContainer>
-
+                                {/* <div>{
+                                props.group?.members.map(users => 
+                                <div>
+                                    {users.name}({users.nickname}) 
+                                <div onClick={() => {
+                                    const index = usersAdded.indexOf(users._id);
+                                    if (index > -1) {
+                                        usersAdded.splice(index,1);
+                                    }
+                                    console.log("sair")
+                                    // setNotifMessage(`Usuário ${users.nickname} removido`);
+                                    // setIsOpen(true);
+                                    // setTimeout(() => {
+                                    //     setIsOpen(false);
+                                    //     // props.toggle();
+                                    // }, 1500);
+                                }}>(X)</div>
+                                </div>)
+                                
+                                }
+                                </div> */}
+                                <div>
+                                {
+                                usersAdded.map(users => usersDb.map(userlist => <div>{userlist._id.includes(users) ? `${userlist.name} (${userlist.nickname})`: ""}</div>))
+                                }
+                                </div>
                             </UsersContainer>
                             <DataList />
                             <ButtonAdd 
@@ -142,9 +205,19 @@ export default function EditGroupModal(props: IEditModal) {
                             >
                                 Adicionar
                             </ButtonAdd>
+                            <ButtonAdd 
+                                onClick={cancelUpdateGroupTemp}
+                                type="button"
+                            >
+                                Cancelar
+                            </ButtonAdd>
                         </SectionLeft>
                         <SectionRight>
-
+                        <ButtonAdd 
+                                type="submit"
+                            >
+                                Atualizar Grupo
+                            </ButtonAdd>
                         </SectionRight>
                     </ModalContainer>
                 </>

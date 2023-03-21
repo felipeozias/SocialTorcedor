@@ -20,7 +20,7 @@ import exitGroup from "../../services/exitGroup";
 import NotificationModal from "../modals/NotificationModal";
 import EditGroupModal from "../modals/EditGroupModal";
 import useModal from "../../hooks/useModal";
-import editGroupService from "../../services/editGroup";
+import { editGroupService } from "../../services/editGroup";
 import { IGetGroups } from "../../interfaces/Groups";
 
 interface Iprops {
@@ -32,6 +32,7 @@ interface Iprops {
     displayEdit: string,
     displayExit: string,
     position: number,
+    pathImage: string
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -53,13 +54,26 @@ export default function MainGroups(props: Iprops): JSX.Element {
             groupId: props.groupId,
             userId: userId
         }
-        console.log(userData);
-        exitGroup(userData);
-        setNotifMessage(`Você saiu do grupo!`);
+        // console.log(userData);
+        // exitGroup(userData);
+        setNotifMessage(`Saindo em 3..`);
         setIsOpenNotif(true);
         setTimeout(() => {
-            setIsOpenNotif(false);
+            // setIsOpenNotif(false);
+            setNotifMessage(`Saindo em 3..2`)
+        }, 1000);
+        setTimeout(() => {
+            // setIsOpenNotif(false);
+            setNotifMessage(`Saindo em 3..2..1`)
         }, 2000);
+        setTimeout(() => {
+            // setIsOpenNotif(false);
+            setNotifMessage(`Você saiu do grupo`)
+            exitGroup(userData);
+        }, 3000);
+        setTimeout(() => {
+            setIsOpenNotif(false);
+        }, 4000);
     }
     async function editGroup() {
         console.log("editar grupo");
@@ -92,7 +106,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 group={groupAtributes}
             />
             <ImgContainer>
-                <Img src={logoIcon} />
+                <Img src={props.pathImage == undefined ? logoIcon : props.pathImage} />
             </ImgContainer>
             <Pcontainer onClick={activateBorder}>
                 <P textSize={props.textSize}> {props.groupName} </P>

@@ -6,13 +6,15 @@ height: 45vh;
 width: 40.5vw;
 font-size: 15px;
 position: fixed;
-left: 10%;
-bottom: 30%;
+/* left: 10%; */
+/* bottom: 30%; */
+left: 30%;
+bottom: 40%;
 border-radius: 10px;
 display: flex;
 box-shadow: 0.5px 0.5px 5px 2px;
 font-family: 'Inter', sans-serif;
-background-color: #054a18;
+background-color: #3D6287;
 `
 // #343232
 // #054a18

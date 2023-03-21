@@ -86,6 +86,7 @@ export default function MainGroupSection() {
                             displayExit="none"
                             position={positionPopUp}
                             groupId={groups._id}
+                            pathImage={groups.pathImage}
                         />
                 )))}
                 {(groupsIn.map((groups) => (
@@ -99,6 +100,7 @@ export default function MainGroupSection() {
                             displayExit="block"
                             position={positionPopUp}
                             groupId={groups._id}
+                            pathImage={groups.pathImage}
                         />
                 )))}
             </StyledGroupSection>

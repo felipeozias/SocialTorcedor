@@ -21,11 +21,12 @@ import { IUser } from "../../../interfaces/Users";
 import createGroup from "../../../services/createGroup";
 import { IRegisterGroup } from "../../../interfaces/Groups";
 import DataUserForHeader from "../../contexts/DataUserForHeader";
+import logoDefault from "../../../assets/logo.png"
 
 let usersAdded: Array<string> = [];
 
 export default function GroupModal(props: Imodal) {
-    let [fileUrl, setFileUrl] = useState("");
+    let [fileUrl, setFileUrl] = useState(logoDefault);
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
@@ -38,6 +39,7 @@ export default function GroupModal(props: Imodal) {
         if (event.files && event.files[0]) {
             setFileUrl(URL.createObjectURL(event.files[0]));
         }
+        console.log(event.files);
     }
 
     async function requestDb() {
@@ -86,6 +88,7 @@ export default function GroupModal(props: Imodal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else if (
             usersDb.some(
                 (userList) => userList.nickname === `${userNick}`
@@ -97,15 +100,16 @@ export default function GroupModal(props: Imodal) {
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         } else {
             usersAdded.push(userId);
             // console.log(`${user.value} Adicionado com sucesso!`);
-            user.value = "";
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
+            user.value = "";
         }
         // console.log(usersAdded);
     }
@@ -118,6 +122,7 @@ export default function GroupModal(props: Imodal) {
     function cancelCreation() {
         props.toggle();
         usersAdded = [];
+        setFileUrl(logoDefault);
     }
 
     return (
@@ -133,24 +138,34 @@ export default function GroupModal(props: Imodal) {
                         leftPosition={30}
                         bottomPosition={70}
                     />
-                    <StyledModal
-                        onSubmit={(e) => {
+                    <StyledModal id="forms"
+                        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                             
-                            let sendGroupApi: IRegisterGroup = {
-                                title: groupName,
-                                admin: userId,
-                                members: usersAdded
-                            }
+                            const forms = document.querySelector("#forms") as HTMLFormElement;
+                            console.log(forms);
+                            const formData = new FormData(forms);
+                            console.log(formData);
+                            const data = Object.fromEntries(formData.entries());
+                            console.log(data);
+
+                            // let sendGroupApi: IRegisterGroup = {
+                            //     title: groupName,
+                            //     admin: userId,
+                            //     members: usersAdded,
+                            //     photo: data["photo"]
+                            // }
+                            
+                            
                             // console.log(sendGroupApi)
                             
-                            createGroup(sendGroupApi);
+                            createGroup(formData);
                             
-                            setNotifMessage(`Grupo criado com sucesso!`);
-                            setIsOpen(true);
-                            setTimeout(() => {
-                                setIsOpen(false);
-                                props.toggle();
-                            }, 2000);
+                            // setNotifMessage(`Grupo criado com sucesso!`);
+                            // setIsOpen(true);
+                            // setTimeout(() => {
+                            //     setIsOpen(false);
+                            //     props.toggle();
+                            // }, 2000);
 
                             e.preventDefault();
                             usersAdded = [];
@@ -159,6 +174,7 @@ export default function GroupModal(props: Imodal) {
                         <StyledSectionLeft>
                             <StyledInputName
                                 id="input-name-group"
+                                name="title"
                                 type="text"
                                 placeholder="Nome"
                                 minLength={5}
@@ -166,6 +182,7 @@ export default function GroupModal(props: Imodal) {
                                 required
                                 onChange={updateValue}
                             />
+                            <input type="text" name="admin" value={userId} hidden/>
                             {/* <StyledUsersContainer
                                 
                             /> */}
@@ -191,6 +208,7 @@ export default function GroupModal(props: Imodal) {
                             </StyledLabelFile>
                             <StyledInputFile
                                 id="fileImage"
+                                name="photo"
                                 type="file"
                                 accept="image/*"
                                 onChange={changeImg}

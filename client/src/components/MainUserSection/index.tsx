@@ -54,6 +54,7 @@ export default function MainUserSection(): JSX.Element {
                     _id: filteredUsers[i]._id,
                     nickname: filteredUsers[i].nickname,
                     team: filteredUsers[i].team,
+                    pathImage: filteredUsers[i].pathImage
                 };
                 filteredArray.push(tempObj);
             }
@@ -94,7 +95,10 @@ export default function MainUserSection(): JSX.Element {
             </StyledInputContainer>
             <UsersContainer>
                 {usersF.map((users) => (
-                    <MainUsers key={users._id} name={users.name} />
+                    <MainUsers
+                    key={users._id} 
+                    name={users.name} 
+                    teamUrl={users.pathImage == undefined ? `${users.team.toLowerCase()}.png` : users.pathImage}/>
                 ))}
             </UsersContainer>
         </StyledUserSection>

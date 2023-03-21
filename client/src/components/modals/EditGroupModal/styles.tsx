@@ -6,13 +6,15 @@ height: 45vh;
 width: 40.5vw;
 font-size: 15px;
 position: fixed;
-left: 10%;
-bottom: 30%;
+/* left: 10%; */
+/* bottom: 30%; */
+left: 30%;
+bottom: 35%;
 border-radius: 10px;
 display: flex;
 box-shadow: 0.5px 0.5px 5px 2px;
 font-family: 'Inter', sans-serif;
-background-color: #054a18;
+background-color: #3D6287;
 `
 // #343232
 // #054a18
@@ -59,6 +61,22 @@ export const UsersContainer = styled.div`
     height: 15vh;
     background-color: #f3f3f3;
     color: #343232;
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-track {
+    /* background: #3D6287; */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
 `
 
 export const StyledInputFile = styled.input`
