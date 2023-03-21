@@ -87,7 +87,7 @@ export default function MainGroupSection() {
                             displayExit="none"
                             position={positionPopUp}
                             groupId={groups._id}
-                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}assets/${groups.pathImage}` : logoIcon}
+                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}` : logoIcon}
                         />
                 )))}
                 {(groupsIn.map((groups) => (
@@ -101,7 +101,7 @@ export default function MainGroupSection() {
                             displayExit="block"
                             position={positionPopUp}
                             groupId={groups._id}
-                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}assets/${groups.pathImage}` : logoIcon}
+                            pathImage={groups.pathImage != undefined ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}` : logoIcon}
                         />
                 )))}
             </StyledGroupSection>
