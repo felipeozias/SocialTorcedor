@@ -32,7 +32,7 @@ export default function Home() {
             value={{
                 id: user.data._id,
                 logo: user.data.pathImage
-                    ? `http://localhost:8000/assets/${user.data.pathImage}`
+                    ? `${process.env.REACT_APP_API}/assets/${user.data.pathImage}`
                     : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
                 name: user.data.name,
