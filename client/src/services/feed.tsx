@@ -43,8 +43,10 @@ export async function postFeed(content: string, image: any, userId: string) {
         formData.append("author", `${userId}`);
         formData.append("photo", image);
 
+        
+
         const options = {
-            method: 'POST',
+            method: "POST",
             headers: {
                 authorization: getCookie("token") as string
             },

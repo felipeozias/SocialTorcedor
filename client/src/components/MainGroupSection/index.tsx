@@ -1,18 +1,22 @@
 import { StyledGroupSection, StyledImg, StyledP, StyledTitleSection, ImgContainer } from "./styles"
 import MainGroups from "../MainGroups"
 import addGroupIcon from "../../assets/group-add.png"
-import { apiRequestGroups, simulateLogin } from "../../database"
+import { apiRequestGroups } from "../../database"
 import GroupModal from "../../components/modals/GroupModal";
 import useModal from "../../hooks/useModal";
 import { useState, useEffect } from "react";
 import Context from "../../hooks/useContext";
 import { IGetGroups } from "../../interfaces/Groups";
+import { useContext } from "react";
+import DataUserForHeader from "../contexts/DataUserForHeader";
 
 export default function MainGroupSection() {
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
     let [reqGroups, setReqGroups] = useState([] as IGetGroups[])
     let [reqSuccess, setReqSuccess] = useState(false);
+    const { id } = useContext(DataUserForHeader);
+    const userId = id.toString();
 
     async function requestDb() {
         let res = await apiRequestGroups();
@@ -20,7 +24,7 @@ export default function MainGroupSection() {
         if (res.succesfull) {
             setReqGroups(res.data);
             setReqSuccess(res.succesfull);
-            // console.log(res.data)
+            console.log(res.data)
         }
     }
 
@@ -29,10 +33,10 @@ export default function MainGroupSection() {
         toggle();
     }
     
-    let filteredGroupsOwner = reqGroups.filter(group => group.admin._id.includes(simulateLogin._id));
-    // console.log(filteredGroupsOwner)
-    let filteredGroupsIn = reqGroups.map(group => group.members.filter(users => users._id.includes(simulateLogin._id)));
-    // console.log(filteredGroupsIn)
+    let filteredGroupsOwner = reqGroups.filter(group => group.admin._id.includes(userId));
+    console.log(filteredGroupsOwner)
+    let filteredGroupsIn = reqGroups.map(group => group.members.filter(users => users._id.includes(userId)));
+    console.log(filteredGroupsIn)
     let positionArray: Array<number> = [];
     let c = 0;
     filteredGroupsIn.forEach(el => {
@@ -58,7 +62,7 @@ export default function MainGroupSection() {
                 const groupObj = document.querySelector("#groupSection") as HTMLElement
                 const scrollTop = groupObj.scrollTop;
                 // console.log(scrollTop)
-                if (scrollTop === 0) {
+                if (scrollTop == 0) {
                     setPositionPopUp(80)
                 } else {
                     setPositionPopUp(80 + (scrollTop * 2))
@@ -82,6 +86,7 @@ export default function MainGroupSection() {
                             displayExit="none"
                             position={positionPopUp}
                             groupId={groups._id}
+                            pathImage={groups.pathImage}
                         />
                 )))}
                 {(groupsIn.map((groups) => (
@@ -95,6 +100,7 @@ export default function MainGroupSection() {
                             displayExit="block"
                             position={positionPopUp}
                             groupId={groups._id}
+                            pathImage={groups.pathImage}
                         />
                 )))}
             </StyledGroupSection>

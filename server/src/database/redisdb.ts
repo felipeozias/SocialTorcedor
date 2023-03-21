@@ -6,6 +6,9 @@ class RedisDb {
     private pub: Redis;
     public sub: Redis;
     expire: number;
+    callbackFeed: (message: any) => void;
+    callbackGroup: (message: any) => void;
+    callbackChat: (message: any) => void;
 
     constructor() {
         const port = Number(process.env.REDIS_PORT) || 6379;
@@ -15,6 +18,10 @@ class RedisDb {
         this.client = new Redis({ port, host, password });
         this.pub = new Redis({ port, host, password });
         this.sub = new Redis({ port, host, password });
+        this.sub.subscribe("feed", "group", "chat");
+        this.callbackFeed = () => {};
+        this.callbackGroup = () => {};
+        this.callbackChat = () => {};
     }
 
     public async set(key: string, value: any) {
@@ -30,8 +37,9 @@ class RedisDb {
         try {
             const value = await this.client.get(key);
             if (!value) {
-                throw new Error("Key not found");
+                return null;
             }
+            await this.client.expire(key, this.expire);
             return JSON.parse(value);
         } catch (error) {
             Logger.error("Error getting Redis key", error);
@@ -48,6 +56,40 @@ class RedisDb {
         }
     }
 
+    public async sadd(key: string, value: any) {
+        try {
+            await this.client.sadd(key, JSON.stringify(value));
+            await this.client.expire(key, this.expire);
+        } catch (error) {
+            Logger.error("Error setting Redis key", error);
+            throw error;
+        }
+    }
+
+    public async srem(key: string, value: any) {
+        try {
+            await this.client.srem(key, JSON.stringify(value));
+            await this.client.expire(key, this.expire);
+        } catch (error) {
+            Logger.error("Error setting Redis key", error);
+            throw error;
+        }
+    }
+
+    public async smembers(key: string) {
+        try {
+            const value = await this.client.smembers(key);
+            if (!value) {
+                return null;
+            }
+            await this.client.expire(key, this.expire);
+            return value.map((v) => JSON.parse(v));
+        } catch (error) {
+            Logger.error("Error getting Redis key", error);
+            throw error;
+        }
+    }
+
     public async publish(channel: string, message: any) {
         try {
             return await this.pub.publish(channel, JSON.stringify(message));
@@ -56,21 +98,21 @@ class RedisDb {
             throw error;
         }
     }
-    public async subscribe(channel: string, callback: (message: any) => void) {
+    public async subscribe() {
         try {
-            await this.sub.subscribe("feed");
-            this.sub.on("message", async (channel, message) => {
-                callback(JSON.parse(message));
+            this.sub.on("message", async (ch, message) => {
+                if (ch === "feed") {
+                    this.callbackFeed(JSON.parse(message));
+                } else if (ch === "group") {
+                    this.callbackGroup(JSON.parse(message));
+                } else if (ch === "chat") {
+                    this.callbackChat(JSON.parse(message));
+                }
             });
         } catch (error: any) {
             Logger.error("Error subscribing Redis message", error.message);
             throw error;
         }
-
-        /*await this.sub.subscribe(channel);
-        this.sub.on("message", (channel, message) => {
-            callback(JSON.parse(JSON.parse(message)));
-        });*/
     }
 }
 

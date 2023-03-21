@@ -3,6 +3,7 @@ import IMessage from "../interfaces/imessage";
 import IResult from "../interfaces/iresult";
 import IGroup from "../interfaces/igroup";
 import { Group } from "../models/group";
+import { io } from "../server";
 
 export default class GroupService {
     async create(data: IGroup): Promise<IResult<IGroup>> {
@@ -12,6 +13,7 @@ export default class GroupService {
             const group = await Group.create(data);
             result.data = group;
             result.status = 201;
+             io.pubGroup("insert", group);
         } catch (error: any) {
             result.errors?.push(error.message);
             result.status = 500;
@@ -30,6 +32,7 @@ export default class GroupService {
             } else {
                 result.data = group;
                 result.status = 200;
+                io.pubGroup("delete", group);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -87,6 +90,7 @@ export default class GroupService {
             } else {
                 result.data = user;
                 result.status = 200;
+                io.pubGroup("update", user);
             }
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -110,6 +114,7 @@ export default class GroupService {
                 group.members?.splice(group.members?.indexOf(idUser), 1);
                 await group.save();
                 result.data = true;
+                io.pubGroup("update", group);
             }
             result.status = 200;
             return result;

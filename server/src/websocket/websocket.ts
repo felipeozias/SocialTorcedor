@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
 import Logger from "../logger/logger";
 import { redis } from "../database/redisdb";
+import IGroup from "../interfaces/igroup";
 
 export default class Websocket {
     io: Server;
@@ -25,20 +26,21 @@ export default class Websocket {
             if (!user) {
                 return next(new Error("token inválido"));
             }
-            redis.set(user._id, socket.id);
             socket.handshake.query.username = user._id;
             next();
         });
 
         this.io.on("connection", (socket) => {
-            console.log("id", socket.id, "auth", socket.handshake.auth);
-            this.io.to(socket.id).emit("feed", `Seja bem vindo token: ${socket.handshake.query.username}`);
+            redis.sadd(socket.handshake.query.username as string, socket.id);
+            this.io.to(socket.id).emit("feed", `Seja bem vindo: ${socket.handshake.query.username}`);
             socket.on("disconnect", () => {
+                redis.srem(socket.handshake.query.username as string, socket.id);
                 console.log(`🔰 Socket conectado: ${socket.id} - user: ${socket.handshake.auth} `);
             });
         });
-        redis.subscribe("feed", this.subFeed.bind(this));
-        redis.subscribe("group", this.subGroup.bind(this));
+        redis.callbackFeed = this.subFeed.bind(this);
+        redis.callbackGroup = this.subGroup.bind(this);
+        redis.subscribe();
         Logger.info("🔰 Websocket rodando!");
     }
 
@@ -46,13 +48,39 @@ export default class Websocket {
         redis.publish("feed", { action, target, data });
     }
 
-    subFeed(message: any) {
-        this.io.emit("feed", message);
-        // this.io.to
+    pubGroup(action: string, data: IGroup) {
+        redis.publish("group", { action, data });
     }
 
-    subGroup(message: any) {
-        this.io.emit("group", message);
-        // this.io.to
+    private subFeed(message: any) {
+        this.io.emit("feed", message);
+    }
+
+    private async subGroup(message: any) {
+        const { action, data } = message;
+        const { _id } = data;
+        const after_members = data.members;
+        const before_members = (await redis.get(_id)) || [];
+        const members = new Set();
+        members.add(data.admin);
+
+        for (const member of after_members) {
+            members.add(member._id || member);
+        }
+
+        for (const member of before_members) {
+            members.add(member._id || member);
+        }
+
+        for (const member of members) {
+            const listSocket = await redis.smembers(member as string);
+            if (listSocket) {
+                for (const socketId of listSocket) {
+                    this.io.to(socketId).emit("group", message);
+                }
+                
+            }
+        }
+        redis.set(_id, after_members);
     }
 }

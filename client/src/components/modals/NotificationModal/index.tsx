@@ -9,7 +9,7 @@ export default function NotificationModal(props: InotificationModal) {
             {props.isOpen && (
             <>
                 <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1003}/>
-                <StyledModal id="notification-modal">
+                <StyledModal leftPosition={props.leftPosition} bottomPosition={props.bottomPosition} id="notification-modal">
                 <p>{props.message}</p>
                 </StyledModal>
             </>

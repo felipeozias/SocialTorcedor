@@ -8,14 +8,14 @@ export const MenuHeaderUser = styled.div`
     position: fixed;
     top: 60px;
     background-color: #1a2a3a;
-    width: 180px;
+    width: 160px;
     gap: 0.3rem;
-    padding: 10px 15px 10px 15px;
+    padding: 7px 10px 7px 10px;
 `;
 
 export const TextList = styled.p`
     color: #f3f3f3;
-    font-size: 12pt;
+    font-size: 11pt;
     font-weight: 200;
     text-decoration: none;
     &:hover {
