@@ -1,13 +1,13 @@
 /// Lembrar de fazer alguma pagina de erro
 
-import { getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export async function fetchFeed() {
     try {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
         };
 
@@ -25,7 +25,6 @@ export async function fetchFeed() {
 
         let data = (await res.json()).data;
         console.log(data);
-        
 
         return data;
     } catch (err) {
