@@ -94,10 +94,21 @@ export default function MainGroups(props: Iprops): JSX.Element {
     }
 
     function deleteGroup() {
-        console.log("delete")
-        console.log(props.groupId);
-        deleteGroupService({groupId: props.groupId});
-        setNotifMessage(`Grupo ${props.groupName} deletado com sucesso!`);
+        // console.log("delete")
+        // console.log(props.groupId);
+
+        deleteGroupService({groupId: props.groupId})
+        .then((res) => {
+            switch (res?.status) {
+                case 200:
+                    setNotifMessage(`Grupo ${props.groupName} deletado com sucesso!`);
+                    break;
+                default:
+                    setNotifMessage(`[ERRO ${res?.status}]`);
+                    break;
+            }
+        })
+
         setIsOpenNotif(true);
         setTimeout(() => {
             setIsOpenNotif(false);
