@@ -5,6 +5,17 @@ export const StyledChatBoxMessages = styled.div`
     margin-bottom: 5px;
     overflow: auto;
     flex: 1;
+
+    ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
+
 `;
 
 export const StyleMessage = styled.div`
