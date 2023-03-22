@@ -29,7 +29,7 @@ export default function ChatComplete(props: IProps) {
     const [idGroup, setIdGroup] = useState("641a05b9e793ef2ca38b2eb0");
     const socket = connect();
 
-    socket.on("chat", (res) => {
+    socket.on("chat", (res: any) => {
         const chatData = chatAll;
         if (
             !(res.data.message === chatData[chatData.length - 1].message) &&

@@ -66,11 +66,13 @@ export default function MainGroupSection() {
     // console.log(groupsIn);
 
 
-    // const socket = connect();
+    const socket = connect();
 
-    // socket.on("group", (data) => {
-    //     console.log(data)
-    // })
+    socket.on("group", (data: any) => {
+        // console.log(data)
+        // console.log(data.length)
+        setChange(true);
+    });
 
     useEffect(() => {
         requestDb();
@@ -103,11 +105,11 @@ export default function MainGroupSection() {
                     }
                 }}
             >
-                <GroupModal 
-                isOpen={isOpen} 
-                toggle={toggle} 
-                index={0}
-                setChanged={setChange}
+                <GroupModal
+                    isOpen={isOpen}
+                    toggle={toggle}
+                    index={0}
+                    setChanged={setChange}
                 />
                 <StyledTitleSection>
                     <StyledP> Grupos </StyledP>
