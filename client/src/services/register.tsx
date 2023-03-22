@@ -26,7 +26,6 @@ export default async function registerService(userData: any) {
 
         return { auth: true, status: res.status, data: data };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
         alert(
             "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
         );

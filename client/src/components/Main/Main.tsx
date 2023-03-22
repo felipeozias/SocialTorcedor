@@ -33,11 +33,10 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         async function fetchAndSetComponents() {
-
             const data = await createComponentsFeed();
             componentsOk = data;
 
-            const componetsEnd = createcomponent(componentsOk)
+            const componetsEnd = createcomponent(componentsOk);
 
             console.log(componentsOk, data);
 
@@ -63,17 +62,15 @@ export default function Main(): JSX.Element {
         // });
 
         // socket.off('feed');
-
     }, []);
 
     function createcomponent(data: any): JSX.Element[] {
-
         return data.map((feed: IGetFeed) => (
             <FeedCommentLike
                 src={
                     feed.author.pathImage !== undefined
                         ? "https://api.socialtorcedor.shop/assets/" +
-                        feed.author.pathImage
+                          feed.author.pathImage
                         : "https://api.socialtorcedor.shop/assets/user_default.jpg"
                 }
                 user_name={feed.author.name}
@@ -115,7 +112,6 @@ export default function Main(): JSX.Element {
         // ));
     }
 
-
     const props_new_publication = {
         place_hoder: "Adicione um feed aqui!",
         src: `${logo}`,
@@ -134,7 +130,7 @@ export default function Main(): JSX.Element {
             </StyledMainSection>
 
             <StyledRigthSection>
-                <ChatComplete groupId="6418bb1735e3cacb1250b402" />
+                <ChatComplete groupId="6419c2fc1e6038a18e8410b2" />
             </StyledRigthSection>
         </StyledMain>
     );

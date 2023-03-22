@@ -3,26 +3,26 @@ import { getCookie } from "../utils/cookies";
 
 export default async function createGroup(userData: IRegisterGroup) {
     console.log(userData);
-    
+
     const formData = new FormData();
     // console.log(formData)
-    formData.append("admin", userData.admin)
-    formData.append("title", userData.title)
+    formData.append("admin", userData.admin);
+    formData.append("title", userData.title);
     if (userData.members.length > 0) {
-        for (let i=0; i < userData.members.length; i++) {
-            formData.append("members", userData.members[i])
+        for (let i = 0; i < userData.members.length; i++) {
+            formData.append("members", userData.members[i]);
         }
         // formData.append("members", userData.members as any)
     }
-    formData.append("photo", userData.photo)
+    formData.append("photo", userData.photo);
 
     try {
         const options = {
             method: "POST",
-            headers: { 
+            headers: {
                 authorization: getCookie("token") as string,
-             },
-            body: formData
+            },
+            body: formData,
         };
 
         const url: string = process.env.REACT_APP_GROUP_LOCAL as string;
@@ -34,13 +34,10 @@ export default async function createGroup(userData: IRegisterGroup) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
-        alert(
-            "Houve um erro ao criar o grupo. Por favor tente novamente!"
-        );
+        alert("Houve um erro ao criar o grupo. Por favor tente novamente!");
         console.error(err);
     }
 }

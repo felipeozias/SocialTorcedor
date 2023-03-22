@@ -7,15 +7,14 @@ export const StyledChatBoxMessages = styled.div`
     flex: 1;
 
     ::-webkit-scrollbar {
-    width: 15px;
-  }
+        width: 15px;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background-color: #5467a0;
-    border-radius: 10px;
-    border: 3px double #ffffff;
-  }
-
+    ::-webkit-scrollbar-thumb {
+        background-color: #5467a0;
+        border-radius: 10px;
+        border: 3px double #ffffff;
+    }
 `;
 
 export const StyleMessage = styled.div`
@@ -24,12 +23,14 @@ export const StyleMessage = styled.div`
     display: inline-block;
     background-color: #dfdfdf;
     border-radius: 5px;
+    padding: 2px;
+    padding-left: 10px;
 
-    & span{
+    & span {
         font-weight: bold;
         color: #203396;
     }
-    & p{
-        color:black;
+    & p {
+        color: black;
     }
 `;

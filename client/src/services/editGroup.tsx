@@ -1,18 +1,16 @@
 import { IUpdateGroup } from "../interfaces/Groups";
 import { getCookie } from "../utils/cookies";
 
-
-export async function editGroupService(userData: {groupId: string}) {
-    // console.log(userData);
+export async function editGroupService(userData: { groupId: string }) {
     try {
-
-        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
+        const url: string =
+            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "GET",
             headers: {
                 authorization: getCookie("token") as string,
-            }
-        }
+            },
+        };
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -21,7 +19,6 @@ export async function editGroupService(userData: {groupId: string}) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
@@ -33,29 +30,26 @@ export async function editGroupService(userData: {groupId: string}) {
 }
 
 export async function updateGroupService(userData: IUpdateGroup) {
-    console.log(userData);
-
     try {
-
         const formData = new FormData();
         formData.append("admin", userData.admin);
         if (userData.members.length > 0) {
-            for (let i=0; i < userData.members.length; i++) {
-                formData.append("members", userData.members[i])
+            for (let i = 0; i < userData.members.length; i++) {
+                formData.append("members", userData.members[i]);
             }
         }
         formData.append("title", userData.title);
         formData.append("photo", userData.photo);
-        console.log(formData)
-        
-        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
+
+        const url: string =
+            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "PATCH",
             headers: {
                 authorization: getCookie("token") as string,
-             },
+            },
             body: formData,
-        }
+        };
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -64,13 +58,10 @@ export async function updateGroupService(userData: IUpdateGroup) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
-        alert(
-            "Houve um erro ao tentar atualizar. Por favor tente novamente!"
-        );
+        alert("Houve um erro ao tentar atualizar. Por favor tente novamente!");
         console.error(err);
     }
 }

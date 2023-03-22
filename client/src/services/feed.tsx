@@ -1,4 +1,3 @@
-/// Lembrar de fazer alguma pagina de erro
 import { getCookie } from "../utils/cookies";
 
 export async function fetchFeed() {
@@ -15,7 +14,6 @@ export async function fetchFeed() {
         const res = await fetch(url, options);
 
         if (!res.ok) {
-            // console.error("Erro ao fazer requisição", await res.json());
             return {
                 failure: true,
                 error: "Ocorreu um erro ao buscar os feeds",
@@ -27,7 +25,6 @@ export async function fetchFeed() {
 
         return data;
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
         alert(
             "Houve um erro ao carregar os feeds. Tente novamente ou contacte um administrador!"
         );
@@ -47,9 +44,9 @@ export async function postFeed(content: string, image: any, userId: string) {
         const options = {
             method: "POST",
             headers: {
-                authorization: getCookie("token") as string
+                authorization: getCookie("token") as string,
             },
-            body: formData
+            body: formData,
         };
 
         const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);

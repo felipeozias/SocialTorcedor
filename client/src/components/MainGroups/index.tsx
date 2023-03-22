@@ -1,20 +1,20 @@
-import { 
-    Container, 
-    Img, 
+import {
+    Container,
+    Img,
     P,
-    P2, 
+    P2,
     EditIcon,
-    ExitIcon, 
+    ExitIcon,
     ImgContainer,
-    ImgContainer2, 
+    ImgContainer2,
     Pcontainer,
     Popup,
     Popup2,
-    Popup3
-    } from "./styles"
-import exitIcon from "../../assets/exit.png"
-import editIcon from "../../assets/edit.png"
-import deleteIcon from "../../assets/delete.png"
+    Popup3,
+} from "./styles";
+import exitIcon from "../../assets/exit.png";
+import editIcon from "../../assets/edit.png";
+import deleteIcon from "../../assets/delete.png";
 import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import Context from "../../hooks/useContext";
@@ -27,15 +27,15 @@ import { IGetGroups } from "../../interfaces/Groups";
 import { deleteGroupService } from "../../services/deleteGroup";
 
 interface Iprops {
-    owner: string,
-    adminName: string,
-    groupName: string,
-    groupId: string,
-    textSize: number,
-    displayEdit: string,
-    displayExit: string,
-    position: number,
-    pathImage: string
+    owner: string;
+    adminName: string;
+    groupName: string;
+    groupId: string;
+    textSize: number;
+    displayEdit: string;
+    displayExit: string;
+    position: number;
+    pathImage: string;
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -46,33 +46,32 @@ export default function MainGroups(props: Iprops): JSX.Element {
     let [isOpenEditIcon, setIsOpenEditIcon] = useState(false);
     let [isOpenNotif, setIsOpenNotif] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
-    let [groupAtributes, setGroupAtributes] = useState<IGetGroups>()
+    let [groupAtributes, setGroupAtributes] = useState<IGetGroups>();
 
     const { id } = useContext(DataUserForHeader);
     const userId = id.toString();
-
 
     function exit() {
         // console.log("Sair do grupo")
         const userData = {
             groupId: props.groupId,
-            userId: userId
-        }
+            userId: userId,
+        };
         // console.log(userData);
         // exitGroup(userData);
         setNotifMessage(`Saindo em 3..`);
         setIsOpenNotif(true);
         setTimeout(() => {
             // setIsOpenNotif(false);
-            setNotifMessage(`Saindo em 3..2`)
+            setNotifMessage(`Saindo em 3..2`);
         }, 1000);
         setTimeout(() => {
             // setIsOpenNotif(false);
-            setNotifMessage(`Saindo em 3..2..1`)
+            setNotifMessage(`Saindo em 3..2..1`);
         }, 2000);
         setTimeout(() => {
             // setIsOpenNotif(false);
-            setNotifMessage(`Você saiu do grupo`)
+            setNotifMessage(`Você saiu do grupo`);
             exitGroup(userData);
         }, 3000);
         setTimeout(() => {
@@ -80,34 +79,33 @@ export default function MainGroups(props: Iprops): JSX.Element {
         }, 4000);
     }
     async function editGroup() {
-        console.log("editar grupo");
-        let res = await editGroupService( {groupId: props.groupId});
+        let res = await editGroupService({ groupId: props.groupId });
         if (res?.status == 200) {
-            console.log(res.data["data"])
-            setGroupAtributes(res.data["data"])
+            setGroupAtributes(res.data["data"]);
         }
         toggle();
     }
     function activateBorder() {
-        console.log("a")
-        setBorderActive("solid")
+        console.log("id do frupo", props.groupId);
+        setBorderActive("solid");
     }
 
     function deleteGroup() {
         // console.log("delete")
         // console.log(props.groupId);
 
-        deleteGroupService({groupId: props.groupId})
-        .then((res) => {
+        deleteGroupService({ groupId: props.groupId }).then((res) => {
             switch (res?.status) {
                 case 200:
-                    setNotifMessage(`Grupo ${props.groupName} deletado com sucesso!`);
+                    setNotifMessage(
+                        `Grupo ${props.groupName} deletado com sucesso!`
+                    );
                     break;
                 default:
                     setNotifMessage(`[ERRO ${res?.status}]`);
                     break;
             }
-        })
+        });
 
         setIsOpenNotif(true);
         setTimeout(() => {
@@ -125,7 +123,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 leftPosition={30}
                 bottomPosition={70}
             />
-            <EditGroupModal 
+            <EditGroupModal
                 isOpen={isOpen}
                 toggle={toggle}
                 index={0}
@@ -139,15 +137,51 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 <P2> Criado por: {props.adminName}</P2>
             </Pcontainer>
             <ImgContainer2>
-                {isOpenExitIcon && <Popup position={props.position}>Sair do Grupo</Popup>}
-                <ExitIcon display={props.displayExit} onMouseOut={()=> {setIsOpenExitIcon(false)}} onMouseEnter={() => {setIsOpenExitIcon(true)}} src={exitIcon} onClick={exit}/>
-                
-                {isOpenEditIcon && <Popup2 position={props.position}>Editar Grupo</Popup2>}
-                <EditIcon display={props.displayEdit} onMouseOut={()=> {setIsOpenEditIcon(false)}} onMouseEnter={() => {setIsOpenEditIcon(true)}} src={editIcon} onClick={editGroup}/>
+                {isOpenExitIcon && (
+                    <Popup position={props.position}>Sair do Grupo</Popup>
+                )}
+                <ExitIcon
+                    display={props.displayExit}
+                    onMouseOut={() => {
+                        setIsOpenExitIcon(false);
+                    }}
+                    onMouseEnter={() => {
+                        setIsOpenExitIcon(true);
+                    }}
+                    src={exitIcon}
+                    onClick={exit}
+                />
 
-                {isOpenDeleteIcon && <Popup3 position={props.position}>Deletar Grupo</Popup3>}
-                <EditIcon display={props.displayEdit} onMouseOut={()=> {setIsOpenDeleteIcon(false)}} onMouseEnter={() => {setIsOpenDeleteIcon(true)}} src={deleteIcon} onClick={deleteGroup}/>
+                {isOpenEditIcon && (
+                    <Popup2 position={props.position}>Editar Grupo</Popup2>
+                )}
+                <EditIcon
+                    display={props.displayEdit}
+                    onMouseOut={() => {
+                        setIsOpenEditIcon(false);
+                    }}
+                    onMouseEnter={() => {
+                        setIsOpenEditIcon(true);
+                    }}
+                    src={editIcon}
+                    onClick={editGroup}
+                />
+
+                {isOpenDeleteIcon && (
+                    <Popup3 position={props.position}>Deletar Grupo</Popup3>
+                )}
+                <EditIcon
+                    display={props.displayEdit}
+                    onMouseOut={() => {
+                        setIsOpenDeleteIcon(false);
+                    }}
+                    onMouseEnter={() => {
+                        setIsOpenDeleteIcon(true);
+                    }}
+                    src={deleteIcon}
+                    onClick={deleteGroup}
+                />
             </ImgContainer2>
         </Container>
-    )
+    );
 }
