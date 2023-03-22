@@ -66,11 +66,13 @@ export default function MainGroupSection() {
     // console.log(groupsIn);
 
 
-    // const socket = connect();
+    const socket = connect();
 
-    // socket.on("group", (data) => {
-    //     console.log(data)
-    // })
+    socket.on("group", (data) => {
+        // console.log(data)
+        // console.log(data.length)
+        setChange(true);
+    });
 
     useEffect(() => {
         requestDb();
