@@ -23,6 +23,7 @@ import { LikeFeed } from "../../services/feed";
 //------ Using context ------
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import { count } from "console";
 
 interface IProps {
     src: string;
@@ -66,10 +67,21 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                     <StyledLikeComment id={props.img_post + '###'}
                         onClick={(e: React.MouseEvent<HTMLParagraphElement>) => {
                             const IdthisElement: any = e.target;
-                            const postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
+
+                            let postId = '';
+                            postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
                             const userId = id;
 
+                            let count = 0;
+                            if (postId === '') {
+                                while (count < 20) {
+                                    if (postId === '') { postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '') }
+                                    count++;
+                                }
+                            }
+
                             LikeFeed(postId, userId)
+                            // console.log(postId, userId)
                         }}>
                         <img src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />
                         Curtir
