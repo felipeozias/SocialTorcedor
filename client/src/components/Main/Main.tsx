@@ -12,32 +12,34 @@ import formatTime from "../../utils/formatTime";
 import { useContext, useEffect, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 
-async function createComponentsFeed(): Promise<JSX.Element[]> {
-    const data = await fetchFeed();
-
-    return data.map((feed: IGetFeed) => (
-        <FeedCommentLike
-            src={
-                feed.author.pathImage !== undefined
-                    ? "https://api.socialtorcedor.shop/assets/" +
-                    feed.author.pathImage
-                    : "https://api.socialtorcedor.shop/assets/user_default.jpg"
-            }
-            user_name={feed.author.name}
-            time_publication={formatTime(
-                new Date(`${feed.createdAt}`)
-            ).toString()}
-            comment_post={feed.content}
-            img_post={feed.pathImage}
-            comments={feed.comments}
-            likes={`${feed.likes ? feed.likes.length : 0}`}
-        />
-    ));
-}
 
 export default function Main(): JSX.Element {
-    const { logo } = useContext(DataUserForHeader);
+    const { logo, id } = useContext(DataUserForHeader);
     const [components, setComponents] = useState<JSX.Element[]>([]);
+
+    async function createComponentsFeed(): Promise<JSX.Element[]> {
+        const data = await fetchFeed();
+
+        return data.map((feed: IGetFeed) => (
+            <FeedCommentLike
+                src={
+                    feed.author.pathImage !== undefined
+                        ? "https://api.socialtorcedor.shop/assets/" +
+                        feed.author.pathImage
+                        : "https://api.socialtorcedor.shop/assets/user_default.jpg"
+                }
+                user_name={feed.author.name}
+                time_publication={formatTime(
+                    new Date(`${feed.createdAt}`)
+                ).toString()}
+                comment_post={feed.content}
+                img_post={feed.pathImage}
+                comments={feed.comments}
+                likes={`${feed.likes ? feed.likes.length : 0}`}
+                thisLike={feed.likes ? feed.likes.includes(`${id}`) : false}
+            />
+        ));
+    }
 
     useEffect(() => {
         async function fetchAndSetComponents() {

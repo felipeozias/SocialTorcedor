@@ -2,6 +2,7 @@
 import { getCookie } from "../utils/cookies";
 
 export async function fetchFeed() {
+
     try {
         const options = {
             method: "GET",
@@ -35,14 +36,13 @@ export async function fetchFeed() {
 }
 
 export async function postFeed(content: string, image: any, userId: string) {
+
     try {
         const formData = new FormData();
 
         formData.append("content", `${content}`);
         formData.append("author", `${userId}`);
         formData.append("photo", image);
-
-
 
         const options = {
             method: "POST",
@@ -64,9 +64,9 @@ export async function postFeed(content: string, image: any, userId: string) {
         }
 
         let data = (await res.json()).data;
-        alert("Publicação realizada com sucesso!");
+        // alert("Publicação realizada com sucesso!");
 
-        return data;
+        return { failure: false, data };
     } catch (err) {
         /// Lembrar de fazer alguma pagina de erro
         alert(
@@ -77,6 +77,7 @@ export async function postFeed(content: string, image: any, userId: string) {
 }
 
 export async function postCommentFeed(content: string, userId: string, postId: string) {
+
     try {
         const options = {
             method: "POST",
@@ -99,13 +100,34 @@ export async function postCommentFeed(content: string, userId: string, postId: s
         }
 
         let data = (await res.json()).data;
-        alert("Comentário realizado com sucesso!");
+        return { failure: false, data };
+
+    } catch (err) {
+        /// Lembrar de fazer alguma pagina de erro
+        alert(
+            "Houve um erro ao enviar comentário. Tente novamente ou contacte um administrador!"
+        );
+        console.error(err);
+    }
+}
+
+export async function LikeFeed(postId: string, userId: string) {
+
+    try {
+        const options = {
+            method: "GET",
+            headers: { authorization: getCookie("token") as string }
+        };
+
+        const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/like/${userId}`, options);
+
+        let data = (await res.json()).data;
 
         return data;
     } catch (err) {
         /// Lembrar de fazer alguma pagina de erro
         alert(
-            "Houve um erro ao enviar comentário. Tente novamente ou contacte um administrador!"
+            "Erro ao curtir. Tente novamente ou contacte um administrador!"
         );
         console.error(err);
     }

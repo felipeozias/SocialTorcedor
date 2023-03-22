@@ -10,6 +10,7 @@ import {
     StyledLikeComment,
 } from "./style";
 import IconLike from "../../assets/icon_like.svg";
+import IconLikeBlue from "../../assets/icon_like_blue.svg";
 import IconComment from "../../assets/icon_comment.svg";
 import FeedNewPublicate from "../FeedNewPublicate";
 import IconImage from "../ImagePerfil";
@@ -17,6 +18,7 @@ import PerfilNameEmail from "../PerfilNameEmail";
 import { ICommentFeed } from "../../interfaces/DataForFeed";
 
 import CommentsFeed from "../CommentsFeed";
+import { LikeFeed } from "../../services/feed";
 
 //------ Using context ------
 import { useContext } from "react";
@@ -26,6 +28,7 @@ interface IProps {
     src: string;
     user_name: string;
     time_publication: string;
+    thisLike: boolean,
     comment_post?: string;
     img_post?: string;
     comments: ICommentFeed[];
@@ -33,7 +36,7 @@ interface IProps {
 }
 
 export default function FeedCommentLike(props: IProps): JSX.Element {
-    const { logo } = useContext(DataUserForHeader);
+    const { logo, id } = useContext(DataUserForHeader);
     return (
         <StyledContainer>
             <StyledUserContainer>
@@ -60,8 +63,15 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                         : "0 curtidas"}
                 </StyledNumLikes>
                 <StyledContainerLikesComment>
-                    <StyledLikeComment>
-                        <img src={IconLike} alt="Icone like" />
+                    <StyledLikeComment id={props.img_post + '###'}
+                        onClick={(e: React.MouseEvent<HTMLParagraphElement>) => {
+                            const IdthisElement: any = e.target;
+                            const postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
+                            const userId = id;
+
+                            LikeFeed(postId, userId)
+                        }}>
+                        <img src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />
                         Curtir
                     </StyledLikeComment>
 
