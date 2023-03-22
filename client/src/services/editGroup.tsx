@@ -39,8 +39,13 @@ export async function updateGroupService(userData: IUpdateGroup) {
 
         const formData = new FormData();
         formData.append("admin", userData.admin);
-        formData.append("members", userData.members as any);
+        if (userData.members.length > 0) {
+            for (let i=0; i < userData.members.length; i++) {
+                formData.append("members", userData.members[i])
+            }
+        }
         formData.append("title", userData.title);
+        formData.append("photo", userData.photo);
         console.log(formData)
         
         const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
@@ -48,9 +53,8 @@ export async function updateGroupService(userData: IUpdateGroup) {
             method: "PATCH",
             headers: {
                 authorization: getCookie("token") as string,
-                "Content-Type": "application/json"
              },
-            body: JSON.stringify(userData),
+            body: formData,
         }
         const res = await fetch(url, options);
 

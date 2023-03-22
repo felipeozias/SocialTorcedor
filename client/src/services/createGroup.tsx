@@ -9,7 +9,10 @@ export default async function createGroup(userData: IRegisterGroup) {
     formData.append("admin", userData.admin)
     formData.append("title", userData.title)
     if (userData.members.length > 0) {
-        formData.append("members", userData.members as any)
+        for (let i=0; i < userData.members.length; i++) {
+            formData.append("members", userData.members[i])
+        }
+        // formData.append("members", userData.members as any)
     }
     formData.append("photo", userData.photo)
 
