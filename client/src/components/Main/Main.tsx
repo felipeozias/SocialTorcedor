@@ -11,14 +11,60 @@ import formatTime from "../../utils/formatTime";
 //------ Using context ------
 import { useContext, useEffect, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import { connect } from "../../services/socket";
 
 export default function Main(): JSX.Element {
     const { logo, id } = useContext(DataUserForHeader);
     const [components, setComponents] = useState<JSX.Element[]>([]);
+    // const [dataFeeds, setDataFeeds] = useState<any>();
+    let componentsOk: any;
 
-    async function createComponentsFeed(): Promise<JSX.Element[]> {
-        const data = await fetchFeed();
+    // ----- socket Feet -----
+    const socket = connect();
 
+    // socket.on("feed", (data) => {
+    //     componentsOk = data;
+    //     console.log(data);
+    //     console.log('@@@@@@@@@@@@@@@@@@@@');
+    // });
+
+    // socket.off('feed');
+    // -----------------------
+
+    useEffect(() => {
+        async function fetchAndSetComponents() {
+            const data = await createComponentsFeed();
+            componentsOk = data;
+
+            const componetsEnd = createcomponent(componentsOk);
+
+            console.log(componentsOk, data);
+
+            setComponents(componetsEnd);
+        }
+
+        fetchAndSetComponents();
+
+        // socket.on("feed", (data) => {
+        //     console.log('-', componentsOk);
+
+        //     componentsOk.push(data);
+        //     componentsOk.push(...componentsOk, ...componentsOk, ...componentsOk);
+
+        //     console.log('-', componentsOk);
+
+        //     console.log('@@@', data.data);
+
+        //     const componetsEnd = createcomponent(componentsOk)
+        //     console.log('!!!', componetsEnd);
+
+        //     setComponents(componetsEnd);
+        // });
+
+        // socket.off('feed');
+    }, []);
+
+    function createcomponent(data: any): JSX.Element[] {
         return data.map((feed: IGetFeed) => (
             <FeedCommentLike
                 src={
@@ -40,14 +86,31 @@ export default function Main(): JSX.Element {
         ));
     }
 
-    useEffect(() => {
-        async function fetchAndSetComponents() {
-            const newComponents = await createComponentsFeed();
-            setComponents(newComponents);
-        }
+    async function createComponentsFeed(): Promise<JSX.Element[]> {
+        const data = await fetchFeed();
+        // setDataFeeds(data);
+        return data;
 
-        fetchAndSetComponents();
-    }, []);
+        // return data.map((feed: IGetFeed) => (
+        //     <FeedCommentLike
+        //         src={
+        //             feed.author.pathImage !== undefined
+        //                 ? "https://api.socialtorcedor.shop/assets/" +
+        //                 feed.author.pathImage
+        //                 : "https://api.socialtorcedor.shop/assets/user_default.jpg"
+        //         }
+        //         user_name={feed.author.name}
+        //         time_publication={formatTime(
+        //             new Date(`${feed.createdAt}`)
+        //         ).toString()}
+        //         comment_post={feed.content}
+        //         img_post={feed.pathImage}
+        //         comments={feed.comments}
+        //         likes={`${feed.likes ? feed.likes.length : 0}`}
+        //         thisLike={feed.likes ? feed.likes.includes(`${id}`) : false}
+        //     />
+        // ));
+    }
 
     const props_new_publication = {
         place_hoder: "Adicione um feed aqui!",
