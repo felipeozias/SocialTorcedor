@@ -116,9 +116,17 @@ export async function LikeFeed(postId: string, userId: string) {
             headers: { authorization: getCookie("token") as string }
         };
 
+        // console.log('---> ...');
+        // console.log(process.env.REACT_APP_API, postId, userId, getCookie("token"));
+       
         const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/like/${userId}`, options);
+        
+        // console.log('---> FINALIZOU');
 
         let data = (await res.json()).data;
+        if (res.ok) {
+            // console.log('---> Curtiu');
+        }
 
         return data;
     } catch (err) {
