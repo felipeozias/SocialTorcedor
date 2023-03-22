@@ -13,7 +13,7 @@ import {
 } from "./styles";
 import DataList from "../DataList";
 import NotificationModal from "../NotificationModal";
-import { Imodal } from "../../../interfaces/Modal";
+import { ICreateGroupModal, Imodal } from "../../../interfaces/Modal";
 import ModalOverlay from "../ModalOverlay";
 import { apiRequestUsers } from "../../../database";
 import Context from "../../../hooks/useContext";
@@ -25,7 +25,7 @@ import logoDefault from "../../../assets/logo.png"
 
 let usersAdded: Array<string> = [];
 
-export default function GroupModal(props: Imodal) {
+export default function GroupModal(props: ICreateGroupModal) {
     let [fileUrl, setFileUrl] = useState(logoDefault);
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
@@ -154,18 +154,23 @@ export default function GroupModal(props: Imodal) {
                                 photo: data["photo"]
                             }
                             
-                            
                             // console.log(sendGroupApi)
                             
-                            createGroup(sendGroupApi);
-                            
-                            setNotifMessage(`Grupo criado com sucesso!`);
-                            setIsOpen(true);
-                            setTimeout(() => {
+                            createGroup(sendGroupApi).then((res) => {
+                                if (res?.status == 201) {
+                                    setNotifMessage(`Grupo criado com sucesso!`);
+                                    props.setChanged(true);
+                                } else {
+                                    setNotifMessage(`[ERRO]${res?.status}`);
+                                }
+                                setIsOpen(true);
+                                setTimeout(() => {
                                 setIsOpen(false);
                                 props.toggle();
                                 setFileUrl(logoDefault);
-                            }, 2000);
+                                // props.setChanged(false);
+                                }, 2000);
+                            });
                             
                             e.preventDefault();
                             usersAdded = [];
