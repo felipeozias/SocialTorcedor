@@ -20,7 +20,7 @@ export default function Main(): JSX.Element {
     let componentsOk: any;
 
     // ----- socket Feet -----
-    const socket = connect();
+    // const socket = connect();
 
     // socket.on("feed", (data) => {
     //     componentsOk = data;
@@ -36,9 +36,9 @@ export default function Main(): JSX.Element {
             const data = await createComponentsFeed();
             componentsOk = data;
 
-            const componetsEnd = createcomponent(componentsOk);
-
             console.log(componentsOk, data);
+            console.log('@', componentsOk[8]);
+            const componetsEnd = await createcomponent([...componentsOk]);
 
             setComponents(componetsEnd);
         }
@@ -64,13 +64,13 @@ export default function Main(): JSX.Element {
         // socket.off('feed');
     }, []);
 
-    function createcomponent(data: any): JSX.Element[] {
+    async function createcomponent(data: any): Promise<JSX.Element[]> {
         return data.map((feed: IGetFeed) => (
             <FeedCommentLike
                 src={
                     feed.author.pathImage !== undefined
                         ? "https://api.socialtorcedor.shop/assets/" +
-                          feed.author.pathImage
+                        feed.author.pathImage
                         : "https://api.socialtorcedor.shop/assets/user_default.jpg"
                 }
                 user_name={feed.author.name}
