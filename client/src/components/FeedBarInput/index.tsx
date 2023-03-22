@@ -8,7 +8,7 @@ import DataUserForHeader from "../contexts/DataUserForHeader";
 import { useContext } from "react";
 
 interface IPropsFeedBarInput {
-    click?: (e: MouseEvent<HTMLButtonElement>, image: string, content: string, id: string) => void,
+    click?: (e: MouseEvent<HTMLButtonElement>, image: string, content: string, id: string, inputRef: React.RefObject<HTMLTextAreaElement>) => void,
     place_hoder: string,
     action: string,
     emotion?: boolean,
@@ -74,7 +74,8 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     e,
                     image,
                     content,
-                    id
+                    id,
+                    inputRef
                 );
             } else {
                 alert("Insira uma foto!")
@@ -92,7 +93,14 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
 
         // ADICIONAR O MODAL DE ALERTA!!!
         if ((content ? content.length : 0) > 4) {
-            postCommentFeed(content, userId, postId);
+            postCommentFeed(content, userId, postId).then(
+                (data) => {
+                    console.log(data?.failure);
+                    if (data?.failure === false && elementInput) {
+                        elementInput.value = ''
+                    }
+                }
+            )
         } else {
             alert("Escreva um comentário com pelo menos 5 caracteres!")
         }

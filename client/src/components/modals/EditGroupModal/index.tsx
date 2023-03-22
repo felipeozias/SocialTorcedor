@@ -12,32 +12,37 @@ import {
     InputFile,
     LabelFile,
     Img,
+    RemoveIcon,
     ButtonAdd,
+    UsersListContainer,
 } from "./styles";
 import { IUser } from "../../../interfaces/Users";
 import { apiRequestUsers } from "../../../database";
 import NotificationModal from "../NotificationModal";
 import logoDefault from "../../../assets/logo.png"
 import { updateGroupService } from "../../../services/editGroup";
+import removeIcon from "../../../assets/remove.png"
+import exitGroup from "../../../services/exitGroup";
 
 let usersAdded: string[] = [];
+let usersAddedNick: string[] = [];
 
 export default function EditGroupModal(props: IEditModal) {
-    let [fileUrl, setFileUrl] = useState(props.group?.pathImage!);
+    let [fileUrl, setFileUrl] = useState("");
     let [groupName, setGroupName] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
-    // let [usersAdded, setUsersAdded] = useState(props.group?.members);
 
     props.group?.members.map(user => {
         if (usersAdded.includes(user._id)) {
             // console.log("a")
         } else {
-            usersAdded.push(user._id)
+            usersAdded.push(user._id);
+            usersAddedNick.push(user.nickname);
         }
     })
-
+    
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
         if (event.files && event.files[0]) {
@@ -62,7 +67,16 @@ export default function EditGroupModal(props: IEditModal) {
 
     useEffect(() => {
         requestDb();
-    }, []);
+
+    }, [usersAdded]);
+
+    useEffect(() => {
+        if (props.group?.pathImage == undefined) {
+            setFileUrl(logoDefault)
+        } else {
+            setFileUrl(`${process.env.REACT_APP_API}/assets/${props.group.pathImage}`)
+        }
+    },[props.isOpen])
 
     function updateGroupTemp() {
         let user = document.querySelector(
@@ -113,6 +127,7 @@ export default function EditGroupModal(props: IEditModal) {
             user.value = "";
         } else {
             usersAdded.push(userId);
+            usersAddedNick.push(userNick);
             // console.log(`${user.value} Adicionado com sucesso!`);
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
@@ -127,6 +142,8 @@ export default function EditGroupModal(props: IEditModal) {
     function cancelUpdateGroupTemp() {
         props.toggle();
         usersAdded = [];
+        usersAddedNick = [];
+        setFileUrl("");
     }
 
     return (
@@ -136,15 +153,25 @@ export default function EditGroupModal(props: IEditModal) {
                     <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1001}/>
                     <ModalContainer onClick={() => {
                         // console.log(usersAdded)
+                        // console.log(usersAddedNick)
                     }}
-                        onSubmit={(event) => {
+                        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 
+                        const formData = new FormData(event.target as HTMLFormElement);
+                        const data = Object.fromEntries(formData.entries());
+                        console.log(data)
+                        interface IPicture {
+                            size: number,
+                            name: string
+                        }
+                        let picture: IPicture = data["photo"] as any;
+                        
                         let sendUpdateGroup: IUpdateGroup= {
                             admin: props.group?.admin._id!,
                             groupId: props.group?._id!,
                             title: groupName == "" ? props.group?.title! : groupName,
                             members: usersAdded,
-                            photo: props.group?.pathImage
+                            photo: picture.size > 0 ? data["photo"] : props.group?.pathImage
                         }
                         // console.log(sendUpdateGroup)
                         // console.log(props.group?.pathImage)
@@ -157,10 +184,12 @@ export default function EditGroupModal(props: IEditModal) {
                         setTimeout(() => {
                             setIsOpen(false);
                             props.toggle();
+                            usersAdded = [];
+                            usersAddedNick = [];
                         }, 2000);
 
                         event.preventDefault();
-                        usersAdded = [];
+
                     }}>
                     <NotificationModal
                         message={notifMessage}
@@ -180,11 +209,32 @@ export default function EditGroupModal(props: IEditModal) {
                                 onChange={updateValue}
                             />
                             <UsersContainer>
-                                <div>
-                                {
-                                usersAdded.map(users => usersDb.map(userlist => <div>{userlist._id.includes(users) ? `${userlist.name} (${userlist.nickname})`: ""}</div>))
-                                }
-                                </div>
+                                {/* {
+                                usersAdded.map(users => usersDb.map(userlist => 
+                                <UsersListContainer onClick={() => {
+                                        console.log(userlist.name)
+                                        // const index = usersAdded.indexOf(userlist._id)
+                                        // if (index > -1) {
+                                        //     usersAdded.splice(index, 1)
+                                        // }
+                                    }
+                                }>
+                                    {userlist._id.includes(users) ? `${userlist.name} (${userlist.nickname}) `: ""}
+                                </UsersListContainer>))
+                                } */}
+                                {usersAddedNick.map(users => 
+                                <UsersListContainer>
+                                    {users} 
+                                    <RemoveIcon imageUrl={removeIcon} onClick={() => {
+                                        console.log(usersAddedNick.indexOf(users))
+                                        const index = usersAddedNick.indexOf(users);
+                                        if (usersAdded.length == 1) {
+                                            exitGroup({groupId: props.group?._id, userId: usersAdded[index]});
+                                        }
+                                        usersAdded.splice(index, 1)
+                                        usersAddedNick.splice(index, 1)
+                                    }}/>
+                                </UsersListContainer>)}
                             </UsersContainer>
                             <DataList />
                             <ButtonAdd 
@@ -201,7 +251,7 @@ export default function EditGroupModal(props: IEditModal) {
                             </ButtonAdd>
                         </SectionLeft>
                         <SectionRight>
-                        {/* <LabelFile htmlFor="fileImage">
+                        <LabelFile htmlFor="fileImage">
                                 Selecionar Imagem{" "}
                             </LabelFile>
                             <InputFile
@@ -211,7 +261,7 @@ export default function EditGroupModal(props: IEditModal) {
                                 accept="image/*"
                                 onChange={changeImg}
                             />
-                            <Img src={props.group?.pathImage == undefined ? logoDefault : `${process.env.REACT_APP_API}assets/${fileUrl}`} alt="preview image" /> */}
+                            <Img src={fileUrl} alt="preview image" />
                             <ButtonAdd 
                                 type="submit"
                             >

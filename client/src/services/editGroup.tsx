@@ -2,7 +2,6 @@ import { IUpdateGroup } from "../interfaces/Groups";
 import { getCookie } from "../utils/cookies";
 
 export async function editGroupService(userData: { groupId: string }) {
-    // console.log(userData);
     try {
         const url: string =
             `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
@@ -20,7 +19,6 @@ export async function editGroupService(userData: { groupId: string }) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
@@ -32,14 +30,16 @@ export async function editGroupService(userData: { groupId: string }) {
 }
 
 export async function updateGroupService(userData: IUpdateGroup) {
-    console.log(userData);
-
     try {
         const formData = new FormData();
         formData.append("admin", userData.admin);
-        formData.append("members", userData.members as any);
+        if (userData.members.length > 0) {
+            for (let i = 0; i < userData.members.length; i++) {
+                formData.append("members", userData.members[i]);
+            }
+        }
         formData.append("title", userData.title);
-        console.log(formData);
+        formData.append("photo", userData.photo);
 
         const url: string =
             `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
@@ -47,9 +47,8 @@ export async function updateGroupService(userData: IUpdateGroup) {
             method: "PATCH",
             headers: {
                 authorization: getCookie("token") as string,
-                "Content-Type": "application/json",
             },
-            body: JSON.stringify(userData),
+            body: formData,
         };
         const res = await fetch(url, options);
 
@@ -59,7 +58,6 @@ export async function updateGroupService(userData: IUpdateGroup) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

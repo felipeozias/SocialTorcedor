@@ -124,3 +124,23 @@ export const ButtonAdd = styled.button`
     height: 5vh;
     font-size: 1.4vw;
 `
+export const UsersListContainer = styled.div`
+    display: flex;
+    width: 10vw;
+    justify-content: space-between;
+    align-items: center;
+`
+
+interface IProps {
+    imageUrl: string
+}
+
+export const RemoveIcon = styled.div<IProps>`
+    background-image: url(${props => props.imageUrl});
+    width: 10px;
+    height: 10px;
+    background-size: contain;
+    :hover {
+        cursor: pointer;
+    }
+`

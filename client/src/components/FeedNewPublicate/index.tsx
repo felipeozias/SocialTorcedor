@@ -14,9 +14,24 @@ interface IPropsFeednewPublication {
     emotion?: boolean
 }
 
-function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string) {
+function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string, inputRef: React.RefObject<HTMLTextAreaElement>) {
     if (content) {
-        postFeed(content, image, userId);
+        postFeed(content, image, userId).then((data) => {
+            if (data?.failure === false && inputRef.current) {
+                inputRef.current.value = '';
+
+                const localImg = document.getElementById('imgForInputPublication');
+                if (localImg) { localImg.remove() }
+
+                // inputRef.current?.dispatchEvent(new KeyboardEvent('keyup', {
+                //     code: 'Space',
+                //     key: ' ',
+                //     keyCode: 32,
+                //     which: 32,
+                //     charCode: 32
+                // }))
+            }
+        })
     }
 }
 

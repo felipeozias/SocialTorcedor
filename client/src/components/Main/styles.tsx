@@ -12,6 +12,7 @@ export const StyledMain = styled.main`
   display: flex;
   flex-wrap: wrap;
   overflow-x: hidden;
+  overflow-y: hidden;
 `
 export const StyledMainSection = styled.section`
   display: flexbox;
