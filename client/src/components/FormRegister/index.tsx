@@ -73,7 +73,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                         }),
                     }}
                 >
-                    Nome:
+                    Nome completo:
                 </InputUser>
                 {errors.name && errors.name.type === "required" && (
                     <ErrorMessage>Preencha o campo Nome</ErrorMessage>

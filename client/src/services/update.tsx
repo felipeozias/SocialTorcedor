@@ -7,8 +7,6 @@ const updateUser = async (userData: any): Promise<any> => {
     const formData = new FormData(forms);
     const url: string = process.env.REACT_APP_UPDATE as string;
 
-    console.log("O forms está assim: ", formData);
-
     try {
         const res = await fetch(process.env.REACT_APP_USER_ME as string, {
             headers: { authorization: getCookie("token") as string },
@@ -38,6 +36,7 @@ const updateUser = async (userData: any): Promise<any> => {
         return { ok: true, data };
     } catch (error) {
         console.log(error);
+        return { ok: false, data: [] };
     }
 };
 

@@ -18,7 +18,11 @@ export default class UserService {
 
             data.password = CryptoJS.SHA256(data.password || "").toString();
             const user = await User.create(data);
-            const auth = await Auth.createSession(data);
+
+            result.data = user;
+            result.status = 201;
+            user.password = "********";
+            const auth = await Auth.createSession(user);
 
             if (auth.error) {
                 result.errors?.push(auth.message);
@@ -27,9 +31,6 @@ export default class UserService {
             }
 
             result.token = auth.token;
-            result.data = user;
-            result.status = 201;
-            user.password = "********";
             io.pubFeed("insert", "user", user);
         } catch (error: any) {
             result.errors?.push(error.message);
@@ -78,7 +79,10 @@ export default class UserService {
                 users = await User.find().sort({ name: 1, nickname: 1 });
             } else {
                 users = await User.find({
-                    $or: [{ nickname: new RegExp(name, "i") }, { name: new RegExp(name, "i") }],
+                    $or: [
+                        { nickname: new RegExp(name, "i") },
+                        { name: new RegExp(name, "i") },
+                    ],
                 }).sort({
                     name: 1,
                     nickname: 1,
@@ -137,7 +141,10 @@ export default class UserService {
         return result;
     }
 
-    async authenticate(nickname: string, password: string): Promise<IResult<IUser>> {
+    async authenticate(
+        nickname: string,
+        password: string
+    ): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
         try {
             password = CryptoJS.SHA256(password).toString();

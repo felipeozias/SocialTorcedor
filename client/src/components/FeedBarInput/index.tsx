@@ -2,16 +2,18 @@ import IconEmotion from "../IconEmotion";
 import IconImage from "../IconImage";
 import { StyledContainer, StyledInput, StyledSpanPublic, StyledIconsOptions } from "./style";
 import { KeyboardEvent, MouseEvent, useRef, useState } from 'react';
+import { postCommentFeed } from "../../services/feed";
 
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import { useContext } from "react";
 
 interface IPropsFeedBarInput {
-    click?: (e: MouseEvent<HTMLButtonElement>, image: string, content: string, id: string) => void,
-    place_hoder: String,
-    action: String,
+    click?: (e: MouseEvent<HTMLButtonElement>, image: string, content: string, id: string, inputRef: React.RefObject<HTMLTextAreaElement>) => void,
+    place_hoder: string,
+    action: string,
     emotion?: boolean,
     image?: boolean
+    img_post?: string
 }
 
 export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
@@ -50,6 +52,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const imageRef = useRef<HTMLInputElement>(null);
+    const inputRefCommentFeed = useRef<HTMLTextAreaElement>(null);
 
     function resizeInput(e: KeyboardEvent<HTMLTextAreaElement>) {
         e.currentTarget.style.height = '35px';
@@ -71,12 +74,37 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     e,
                     image,
                     content,
-                    id
+                    id,
+                    inputRef
                 );
             } else {
                 alert("Insira uma foto!")
             }
         }
+    }
+
+    function commentFeed(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+        const elementInput = inputRefCommentFeed.current;
+
+        const userId = id;
+        const postId = elementInput ? elementInput.id.toString().replace('.jpg', '').replace('.png', '') : '';
+        const content: string = elementInput ? elementInput.value : '';
+
+        // ADICIONAR O MODAL DE ALERTA!!!
+        if ((content ? content.length : 0) > 4) {
+            postCommentFeed(content, userId, postId).then(
+                (data) => {
+                    console.log(data?.failure);
+                    if (data?.failure === false && elementInput) {
+                        elementInput.value = ''
+                    }
+                }
+            )
+        } else {
+            alert("Escreva um comentário com pelo menos 5 caracteres!")
+        }
+
     }
 
     if (props.image && props.emotion) {
@@ -122,8 +150,8 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
 
     return (
         <StyledContainer>
-            <StyledInput ref={inputRef} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
-            <StyledSpanPublic onClick={submitFeed}>{props.action}</StyledSpanPublic>
+            <StyledInput id={props.img_post} ref={inputRefCommentFeed} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
+            <StyledSpanPublic onClick={commentFeed}>{props.action}</StyledSpanPublic>
         </StyledContainer>
     )
 }

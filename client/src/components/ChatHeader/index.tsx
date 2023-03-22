@@ -11,7 +11,7 @@ export default function ChatHeader(props: IPropsChat) {
     return (
         <StyledChatContainer>
             <StyledTitleSpan>{props.title}</StyledTitleSpan>
-            {props.empty && (
+            {!props.empty && (
                 <>
                     <InfoChat>Criado por: {props.admin}</InfoChat>
                     <InfoChat>Participantes: {props.members}</InfoChat>

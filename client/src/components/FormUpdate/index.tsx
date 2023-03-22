@@ -7,12 +7,12 @@ import {
     DivWrap,
     Message,
     ErrorMessage,
+    DivImage,
 } from "./style";
 import { useState } from "react";
 import imageUpload from "../../assets/icon_user_update.png";
 
 import InputImg from "../inputImg";
-import { StyledUpdateImg } from "../IconUpdateImage/style";
 import { useForm } from "react-hook-form";
 
 interface IProps {
@@ -21,7 +21,6 @@ interface IProps {
 }
 
 const FormUpdate = (props: IProps) => {
-
     const MAX_SIZE = 5000000; // 5 MB
     const {
         register,
@@ -34,36 +33,37 @@ const FormUpdate = (props: IProps) => {
         setSelectedTimeId(timeId);
     }
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [image, setImage] = useState<File | null>(null);
     function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-        console.log("file");
-
         const file = event.target.files?.[0];
-        console.log(file);
         if (!file) return;
-    
+
         if (!isValidExtension(file.name)) {
         setError('Por favor, selecione um arquivo com formato JPG, JPEG ou PNG.');
         setImage(null);
         } else if (!isValidSize(file.size)) {
-        setError('Por favor, selecione um arquivo com tamanho menor que 5 MB.');
-        setImage(null);
+            setError(
+                "Por favor, selecione um arquivo com tamanho menor que 5 MB."
+            );
+            setImage(null);
         } else {
-        setImage(file);
-        setError('');
+            setImage(file);
+            setError("");
         }
     }
 
-    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+    const allowedExtensions = [".jpg", ".jpeg", ".png"];
 
     const isValidExtension = (fileName: string) => {
-    const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
-    return allowedExtensions.includes(extension);
+        const extension = fileName
+            .substring(fileName.lastIndexOf("."))
+            .toLowerCase();
+        return allowedExtensions.includes(extension);
     };
 
     const isValidSize = (size: number) => {
-    return size <= MAX_SIZE;
+        return size <= MAX_SIZE;
     };
 
     return (
@@ -71,18 +71,11 @@ const FormUpdate = (props: IProps) => {
             onSubmit={handleSubmit(props.submit)}
             className="form-update-user"
         >
-
             <DivWrap>
                 {image ? (
-                    <StyledUpdateImg
-                        src={URL.createObjectURL(image)}
-                        alt="Imagem"
-                    />
+                    <DivImage path={URL.createObjectURL(image)} />
                 ) : (
-                    <StyledUpdateImg
-                        src={imageUpload}
-                        alt={"foto"}
-                    ></StyledUpdateImg>
+                    <DivImage path={imageUpload}></DivImage>
                 )}
                 <InputImg
                     change={handleImageChange}
@@ -106,7 +99,7 @@ const FormUpdate = (props: IProps) => {
                         }),
                     }}
                 >
-                    Nome:
+                    Nome completo:
                 </InputUser>
                 {errors.name && errors.name.type === "required" && (
                     <ErrorMessage>Preencha o campo Nome</ErrorMessage>
@@ -164,12 +157,9 @@ const FormUpdate = (props: IProps) => {
                 )}
             </BoxInputs>
 
-           
-            <Button  disabled={!image}>ATUALIZAR</Button>
-            
+            <Button disabled={!image}>ATUALIZAR</Button>
         </Form>
     );
 };
 
 export default FormUpdate;
-

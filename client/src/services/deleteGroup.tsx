@@ -1,20 +1,17 @@
 import { getCookie } from "../utils/cookies";
 
-export default async function exitGroup(userData: {
-    groupId: string | undefined;
-    userId: string;
-}) {
+
+export async function deleteGroupService(userData: {groupId: string}) {
+    // console.log(userData);
     try {
+
+        const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
         const options = {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 authorization: getCookie("token") as string,
-            },
-        };
-
-        const url: string =
-            `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}/members/${userData.userId}` as string;
+            }
+        }
         const res = await fetch(url, options);
 
         if (!res.ok) {
@@ -23,11 +20,12 @@ export default async function exitGroup(userData: {
         }
 
         const data = await res.json();
+        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {
         alert(
-            "Houve um erro ao tentar sair do grupo. Por favor tente novamente!"
+            "Houve um erro ao tentar deletar o grupo desejado. Por favor tente novamente!"
         );
         console.error(err);
     }

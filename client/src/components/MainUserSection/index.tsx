@@ -97,7 +97,8 @@ export default function MainUserSection(): JSX.Element {
                 {usersF.map((users) => (
                     <MainUsers
                     key={users._id} 
-                    name={users.name} 
+                    name={users.name.split(" ")[0]}
+                    nickname={users.nickname} 
                     teamUrl={users.pathImage == undefined ? `${users.team.toLowerCase()}.png` : users.pathImage}/>
                 ))}
             </UsersContainer>

@@ -9,13 +9,29 @@ interface IPropsFeednewPublication {
     src: string,
     alt: string,
     action: string,
+    img_post?: string
     image?: boolean,
     emotion?: boolean
 }
 
-function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string) {
+function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string, inputRef: React.RefObject<HTMLTextAreaElement>) {
     if (content) {
-        postFeed(content, image, userId);
+        postFeed(content, image, userId).then((data) => {
+            if (data?.failure === false && inputRef.current) {
+                inputRef.current.value = '';
+
+                const localImg = document.getElementById('imgForInputPublication');
+                if (localImg) { localImg.remove() }
+
+                // inputRef.current?.dispatchEvent(new KeyboardEvent('keyup', {
+                //     code: 'Space',
+                //     key: ' ',
+                //     keyCode: 32,
+                //     which: 32,
+                //     charCode: 32
+                // }))
+            }
+        })
     }
 }
 
@@ -25,7 +41,7 @@ export default function Feed(props: IPropsFeednewPublication): JSX.Element {
             <BoxIconImage>
                 <IconImage src={props.src} alt={props.alt} />
             </BoxIconImage>
-            <FeedBarInput click={handleClick} place_hoder={props.place_hoder} action='Publicar' image={props.image ? true : false} emotion={props.emotion ? true : false} />
+            <FeedBarInput img_post={props.img_post} click={handleClick} place_hoder={props.place_hoder} action='Publicar' image={props.image ? true : false} emotion={props.emotion ? true : false} />
         </StyledContainer >
     )
 }

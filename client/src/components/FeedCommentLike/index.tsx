@@ -10,6 +10,7 @@ import {
     StyledLikeComment,
 } from "./style";
 import IconLike from "../../assets/icon_like.svg";
+import IconLikeBlue from "../../assets/icon_like_blue.svg";
 import IconComment from "../../assets/icon_comment.svg";
 import FeedNewPublicate from "../FeedNewPublicate";
 import IconImage from "../ImagePerfil";
@@ -17,29 +18,32 @@ import PerfilNameEmail from "../PerfilNameEmail";
 import { ICommentFeed } from "../../interfaces/DataForFeed";
 
 import CommentsFeed from "../CommentsFeed";
+import { LikeFeed } from "../../services/feed";
 
 //------ Using context ------
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import { count } from "console";
 
 interface IProps {
-    src: String;
-    user_name: String;
-    time_publication: String;
-    comment_post?: String;
-    img_post?: String;
+    src: string;
+    user_name: string;
+    time_publication: string;
+    thisLike: boolean,
+    comment_post?: string;
+    img_post?: string;
     comments: ICommentFeed[];
-    likes?: String;
+    likes?: string;
 }
 
 export default function FeedCommentLike(props: IProps): JSX.Element {
-    const { logo } = useContext(DataUserForHeader);
+    const { logo, id } = useContext(DataUserForHeader);
     return (
         <StyledContainer>
             <StyledUserContainer>
-                <IconImage src={props.src.toString()} alt="Image de perfil" />
+                <IconImage src={props.src} alt="Image de perfil" />
                 <PerfilNameEmail
-                    name={props.user_name.toString()}
+                    name={props.user_name}
                     nickname={props.time_publication}
                 />
             </StyledUserContainer>
@@ -47,7 +51,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledCommetPost>{props.comment_post}</StyledCommetPost>
 
             <StyledImgPost
-                src={`${process.env.REACT_APP_API}/assets/` + props.img_post?.toString()}
+                src={`${process.env.REACT_APP_API}/assets/` + props.img_post}
                 alt="Imagem da publicação"
             ></StyledImgPost>
 
@@ -60,13 +64,31 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                         : "0 curtidas"}
                 </StyledNumLikes>
                 <StyledContainerLikesComment>
-                    <StyledLikeComment>
-                        <img src={IconLike} alt="Icone like" />
+                    <StyledLikeComment id={props.img_post + '###'}
+                        onClick={(e: React.MouseEvent<HTMLParagraphElement>) => {
+                            const IdthisElement: any = e.target;
+
+                            let postId = '';
+                            postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
+                            const userId = id;
+
+                            let count = 0;
+                            if (postId === '') {
+                                while (count < 20) {
+                                    if (postId === '') { postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '') }
+                                    count++;
+                                }
+                            }
+
+                            LikeFeed(postId, userId)
+                            // console.log(postId, userId)
+                        }}>
+                        <img src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />
                         Curtir
                     </StyledLikeComment>
 
                     <StyledLikeComment onClick={(e) => {
-                        const meuElemento: HTMLInputElement | null = document.getElementById("inputOfComponent") as HTMLInputElement;
+                        const meuElemento: HTMLInputElement | null = document.getElementById(`${props.img_post}`) as HTMLInputElement;
                         if (meuElemento) {
                             meuElemento.focus();
                         }
@@ -81,8 +103,9 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
 
             <StyledComment>
                 <FeedNewPublicate
+                    img_post={props.img_post}
                     place_hoder="Adicione um comentário aqui!"
-                    src={logo.toString()}
+                    src={logo}
                     alt="Image de perfil"
                     action="Publicar"
                 // emotion={true}

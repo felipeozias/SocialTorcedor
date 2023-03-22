@@ -33,8 +33,7 @@ export const StyledComments = styled.main <Iprops> `
     width: 100%;
     font-size: 10.4pt;
     text-align: left;
-    font-weight: bold;
-
+    
     span{
       font-size: 8pt;
       font-style: italic;

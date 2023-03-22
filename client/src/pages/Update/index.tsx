@@ -18,9 +18,9 @@ export default function Update(): JSX.Element {
     const navigate = useNavigate();
     const [ok, setOk] = useState(false);
 
-    /*  useEffect(() => {
+    useEffect(() => {
         if (ok) navigate("/home");
-    }, [ok, navigate]); */
+    }, [ok, navigate]);
 
     const submitUpdate = async (userData: User) => {
         try {
