@@ -25,6 +25,8 @@ export default function ChatComplete(props: IProps) {
     const [groups, setGroups] = useState<any>();
     const [fail, setFail] = useState(true);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
+    const [failure, setFailure] = useState(true);
+    const [idGroup, setIdGroup] = useState("641a05b9e793ef2ca38b2eb0");
     const socket = connect();
 
     socket.on("chat", (res) => {
@@ -37,17 +39,30 @@ export default function ChatComplete(props: IProps) {
             setChatAll(chatData);
         }
 
-        /* console.log("Vindo do chat Message ", res);
+        setFail(!fail);
+
+        /*  console.log("Vindo do chat Message ", res);
         console.log("O state do chat ", chatAll); */
     });
 
     async function getGroups() {
-        const dataGroups = await chat(
-            "641a05b9e793ef2ca38b2eb0" /* props.groupId as string */
-        );
+        const dataGroups = await chat(idGroup);
         setGroups(dataGroups?.data);
         setChatAll(dataGroups?.data.data.chat);
         setFail(true);
+
+        setFailure(dataGroups.failure);
+
+        const divGroups = document.querySelectorAll(".group-me-user");
+        for (let i = 0; divGroups.length > i; i++) {
+            divGroups[i].addEventListener("click", () => {
+                if (divGroups[i].id) {
+                    setIdGroup(divGroups[i].id);
+                    setFail(!fail);
+                }
+            });
+        }
+
         return dataGroups;
     }
 
@@ -67,22 +82,24 @@ export default function ChatComplete(props: IProps) {
     return (
         <StyledChatContainer>
             <ChatHeader
-                title={groups ? groups.data.title : "Chat"}
-                admin={groups ? groups.data.admin.name : ""}
-                members={groups && membersName()}
-                empty={!props.groupId}
+                title={!failure ? groups.data.title : "Chat"}
+                admin={!failure ? groups.data.admin.name : ""}
+                members={!failure ? membersName() : ""}
+                empty={failure}
             />
+
             <ChatMessages>
-                {chatAll.map((post: any) => {
-                    return (
-                        <StyleMessage>
-                            <span>{post.author.name}:</span>
-                            <p>{post.message}</p>
-                        </StyleMessage>
-                    );
-                })}
+                {!failure &&
+                    chatAll.map((post: any) => {
+                        return (
+                            <StyleMessage>
+                                <span>{post.author.name}:</span>
+                                <p>{post.message}</p>
+                            </StyleMessage>
+                        );
+                    })}
             </ChatMessages>
-            <ChatInput />
+            <ChatInput id={idGroup} />
         </StyledChatContainer>
     );
 }

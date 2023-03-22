@@ -1,15 +1,18 @@
 import { BoxInput, ButtonChat, InputBox, StyledChatContainer } from "./styles";
-import FeedBarInput from "../FeedBarInput";
 import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import { sendMessage } from "../../services/chat";
 
-export default function ChatInput() {
+interface IProps {
+    id: string;
+}
+
+export default function ChatInput(props: IProps) {
     const { id } = useContext(DataUserForHeader);
     const [value, setValue] = useState("");
 
     const postChat = () => {
-        sendMessage("6419c2fc1e6038a18e8410b2", value);
+        sendMessage(props.id /* "641a05b9e793ef2ca38b2eb0" */, value);
     };
 
     return (

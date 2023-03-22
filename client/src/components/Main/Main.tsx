@@ -130,7 +130,7 @@ export default function Main(): JSX.Element {
             </StyledMainSection>
 
             <StyledRigthSection>
-                <ChatComplete groupId="6419c2fc1e6038a18e8410b2" />
+                <ChatComplete groupId="641a05b9e793ef2ca38b2eb0" />
             </StyledRigthSection>
         </StyledMain>
     );
