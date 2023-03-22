@@ -36,6 +36,7 @@ interface Iprops {
     displayExit: string;
     position: number;
     pathImage: string;
+    setChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -86,8 +87,8 @@ export default function MainGroups(props: Iprops): JSX.Element {
         toggle();
     }
     function activateBorder() {
-        console.log("id do frupo", props.groupId);
-        setBorderActive("solid");
+        console.log("id do grupo", props.groupId);
+        // setBorderActive("solid");
     }
 
     function deleteGroup() {
@@ -105,12 +106,13 @@ export default function MainGroups(props: Iprops): JSX.Element {
                     setNotifMessage(`[ERRO ${res?.status}]`);
                     break;
             }
+            setIsOpenNotif(true);
+            setTimeout(() => {
+                setIsOpenNotif(false);
+                props.setChanged(true);
+            }, 2000);
         });
 
-        setIsOpenNotif(true);
-        setTimeout(() => {
-            setIsOpenNotif(false);
-        }, 1500);
     }
 
     return (
@@ -128,6 +130,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 toggle={toggle}
                 index={0}
                 group={groupAtributes}
+                setChanged={props.setChanged}
             />
             <ImgContainer>
                 <Img src={props.pathImage} />

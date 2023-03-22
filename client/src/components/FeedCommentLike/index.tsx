@@ -72,15 +72,18 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                             postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
                             const userId = id;
 
-                            let count = 0;
-                            if (postId === '') {
-                                while (count < 20) {
-                                    if (postId === '') { postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '') }
-                                    count++;
-                                }
+                            // let count = 0;
+                            // if (postId === '') {
+                            //     while (count < 20) {
+                            //         if (postId === '') { postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '') }
+                            //         count++;
+                            //     }
+                            // }
+                            if (postId !== '') {
+                                LikeFeed(postId, userId)
+                            } else {
+                                console.log('falha ao capturar ID do post');
                             }
-
-                            LikeFeed(postId, userId)
                             // console.log(postId, userId)
                         }}>
                         <img src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />

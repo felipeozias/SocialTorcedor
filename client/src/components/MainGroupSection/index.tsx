@@ -16,12 +16,14 @@ import { IGetGroups } from "../../interfaces/Groups";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import logoIcon from "../../assets/logo.png";
+import { connect } from "../../services/socket"
 
 export default function MainGroupSection() {
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
     let [reqGroups, setReqGroups] = useState([] as IGetGroups[]);
     let [reqSuccess, setReqSuccess] = useState(false);
+    let [change, setChange] = useState(false);
     const { id } = useContext(DataUserForHeader);
     const userId = id.toString();
 
@@ -63,9 +65,26 @@ export default function MainGroupSection() {
     });
     // console.log(groupsIn);
 
+
+    // const socket = connect();
+
+    // socket.on("group", (data) => {
+    //     console.log(data)
+    // })
+
     useEffect(() => {
         requestDb();
     }, [reqSuccess]);
+
+    useEffect(() => {
+        if (change == true) {
+            console.log("Grupo modificado!");
+            requestDb();
+            setChange(false);
+        } else {
+            console.log("Estado voltou ao de origem")
+        }
+    }, [change])
 
     return (
         <Context.Provider value={[]}>
@@ -84,7 +103,12 @@ export default function MainGroupSection() {
                     }
                 }}
             >
-                <GroupModal isOpen={isOpen} toggle={toggle} index={0} />
+                <GroupModal 
+                isOpen={isOpen} 
+                toggle={toggle} 
+                index={0}
+                setChanged={setChange}
+                />
                 <StyledTitleSection>
                     <StyledP> Grupos </StyledP>
                     <ImgContainer>
@@ -107,6 +131,7 @@ export default function MainGroupSection() {
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}`
                                 : logoIcon
                         }
+                        setChanged={setChange}
                     />
                 ))}
                 {groupsIn.map((groups) => (
@@ -125,6 +150,7 @@ export default function MainGroupSection() {
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}`
                                 : logoIcon
                         }
+                        setChanged={setChange}
                     />
                 ))}
             </StyledGroupSection>

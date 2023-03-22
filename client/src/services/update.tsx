@@ -1,6 +1,11 @@
 import { getCookie } from "../utils/cookies";
 
 const updateUser = async (userData: any): Promise<any> => {
+
+    if(userData.password !== userData.password2){
+        return {auth: false, isNoAuth: true, status: 400, password: false}
+    }
+    
     const forms = document.querySelector(
         ".form-update-user"
     ) as HTMLFormElement;
