@@ -14,12 +14,28 @@ import { apiRequestUsers } from "../../database";
 import { IUser } from "../../interfaces/Users";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import { connect } from "../../services/socket"
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
     const { id } = useContext(DataUserForHeader);
+
+    // const socket = connect();
+
+    // socket.on("feed", (data) => {
+
+    //     // if (data["target"])
+    //     console.log("Main users init")
+    //     console.log(data)
+    //     // console.log(data["target"])
+    //     // console.log(data["data"])
+    //     if (data["target"] == "user") {
+    //         console.log("alterou usuario")
+    //     }
+    //     console.log("Main users finish")
+    // })
 
     const userId = id.toString();
 

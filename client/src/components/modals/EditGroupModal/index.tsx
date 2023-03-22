@@ -177,17 +177,22 @@ export default function EditGroupModal(props: IEditModal) {
                         // console.log(props.group?.pathImage)
                         // console.log(fileUrl)
 
-                        updateGroupService(sendUpdateGroup);
-                            
-                        setNotifMessage(`Grupo atualizado com sucesso!`);
-                        setIsOpen(true);
-                        setTimeout(() => {
+                        updateGroupService(sendUpdateGroup).then((res) => {
+                            if (res?.status == 200) {
+                                setNotifMessage(`Grupo atualizado com sucesso!`);
+                                props.setChanged(true);
+                            } else {
+                                setNotifMessage(`[ERRO]${res?.status}`);
+                            }
+                            setIsOpen(true);
+                            setTimeout(() => {
                             setIsOpen(false);
                             props.toggle();
                             usersAdded = [];
                             usersAddedNick = [];
-                        }, 2000);
-
+                            }, 2000);
+                        });
+                        
                         event.preventDefault();
 
                     }}>
