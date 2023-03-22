@@ -42,7 +42,9 @@ export default function ChatComplete(props: IProps) {
     });
 
     async function getGroups() {
-        const dataGroups = await chat(props.groupId as string);
+        const dataGroups = await chat(
+            "641a05b9e793ef2ca38b2eb0" /* props.groupId as string */
+        );
         setGroups(dataGroups?.data);
         setChatAll(dataGroups?.data.data.chat);
         setFail(true);
