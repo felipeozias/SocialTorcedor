@@ -19,7 +19,7 @@ export default function MainUsers(props: Iprops): JSX.Element {
             <ImgContainer>
                 <Img src={`${process.env.REACT_APP_API}/assets/${props.teamUrl}`} />
             </ImgContainer>
-            <P> {props.name} </P>
+            <P> {props.nickname} <Span> ({props.name}) </Span></P>
             <ImgContainer2>
                 <ChatIcon src={chatIcon} onClick={startChat}/>
             </ImgContainer2>
