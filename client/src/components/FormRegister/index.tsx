@@ -9,6 +9,7 @@ import { useState } from "react";
 interface IProps {
     submit: (e: any) => void;
     noAuth?: boolean;
+    password?: boolean;
 }
 
 export default function FormRegister(props: IProps): JSX.Element {
@@ -80,7 +81,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.name && errors.name.type === "pattern" && (
                     <ErrorMessage>
-                        O Nome deve começar com maiusculas{<br />} e só deve
+                        O Nome deve começar com maiúsculas{<br />} e só deve
                         conter letras
                     </ErrorMessage>
                 )}
@@ -126,26 +127,28 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 <InputUser
                     type="password"
-                    name="password"
+                    name="password2"
                     password={true}
                     validates={{
-                        ...register("password", {
+                        ...register("password2", {
                             required: true,
+                            
                         }),
                     }}
                 >
                     Confimar Senha:
                 </InputUser>
-                {errors.password && errors.password.type === "required" && (
+                {errors.password2 && errors.password2.type === "required" && (
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
                 )}
-                {errors.p && (
+                {!props.password && (
                     <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
                 )}
             </BoxInputs>
-            {props.noAuth && (
+
+            {props.noAuth && props.password && (
                 <ErrorServer>
-                    Houve um erro no servidor :({<br />} tente nvamente
+                    Houve um erro no servidor :({<br />} tente novamente
                 </ErrorServer>
             )}
 

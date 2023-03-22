@@ -10,6 +10,7 @@ export default function Register(): JSX.Element {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(false);
     const [authError, setAuthError] = useState(false);
+    const [password, setPassword] = useState(true);
 
     useEffect(() => {
         if (auth) navigate("/home");
@@ -17,12 +18,17 @@ export default function Register(): JSX.Element {
 
     async function register(e: any) {
         const req = await registerService(e);
+
+        if(!req.password){
+            setPassword(false);
+        }
         setAuthError(req?.isNoAuth === true);
 
         if (req?.auth) {
             setAuth(true);
             return;
         }
+
     }
     return (
         <>
@@ -31,6 +37,7 @@ export default function Register(): JSX.Element {
                 <FormRegister
                     submit={(e: any) => register(e)}
                     noAuth={authError}
+                    password={password}
                 />
             </TemplateMain>
             <Footer />
