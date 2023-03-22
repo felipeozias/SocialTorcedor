@@ -68,7 +68,7 @@ export default function MainGroupSection() {
 
     const socket = connect();
 
-    socket.on("group", (data) => {
+    socket.on("group", (data: any) => {
         // console.log(data)
         // console.log(data.length)
         setChange(true);
@@ -105,11 +105,11 @@ export default function MainGroupSection() {
                     }
                 }}
             >
-                <GroupModal 
-                isOpen={isOpen} 
-                toggle={toggle} 
-                index={0}
-                setChanged={setChange}
+                <GroupModal
+                    isOpen={isOpen}
+                    toggle={toggle}
+                    index={0}
+                    setChanged={setChange}
                 />
                 <StyledTitleSection>
                     <StyledP> Grupos </StyledP>
