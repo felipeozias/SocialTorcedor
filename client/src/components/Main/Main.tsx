@@ -20,8 +20,8 @@ export default function Main(): JSX.Element {
     // ----- socket Feet -----
     const socket = connect();
 
-    socket.on("feed", (data) => {
-        console.log(data);
+    socket.on("feed", (data: any) => {
+        // console.log(data);
 
         if (data.action === 'insert' && data.target === 'post') {
             posts.push(data.data);
@@ -38,7 +38,7 @@ export default function Main(): JSX.Element {
                 setDataFeeds([...posts]);
             }
 
-            console.log(posts);
+            // console.log(posts);
             // console.log('#### ', data);
             // console.log('#### ', data.data._id);
             // console.log('#### INDEX ', index);

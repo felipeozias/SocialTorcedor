@@ -27,7 +27,7 @@ export default function ChatComplete(props: IProps) {
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
     const socket = connect();
 
-    socket.on("chat", (res) => {
+    socket.on("chat", (res: any) => {
         const chatData = chatAll;
         if (
             !(res.data.message === chatData[chatData.length - 1].message) &&
