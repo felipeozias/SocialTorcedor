@@ -100,7 +100,7 @@ const FormUpdate = (props: IProps) => {
                         }),
                     }}
                 >
-                    Nome:
+                    Nome completo:
                 </InputUser>
                 {errors.name && errors.name.type === "required" && (
                     <ErrorMessage>Preencha o campo Nome</ErrorMessage>
