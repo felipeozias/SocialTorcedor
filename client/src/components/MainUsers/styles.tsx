@@ -52,3 +52,6 @@ export const ChatIcon = styled.img`
         cursor: pointer;
     }
 `
+export const Span = styled.span`
+    font-size: 1.2vw;
+`

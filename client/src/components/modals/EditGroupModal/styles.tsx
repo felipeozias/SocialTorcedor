@@ -79,10 +79,10 @@ export const UsersContainer = styled.div`
   }
 `
 
-export const StyledInputFile = styled.input`
+export const InputFile = styled.input`
     display: none;
 `
-export const StyledLabelFile = styled.label`
+export const LabelFile = styled.label`
     font-size: 1.8vw;
     border-radius: 10px;
     background-color: #343232;
@@ -99,31 +99,13 @@ export const StyledLabelFile = styled.label`
     }
     color: #f3f3f3;
 `
-export const StyledImg = styled.img`
+export const Img = styled.img`
     width: 15vw;
     height: 15vh;
     align-self: center;
     font-size: 1.8vw;
 `
 
-export const StyledButton = styled.button`
-    :hover {
-        cursor: pointer;
-        border: none;
-        box-shadow: 0.5px 0.5px 5px 3px #f3f3f3;
-    }
-    :active {
-        opacity: 0.7;
-    }
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0.5px 0.5px 5px 0.5px #f3f3f3;
-    background-color: #343232;
-    color: #f3f3f3;
-    margin-top: 1.4vh;
-    height: 5vh;
-    font-size: 1.4vw;
-`
 export const ButtonAdd = styled.button`
     :hover {
         cursor: pointer;

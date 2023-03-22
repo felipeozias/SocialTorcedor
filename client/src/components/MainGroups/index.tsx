@@ -9,10 +9,12 @@ import {
     ImgContainer2,
     Pcontainer,
     Popup,
+    Popup2,
+    Popup3,
 } from "./styles";
-import logoIcon from "../../assets/logo.png";
 import exitIcon from "../../assets/exit.png";
 import editIcon from "../../assets/edit.png";
+import deleteIcon from "../../assets/delete.png";
 import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import Context from "../../hooks/useContext";
@@ -22,6 +24,7 @@ import EditGroupModal from "../modals/EditGroupModal";
 import useModal from "../../hooks/useModal";
 import { editGroupService } from "../../services/editGroup";
 import { IGetGroups } from "../../interfaces/Groups";
+import { deleteGroupService } from "../../services/deleteGroup";
 
 interface Iprops {
     owner: string;
@@ -39,6 +42,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
     const { isOpen, toggle } = useModal();
     let [borderActive, setBorderActive] = useState("");
     let [isOpenExitIcon, setIsOpenExitIcon] = useState(false);
+    let [isOpenDeleteIcon, setIsOpenDeleteIcon] = useState(false);
     let [isOpenEditIcon, setIsOpenEditIcon] = useState(false);
     let [isOpenNotif, setIsOpenNotif] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
@@ -82,7 +86,19 @@ export default function MainGroups(props: Iprops): JSX.Element {
         toggle();
     }
     function activateBorder() {
+        console.log("id do frupo", props.groupId);
         setBorderActive("solid");
+    }
+
+    function deleteGroup() {
+        console.log("delete");
+        console.log(props.groupId);
+        deleteGroupService({ groupId: props.groupId });
+        setNotifMessage(`Grupo ${props.groupName} deletado com sucesso!`);
+        setIsOpenNotif(true);
+        setTimeout(() => {
+            setIsOpenNotif(false);
+        }, 1500);
     }
 
     return (
@@ -102,13 +118,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 group={groupAtributes}
             />
             <ImgContainer>
-                <Img
-                    src={
-                        props.pathImage == undefined
-                            ? logoIcon
-                            : props.pathImage
-                    }
-                />
+                <Img src={props.pathImage} />
             </ImgContainer>
             <Pcontainer onClick={activateBorder}>
                 <P textSize={props.textSize}> {props.groupName} </P>
@@ -129,8 +139,9 @@ export default function MainGroups(props: Iprops): JSX.Element {
                     src={exitIcon}
                     onClick={exit}
                 />
+
                 {isOpenEditIcon && (
-                    <Popup position={props.position}>Editar Grupo</Popup>
+                    <Popup2 position={props.position}>Editar Grupo</Popup2>
                 )}
                 <EditIcon
                     display={props.displayEdit}
@@ -142,6 +153,21 @@ export default function MainGroups(props: Iprops): JSX.Element {
                     }}
                     src={editIcon}
                     onClick={editGroup}
+                />
+
+                {isOpenDeleteIcon && (
+                    <Popup3 position={props.position}>Deletar Grupo</Popup3>
+                )}
+                <EditIcon
+                    display={props.displayEdit}
+                    onMouseOut={() => {
+                        setIsOpenDeleteIcon(false);
+                    }}
+                    onMouseEnter={() => {
+                        setIsOpenDeleteIcon(true);
+                    }}
+                    src={deleteIcon}
+                    onClick={deleteGroup}
                 />
             </ImgContainer2>
         </Container>

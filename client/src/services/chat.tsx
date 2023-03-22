@@ -1,4 +1,5 @@
 import { getCookie } from "../utils/cookies";
+import { connect } from "./socket";
 
 export default async function chat(id: string) {
     try {
@@ -37,4 +38,9 @@ export default async function chat(id: string) {
             data: [],
         };
     }
+}
+
+export function sendMessage(id: string, message: string) {
+    const socket = connect();
+    socket.emit("send message", { id, message });
 }

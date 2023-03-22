@@ -1,14 +1,25 @@
-import { getToken } from "../utils/cookies";
+import { IRegisterGroup } from "../interfaces/Groups";
+import { getCookie } from "../utils/cookies";
 
-export default async function createGroup(userData: any) {
+export default async function createGroup(userData: IRegisterGroup) {
+    console.log(userData);
+
+    const formData = new FormData();
+    // console.log(formData)
+    formData.append("admin", userData.admin);
+    formData.append("title", userData.title);
+    if (userData.members.length > 0) {
+        formData.append("members", userData.members as any);
+    }
+    formData.append("photo", userData.photo);
+
     try {
         const options = {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
-            body: JSON.stringify(userData),
+            body: formData,
         };
 
         const url: string = process.env.REACT_APP_GROUP_LOCAL as string;

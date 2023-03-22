@@ -233,7 +233,7 @@ class GroupController {
         */
         try {
             const id = req.params.id;
-            const data: IMessage = req.body;
+            const data: IMessage = { message: req.body.message, author: req.body.author };
             const service = new GroupService();
             const result: IResult<Boolean> = await service.addMessage(id, data);
 

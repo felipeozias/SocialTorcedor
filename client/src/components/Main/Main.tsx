@@ -20,7 +20,7 @@ async function createComponentsFeed(): Promise<JSX.Element[]> {
             src={
                 feed.author.pathImage !== undefined
                     ? "https://api.socialtorcedor.shop/assets/" +
-                    feed.author.pathImage
+                      feed.author.pathImage
                     : "https://api.socialtorcedor.shop/assets/user_default.jpg"
             }
             user_name={feed.author.name}
@@ -66,7 +66,7 @@ export default function Main(): JSX.Element {
             </StyledMainSection>
 
             <StyledRigthSection>
-                <ChatComplete groupId="6418bb1735e3cacb1250b402" />
+                <ChatComplete groupId="6419c2fc1e6038a18e8410b2" />
             </StyledRigthSection>
         </StyledMain>
     );

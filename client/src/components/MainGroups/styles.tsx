@@ -105,3 +105,31 @@ export const Popup = styled.div<PProps>`
     margin-bottom: ${props => props.position}px;
     margin-right: 10px;
 `
+export const Popup2 = styled.div<PProps>`
+    z-index: 1005;
+    width: 90px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 100px;
+    position: absolute;
+    text-align: center;
+    font-weight: 700;
+    border: solid 1px red;
+    margin-bottom: ${props => props.position}px;
+    margin-right: 40px;
+`
+export const Popup3 = styled.div<PProps>`
+    z-index: 1005;
+    width: 90px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 100px;
+    position: absolute;
+    text-align: center;
+    font-weight: 700;
+    border: solid 1px red;
+    margin-bottom: ${props => props.position}px;
+    margin-left: 30px;
+`

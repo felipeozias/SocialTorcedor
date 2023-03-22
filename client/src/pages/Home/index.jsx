@@ -7,7 +7,6 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 //------ Declared context ------
 import DataUserForHeader from "../../components/contexts/DataUserForHeader";
 import { useEffect } from "react";
-import { connect } from "../../services/socket";
 
 export async function homeLoader() {
     const user = await homeService();
@@ -17,11 +16,6 @@ export async function homeLoader() {
 export default function Home() {
     const { user } = useLoaderData();
     const navigate = useNavigate();
-    const socket = connect();
-
-    socket.on("feed", (data) => {
-        console.log(data);
-    });
 
     useEffect(() => {
         if (!user.auth) navigate("/login");

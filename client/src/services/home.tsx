@@ -23,8 +23,6 @@ export async function homeService() {
         }
 
         const data = await res.json();
-        console.log(data);
-
         const id = data._id;
 
         const option = {
@@ -35,7 +33,6 @@ export async function homeService() {
         };
 
         const urlUser: string = `${process.env.REACT_APP_API}/users/${id}`;
-        //console.log(`${process.env.REACT_APP_API}/users/${id}`);
         const response = await fetch(urlUser, option);
 
         if (!res.ok) {
@@ -49,7 +46,6 @@ export async function homeService() {
         }
 
         const dataF = await response.json();
-        console.log("do path id", dataF);
 
         return {
             auth: true,

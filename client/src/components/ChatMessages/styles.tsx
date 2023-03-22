@@ -5,6 +5,7 @@ export const StyledChatBoxMessages = styled.div`
     margin-bottom: 5px;
     overflow: auto;
     flex: 1;
+    overflow-y: scroll;
 `;
 
 export const StyleMessage = styled.div`
@@ -13,12 +14,14 @@ export const StyleMessage = styled.div`
     display: inline-block;
     background-color: #dfdfdf;
     border-radius: 5px;
+    padding: 2px;
+    padding-left: 10px;
 
-    & span{
+    & span {
         font-weight: bold;
         color: #203396;
     }
-    & p{
-        color:black;
+    & p {
+        color: black;
     }
 `;
