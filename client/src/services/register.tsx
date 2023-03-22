@@ -1,6 +1,11 @@
 /// Lembrar de fazer alguma pagina de erro
 
 export default async function registerService(userData: any) {
+    
+    if(userData.password !== userData.password2){
+        return {auth: false, isNoAuth: true, status: 400, password: false}
+    }
+
     try {
         const options = {
             method: "POST",

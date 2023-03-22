@@ -13,12 +13,12 @@ import { useState } from "react";
 import imageUpload from "../../assets/icon_user_update.png";
 
 import InputImg from "../inputImg";
-import { StyledUpdateImg } from "../IconUpdateImage/style";
 import { useForm } from "react-hook-form";
 
 interface IProps {
     submit: (e: any) => void;
     noAuth?: boolean;
+    password?: boolean;
 }
 
 const FormUpdate = (props: IProps) => {
@@ -41,8 +41,8 @@ const FormUpdate = (props: IProps) => {
         if (!file) return;
 
         if (!isValidExtension(file.name)) {
-            setError("Por favor, selecione um arquivo com formato JPG ou PNG.");
-            setImage(null);
+        setError('Por favor, selecione um arquivo com formato JPG, JPEG ou PNG.');
+        setImage(null);
         } else if (!isValidSize(file.size)) {
             setError(
                 "Por favor, selecione um arquivo com tamanho menor que 5 MB."
@@ -155,6 +155,9 @@ const FormUpdate = (props: IProps) => {
                 </InputUser>
                 {errors.password && errors.password.type === "required" && (
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
+                )}
+                {!props.password && (
+                    <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
                 )}
             </BoxInputs>
 

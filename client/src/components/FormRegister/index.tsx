@@ -9,6 +9,7 @@ import { useState } from "react";
 interface IProps {
     submit: (e: any) => void;
     noAuth?: boolean;
+    password?: boolean;
 }
 
 export default function FormRegister(props: IProps): JSX.Element {
@@ -34,7 +35,8 @@ export default function FormRegister(props: IProps): JSX.Element {
                         ...register("nickname", {
                             required: true,
                             pattern: /^[a-z][a-z0-9-_@.]*[a-z0-9]+$/,
-                            minLength: 4,
+                            minLength: 5,
+                            maxLength: 25,
                         }),
                     }}
                 >
@@ -45,15 +47,21 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.nickname && errors.nickname.type === "pattern" && (
                     <ErrorMessage>
-                        O Apelido só pode conter letras,{<br />} números e os
-                        caracteres: _-@
+                        O Apelido deve começar e terminar com letras,
+                        pode conter números e os caracteres: .-@_
                     </ErrorMessage>
                 )}
                 {errors.nickname && errors.nickname.type === "minLength" && (
                     <ErrorMessage>
-                        O Apelido precisa conter mais de 3 letras
+                        O Apelido precisa conter no mínimo 5 letras
                     </ErrorMessage>
                 )}
+                {errors.nickname && errors.nickname.type === "maxLength" && (
+                    <ErrorMessage>
+                        O Nome precisa conter no máximo 25 letras
+                    </ErrorMessage>
+                )}
+
                 <InputUser
                     type="text"
                     name="name"
@@ -62,6 +70,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                             required: true,
                             pattern: /^[a-zA-Zà-úÀ-Ú ]+$/,
                             minLength: 5,
+                            maxLength: 25,
                         }),
                     }}
                 >
@@ -72,13 +81,18 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.name && errors.name.type === "pattern" && (
                     <ErrorMessage>
-                        O Nome deve começar com maiusculas{<br />} e só deve
+                        O Nome deve começar com maiúsculas{<br />} e só deve
                         conter letras
                     </ErrorMessage>
                 )}
                 {errors.name && errors.name.type === "minLength" && (
                     <ErrorMessage>
-                        O Apelido precisa conter no mínimo 5 letras
+                        O Nome precisa conter no mínimo 5 letras
+                    </ErrorMessage>
+                )}
+                {errors.name && errors.name.type === "maxLength" && (
+                    <ErrorMessage>
+                        O Nome precisa conter no máximo 25 letras
                     </ErrorMessage>
                 )}
 
@@ -113,26 +127,28 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 <InputUser
                     type="password"
-                    name="password"
+                    name="password2"
                     password={true}
                     validates={{
-                        ...register("password", {
+                        ...register("password2", {
                             required: true,
+                            
                         }),
                     }}
                 >
                     Confimar Senha:
                 </InputUser>
-                {errors.password && errors.password.type === "required" && (
+                {errors.password2 && errors.password2.type === "required" && (
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
                 )}
-                {errors.p && (
+                {!props.password && (
                     <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
                 )}
             </BoxInputs>
-            {props.noAuth && (
+
+            {props.noAuth && props.password && (
                 <ErrorServer>
-                    Houve um erro no servidor :({<br />} tente nvamente
+                    Houve um erro no servidor :({<br />} tente novamente
                 </ErrorServer>
             )}
 
