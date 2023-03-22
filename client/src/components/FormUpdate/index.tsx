@@ -44,7 +44,7 @@ const FormUpdate = (props: IProps) => {
         if (!file) return;
     
         if (!isValidExtension(file.name)) {
-        setError('Por favor, selecione um arquivo com formato JPG ou PNG.');
+        setError('Por favor, selecione um arquivo com formato JPG, JPEG ou PNG.');
         setImage(null);
         } else if (!isValidSize(file.size)) {
         setError('Por favor, selecione um arquivo com tamanho menor que 5 MB.');

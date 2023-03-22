@@ -34,7 +34,8 @@ export default function FormRegister(props: IProps): JSX.Element {
                         ...register("nickname", {
                             required: true,
                             pattern: /^[a-z][a-z0-9-_@.]*[a-z0-9]+$/,
-                            minLength: 4,
+                            minLength: 5,
+                            maxLength: 25,
                         }),
                     }}
                 >
@@ -45,15 +46,21 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.nickname && errors.nickname.type === "pattern" && (
                     <ErrorMessage>
-                        O Apelido só pode conter letras,{<br />} números e os
-                        caracteres: _-@
+                        O Apelido deve começar e terminar com letras,
+                        pode conter números e os caracteres: .-@_
                     </ErrorMessage>
                 )}
                 {errors.nickname && errors.nickname.type === "minLength" && (
                     <ErrorMessage>
-                        O Apelido precisa conter mais de 3 letras
+                        O Apelido precisa conter no mínimo 5 letras
                     </ErrorMessage>
                 )}
+                {errors.nickname && errors.nickname.type === "maxLength" && (
+                    <ErrorMessage>
+                        O Nome precisa conter no máximo 25 letras
+                    </ErrorMessage>
+                )}
+
                 <InputUser
                     type="text"
                     name="name"
@@ -62,6 +69,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                             required: true,
                             pattern: /^[a-zA-Zà-úÀ-Ú ]+$/,
                             minLength: 5,
+                            maxLength: 25,
                         }),
                     }}
                 >
@@ -78,7 +86,12 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.name && errors.name.type === "minLength" && (
                     <ErrorMessage>
-                        O Apelido precisa conter no mínimo 5 letras
+                        O Nome precisa conter no mínimo 5 letras
+                    </ErrorMessage>
+                )}
+                {errors.name && errors.name.type === "maxLength" && (
+                    <ErrorMessage>
+                        O Nome precisa conter no máximo 25 letras
                     </ErrorMessage>
                 )}
 
