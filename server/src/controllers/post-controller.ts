@@ -24,6 +24,10 @@ class PostController {
 
         */
             const data: IPost = req.body;
+            const userAuth: any = req.query.userAuth;
+
+            if (data.author !== userAuth._id)
+                return res.status(401).json({ errors: ["Você não tem permissão para criar um post para outro usuário"] });
             const service = new PostService();
 
             const result: IResult<IPost> = await service.create(data);
@@ -155,7 +159,10 @@ class PostController {
 
         try {
             const service = new PostService();
-
+            const userAuth: any = req.query.userAuth;
+            if (req.params.userId !== userAuth._id) {
+                return res.status(401).json({ errors: ["Você não tem permissão para dar like para outro usuário"] });
+            }
             const result: IResult<Boolean> = await service.like(req.params.id, req.params.userId);
 
             return res.status(result.status || 500).json(result);
@@ -195,6 +202,10 @@ class PostController {
         try {
             const id = req.params.id;
             const data: IComent = req.body;
+            const userAuth: any = req.query.userAuth;
+            if (data.author !== userAuth._id) {
+                return res.status(401).json({ errors: ["Você não tem permissão para comentar como outro usuário"] });
+            }
             const service = new PostService();
             const result: IResult<Boolean> = await service.addComment(id, data);
 
