@@ -18,6 +18,8 @@ export default async function loginService(formData: any) {
         }
 
         const data = await res.json();
+        document.cookie =
+            "token=; expires=" + new Date(2010, 0, 1) + "; path=/";
 
         document.cookie = `token=${data.token}; expires=${new Date(
             new Date().getTime() + 24 * 60 * 60 * 1000
