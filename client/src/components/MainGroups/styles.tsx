@@ -45,7 +45,7 @@ export const Img = styled.img`
     border-radius: 5px;
 `;
 export const Pcontainer = styled.div`
-    padding-top: 5px;
+    padding-top: 2px;
     width: 64%;
     height: 100%;
     :hover {
