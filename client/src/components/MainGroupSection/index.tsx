@@ -27,6 +27,8 @@ export default function MainGroupSection() {
     const { id } = useContext(DataUserForHeader);
     const userId = id.toString();
 
+    let date = new Date().getMilliseconds();
+
     async function requestDb() {
         let res = await apiRequestGroups();
         // console.log(res)
@@ -71,7 +73,18 @@ export default function MainGroupSection() {
     socket.on("group", (data: any) => {
         // console.log(data)
         // console.log(data.length)
-        setChange(true);
+        if (data["action"] == "delete") {
+            setTimeout(() => {
+                setChange(true);
+            },1500)
+        } else if (data["action"] == "update") {
+            setChange(true)
+        } else {
+            setTimeout(() => {
+                setChange(true);
+            }, 2000)
+        }
+        
     });
 
     useEffect(() => {
@@ -80,11 +93,13 @@ export default function MainGroupSection() {
 
     useEffect(() => {
         if (change == true) {
-            console.log("Grupo modificado!");
+            // console.log("Grupo modificado!");
             requestDb();
-            setChange(false);
+            setTimeout(() => {
+                setChange(false);
+            },1000)
         } else {
-            console.log("Estado voltou ao de origem")
+            // console.log("Estado voltou ao de origem")
         }
     }, [change])
 
@@ -130,7 +145,7 @@ export default function MainGroupSection() {
                         groupId={groups._id}
                         pathImage={
                             groups.pathImage != undefined
-                                ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}`
+                                ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}?${date}`
                                 : logoIcon
                         }
                         setChanged={setChange}
