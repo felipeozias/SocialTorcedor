@@ -1,12 +1,11 @@
-import { getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export async function homeService() {
-    console.log("Estamos no Service Home o token é => ", getToken);
     try {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
         };
 
@@ -24,13 +23,39 @@ export async function homeService() {
         }
 
         const data = await res.json();
-        //console.log("User me => ", data);
+        const id = data._id;
 
-        return { auth: true, isNoAuth: true, status: res.status, data: data };
+        const option = {
+            method: "GET",
+            headers: {
+                authorization: getCookie("token") as string,
+            },
+        };
+
+        const urlUser: string = `${process.env.REACT_APP_API}/users/${id}`;
+        const response = await fetch(urlUser, option);
+
+        if (!res.ok) {
+            console.error("Erro ao fazer requisição", await res.json());
+            return {
+                auth: false,
+                isNoAuth: false,
+                status: res.status,
+                data: null,
+            };
+        }
+
+        const dataF = await response.json();
+
+        return {
+            auth: true,
+            isNoAuth: true,
+            status: response.status,
+            data: dataF.data,
+        };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
-        //alert("Houve um erro ao entrar. Tente novamente!");
+        alert("Houve um erro ao entrar. Tente novamente!");
         console.error(err);
-        return { auth: false, isNoAuth: false, status: 500 };
+        return { auth: false, isNoAuth: false, status: 500, data: [] };
     }
 }

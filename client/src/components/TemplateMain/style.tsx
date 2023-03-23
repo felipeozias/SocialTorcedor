@@ -15,7 +15,7 @@ export const Template = styled.div`
     background-color: #1a2a3a;
     position: fixed;
     right: 0;
-    gap: 0.5rem;
+    gap: 0.2rem;
     @media (max-width: 1000px) {
         width: 40vw;
     }
@@ -39,12 +39,19 @@ export const NameLogo = styled.h1<IProps>`
 `;
 
 export const BoxLogo = styled.div`
+    width: 30vw;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: fixed;
-    top: 6vh;
+    top: 3vh;
+    @media (max-width: 1000px) {
+        width: 40vw;
+    }
+    @media (max-width: 780px) {
+        width: 100vw;
+    }
 `;
 
 export const BoxChild = styled.div`

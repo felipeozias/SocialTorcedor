@@ -1,17 +1,23 @@
 import styled from "styled-components";
 
+interface IProps {
+    path: string;
+}
+
 export const Form = styled.form`
+    height: 100%;
+    width: 240px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 1rem;
 `;
 
 export const BoxInputs = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.2rem;
 `;
 
 export const Message = styled.p`
@@ -25,18 +31,24 @@ export const Link = styled.a`
     font-weight: bold;
 `;
 
-export const DivAlign = styled.div`
-    display: flex;
-    align-items: flex-end;
-    
-    
-`;
-
 export const DivWrap = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    margin-right: 10px;
-    
+`;
+
+export const ErrorMessage = styled.span`
+    color: #ff0000;
+    font-size: 9pt;
+`;
+
+export const DivImage = styled.div<IProps>`
+    background-image: url(${(props) => props.path});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 90px;
+    width: 75px;
+    margin-bottom: 5px;
+    //border-radius: 10px;
 `;

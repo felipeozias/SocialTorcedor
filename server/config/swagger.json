@@ -1486,86 +1486,32 @@
         }
       }
     },
-    "/groups": {
+    "/groups/{id}/messages": {
       "post": {
         "tags": [
           "Group"
         ],
-        "description": "Endpoints para criar um grupo",
+        "description": "Endpoints para incluir uma mensagem no chat do grupo",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "userAuth",
-            "in": "query",
             "type": "string"
           },
           {
             "name": "",
             "in": "body",
-            "description": "Informações do grupo",
+            "description": "Informações da mensagem",
             "schema": {
-              "$ref": "#/definitions/AddGroup"
+              "$ref": "#/definitions/AddMessage"
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Group"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 201
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/GroupValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Group"
-        ],
-        "description": "Endpoints para listar os grupos que o usuário logado pertence do mais recente para o mais antigo",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "userAuth",
-            "in": "query",
-            "type": "string"
           }
         ],
         "responses": {
@@ -1573,11 +1519,14 @@
             "schema": {
               "type": "object",
               "properties": {
-                "data": {
+                "errors": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Group"
-                  }
+                  "example": [],
+                  "items": {}
+                },
+                "data": {
+                  "type": "boolean",
+                  "example": true
                 },
                 "status": {
                   "type": "number",
@@ -1592,6 +1541,36 @@
           },
           "401": {
             "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/GroupValidator"
+            }
           },
           "500": {
             "description": "Erro Interno do Servidor",

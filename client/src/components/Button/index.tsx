@@ -4,6 +4,7 @@ interface IProps {
     children: string;
     click?: () => void;
     type?: "button" | "submit" | "reset" | undefined;
+    disabled?: boolean;
 }
 
 export default function Button(props: IProps): JSX.Element {

@@ -1,9 +1,11 @@
-import { Container, Img, P, ChatIcon, ImgContainer, ImgContainer2 } from "./styles"
+import { Container, Img, P, ChatIcon, ImgContainer, ImgContainer2, Span } from "./styles"
 import userIcon from "../../assets/icon_user.png";
 import chatIcon from "../../assets/chat.png"
 
 interface Iprops {
     name: string,
+    teamUrl: string,
+    nickname: string
 }
 
 export default function MainUsers(props: Iprops): JSX.Element {
@@ -15,9 +17,9 @@ export default function MainUsers(props: Iprops): JSX.Element {
     return (
         <Container>
             <ImgContainer>
-                <Img src={userIcon} />
+                <Img src={`${process.env.REACT_APP_API}/assets/${props.teamUrl}`} />
             </ImgContainer>
-            <P> {props.name} </P>
+            <P> {props.nickname} <Span> ({props.name}) </Span></P>
             <ImgContainer2>
                 <ChatIcon src={chatIcon} onClick={startChat}/>
             </ImgContainer2>

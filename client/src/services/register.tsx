@@ -1,6 +1,11 @@
 /// Lembrar de fazer alguma pagina de erro
 
 export default async function registerService(userData: any) {
+    
+    if(userData.password !== userData.password2){
+        return {auth: false, isNoAuth: true, status: 400, password: false}
+    }
+
     try {
         const options = {
             method: "POST",
@@ -17,14 +22,19 @@ export default async function registerService(userData: any) {
         }
 
         const data = await res.json();
-        console.log(data);
+        document.cookie =
+            "token=; expires=" + new Date(2010, 0, 1) + "; path=/";
+
+        document.cookie = `token=${data.token}; expires=${new Date(
+            new Date().getTime() + 24 * 60 * 60 * 1000
+        )}; path=/;`;
 
         return { auth: true, status: res.status, data: data };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
         alert(
             "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
         );
         console.error(err);
+        return { auth: false, status: 500, data: [] };
     }
 }

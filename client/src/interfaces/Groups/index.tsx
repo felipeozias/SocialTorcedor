@@ -1,7 +1,16 @@
 export interface IRegisterGroup {
     title: string, // Titulo do grupo
     admin: string, // ID do usuário que criar o grupo
-    members: string[] // ID dos membros do grupo
+    members: string[], // ID dos membros do grupo
+    photo: any
+}
+
+export interface IUpdateGroup {
+    admin: string,
+    groupId: string,
+    title: string,
+    members: string[],
+    photo: any
 }
 
 export interface IUsersGroup {
@@ -22,7 +31,8 @@ export interface IGetGroups {
     chat: [],
     members: IUsersGroup[], // Array com ids dos membros
     title: string, // Nome do grupo
-    _id: string // Id do grupo
+    _id: string, // Id do grupo
+    pathImage: string
 }
 
 // 640f6af6ad964b6d45a13c35 Id para simular um usuário logado

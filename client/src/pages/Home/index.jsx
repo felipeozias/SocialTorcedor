@@ -19,17 +19,20 @@ export default function Home() {
 
     useEffect(() => {
         if (!user.auth) navigate("/login");
-    }, [navigate]);
+    }, [navigate, user.auth]);
 
     return (
         <DataUserForHeader.Provider
             value={{
-                id: user.data._id || "",
-                logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                id: user.data ? user.data._id : "",
+                logo:
+                    user.data && user.data.pathImage
+                        ? `${process.env.REACT_APP_API}/assets/${user.data.pathImage}`
+                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 alt: "Usuário",
-                name: user.data.name || "Torcedor",
-                nickname: user.data.nickname || "torcedor.com",
-                team: user.data.team || "",
+                name: user.data ? user.data.name : "",
+                nickname: user.data ? user.data.nickname : "",
+                team: user.data ? user.data.team : "",
             }}
         >
             <Header complete={true} />

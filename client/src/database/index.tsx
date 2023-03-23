@@ -1,24 +1,10 @@
-import { getToken } from "../utils/cookies";
-
-export const simulateLogin = {
-    _id: "640f6af6ad964b6d45a13c35",
-    name: "Zoro Oliveira",
-    nickname: "zoro_oliveira",
-    team: "são paulo",
-};
-
-export const simulateLogin2 = {
-    _id: "640ff195438d50338971dec8",
-    name: "Shinobu Sensui",
-    nickname: "sensui123",
-    team: "Outro",
-};
+import { getCookie } from "../utils/cookies";
 
 export async function apiRequestUsers() {
     try {
         const header = {
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
         };
         const url = process.env.REACT_APP_USERS_LOCAL as string;
@@ -51,8 +37,14 @@ export async function apiRequestUsers() {
 export async function apiRequestGroups() {
     try {
         const url = process.env.REACT_APP_GROUP_LOCAL as string;
-
-        const request = await fetch(url);
+        const options = {
+            method: "GET",
+            headers: {
+                authorization: getCookie("token") as string
+            }
+        }
+        
+        const request = await fetch(url, options);
         if (!request.ok) {
             console.error(request.json());
             return {

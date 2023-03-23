@@ -6,6 +6,35 @@ export const StyledContainer = styled.div`
     display: flex;
     align-items: center;
     margin: 5px;
+
+    & button{
+        display: flex;
+        /* position: relative; */
+        background-color: #3D3D3D;
+        box-shadow: none;
+        border: none;
+        color: #fff;
+    }
+
+    label{
+        display: flex;
+        width: 25px;
+        height: 25px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    input{
+        display: none;
+    } 
+
+    #imgForInputPublication{
+        position: absolute;
+        left: 65px;
+        bottom: 0;
+        font-size: 8pt;
+        font-style: italic;
+    }
 `;
 
 export const StyledInput = styled.textarea`
@@ -24,7 +53,7 @@ export const StyledInput = styled.textarea`
     margin-bottom: 25px;
 `;
 
-export const StyledSpanPublic = styled.span`
+export const StyledSpanPublic = styled.button`
     font-family: Inter, sans-serif;
     font-size: 11pt;
     color: #FFF;

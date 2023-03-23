@@ -1,11 +1,15 @@
 import { StyledInputName } from "../GroupModal/styles";
-import { useEffect, useState } from "react";
-import { apiRequestUsers, simulateLogin } from "../../../database";
+import { useEffect, useState, useContext } from "react";
+import { apiRequestUsers } from "../../../database";
 import { IUser } from "../../../interfaces/Users"; 
+import DataUserForHeader from "../../contexts/DataUserForHeader";
 
 export default function DataList() {
     let [users, setUsers] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
+
+    const { nickname } = useContext(DataUserForHeader);
+    const userNickname = nickname.toString();
 
     async function requestDb() {
         let res = await apiRequestUsers()
@@ -19,7 +23,7 @@ export default function DataList() {
         let list = document.querySelector("#user-list");
         // console.log(list)
         users.forEach(el => {
-            if (el.nickname !== simulateLogin.nickname) {
+            if (el.nickname != userNickname) {
                 let option = document.createElement('option');
                 option.value = `${el.name} (${el.nickname})`
                 list?.appendChild(option);

@@ -1,5 +1,3 @@
-/// Lembrar de fazer alguma pagina de erro
-
 export default async function loginService(formData: any) {
     try {
         const options = {
@@ -12,7 +10,7 @@ export default async function loginService(formData: any) {
         const res = await fetch(url, options);
 
         if (!res.ok) {
-            if (res.status === 404)
+            if (res.status === 401)
                 return { auth: false, isNoAuth: true, status: res.status };
 
             console.error("Erro ao fazer requisição", await res.json());

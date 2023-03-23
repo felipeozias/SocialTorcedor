@@ -78,6 +78,19 @@ export const EditIcon = styled.img<DProps>`
     margin-right: 10px;
     display: ${props => props.display};
 `
+export const DeleteIcon = styled.img<DProps>`
+    width: 50%;
+    height: 75%;
+    background-color: #FFF;
+    border-radius: 5px;
+    padding: 0.15vw;
+    :hover {
+        cursor: pointer;
+    }
+    margin-right: 15px;
+    display: ${props => props.display};
+`
+
 export const ExitIcon = styled.img<DProps>`
     width: 50%;
     height: 75%;
@@ -104,4 +117,32 @@ export const Popup = styled.div<PProps>`
     border: solid 1px red;
     margin-bottom: ${props => props.position}px;
     margin-right: 10px;
+`
+export const Popup2 = styled.div<PProps>`
+    z-index: 1005;
+    width: 90px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 100px;
+    position: absolute;
+    text-align: center;
+    font-weight: 700;
+    border: solid 1px red;
+    margin-bottom: ${props => props.position}px;
+    margin-right: 40px;
+`
+export const Popup3 = styled.div<PProps>`
+    z-index: 1005;
+    width: 90px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 100px;
+    position: absolute;
+    text-align: center;
+    font-weight: 700;
+    border: solid 1px red;
+    margin-bottom: ${props => props.position}px;
+    margin-left: 30px;
 `

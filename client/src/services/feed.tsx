@@ -1,13 +1,12 @@
-/// Lembrar de fazer alguma pagina de erro
-
-import { getToken } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 
 export async function fetchFeed() {
+
     try {
         const options = {
             method: "GET",
             headers: {
-                authorization: getToken || "",
+                authorization: getCookie("token") as string,
             },
         };
 
@@ -15,7 +14,6 @@ export async function fetchFeed() {
         const res = await fetch(url, options);
 
         if (!res.ok) {
-            console.error("Erro ao fazer requisição", await res.json());
             return {
                 failure: true,
                 error: "Ocorreu um erro ao buscar os feeds",
@@ -27,7 +25,6 @@ export async function fetchFeed() {
 
         return data;
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
         alert(
             "Houve um erro ao carregar os feeds. Tente novamente ou contacte um administrador!"
         );
@@ -35,16 +32,24 @@ export async function fetchFeed() {
     }
 }
 
-export async function postFeed(content: String) {
+export async function postFeed(content: string, image: any, userId: string) {
+
     try {
+        const formData = new FormData();
+
+        formData.append("content", `${content}`);
+        formData.append("author", `${userId}`);
+        formData.append("photo", image);
+
         const options = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: `{"content":"${content}","author":"640ab68a27fea004b4b9ce05","pathImage":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeW-gyEUEq2lTJP_4i_gmk6vPUwe0qZSlESg&usqp=CAU"}`,
+            headers: {
+                authorization: getCookie("token") as string,
+            },
+            body: formData,
         };
 
-        const url: string = process.env.REACT_APP_FEED_POST as string;
-        const res = await fetch(url, options);
+        const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);
 
         if (!res.ok) {
             console.error("Erro ao fazer a publicação", await res.json());
@@ -56,13 +61,78 @@ export async function postFeed(content: String) {
         }
 
         let data = (await res.json()).data;
-        alert("Publicação realizada com sucesso!");
+        // alert("Publicação realizada com sucesso!");
+
+        return { failure: false, data };
+    } catch (err) {
+        /// Lembrar de fazer alguma pagina de erro
+        alert(
+            "Houve um erro ao enviar a publicação. Tente novamente ou contacte um administrador!"
+        );
+        console.error(err);
+    }
+}
+
+export async function postCommentFeed(content: string, userId: string, postId: string) {
+
+    try {
+        const options = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: getCookie("token") as string
+            },
+            body: `{"content":"${content}","author":"${userId}"}`
+        };
+
+        const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/comments`, options);
+
+        if (!res.ok) {
+            console.error("Erro ao fazer comentário", await res.json());
+            return {
+                failure: true,
+                error: "Ocorreu um erro ao fazer o comentário",
+                status: res.status,
+            };
+        }
+
+        let data = (await res.json()).data;
+        return { failure: false, data };
+
+    } catch (err) {
+        /// Lembrar de fazer alguma pagina de erro
+        alert(
+            "Houve um erro ao enviar comentário. Tente novamente ou contacte um administrador!"
+        );
+        console.error(err);
+    }
+}
+
+export async function LikeFeed(postId: string, userId: string) {
+
+    try {
+        const options = {
+            method: "GET",
+            headers: { authorization: getCookie("token") as string }
+        };
+
+        // console.log('---> ...');
+        // console.log(process.env.REACT_APP_API, postId, userId, getCookie("token"));
+       
+        const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/like/${userId}`, options);
+        
+        // console.log('---> FINALIZOU');
+
+        let data = (await res.json()).data;
+        if (res.ok) {
+            // console.log('---> Curtiu');
+        }
 
         return data;
     } catch (err) {
         /// Lembrar de fazer alguma pagina de erro
         alert(
-            "Houve um erro ao enviar a publicação. Tente novamente ou contacte um administrador!"
+            "Erro ao curtir. Tente novamente ou contacte um administrador!"
         );
         console.error(err);
     }

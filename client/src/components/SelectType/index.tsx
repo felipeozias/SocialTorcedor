@@ -7,11 +7,12 @@ interface Time {
 }
 
 interface TimeSelectProps {
-  onChange: (timeId: number) => void;
   selectedTimeId: number | string;
+  name: string;
+  validates: any;
 }
 
-const SelectType: React.FC<TimeSelectProps> = ({ onChange, selectedTimeId }) => {
+const SelectType: React.FC<TimeSelectProps> = ({ selectedTimeId, name, validates }) => {
   const [times, setTimes] = useState<Time[]>([]);
 
   useEffect(() => {
@@ -38,13 +39,11 @@ const SelectType: React.FC<TimeSelectProps> = ({ onChange, selectedTimeId }) => 
     fetchTimes();
   }, []);
 
-  async function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    // console.log(event.target.value);
-  }
+ 
 
   return (
     <>
-        <Select onChange={handleSelectChange}>
+        <Select name={name} {... validates}>
 
         <option value="">Selecione um time</option>
         {times.map((time) => (

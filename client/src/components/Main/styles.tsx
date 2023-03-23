@@ -11,14 +11,16 @@ export const StyledMain = styled.main`
   color: #ffffff;
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `
 export const StyledMainSection = styled.section`
   display: flexbox;
   text-align: center;
   width: 40%;
-  height: 100%;
+  height: 99%;
   overflow: auto;
-  padding-bottom: 80px;
+  margin-top: 10px;
 
   
   @media (max-width: 700px) {

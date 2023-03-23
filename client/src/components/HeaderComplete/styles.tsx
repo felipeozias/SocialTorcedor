@@ -12,5 +12,5 @@ export const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 60px 0px 40px;
+    padding: 0px 80px 0px 40px;
 `;

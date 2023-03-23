@@ -5,6 +5,7 @@ import Routes from "./routes";
 // import Update from "./pages/Update";
 
 export default function App() {
+
     return <Routes />;
     //return <Home />
 }

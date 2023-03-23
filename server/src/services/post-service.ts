@@ -49,7 +49,7 @@ export default class PostService {
         try {
             const post = await Post.findById(id)
                 .populate("author", "name nickname team pathImage")
-                .populate({ path: "comments.author", select: "name nickname" });
+                .populate({ path: "comments.author", select: "name nickname pathImage" });
             if (!post) {
                 result.errors?.push("Post não encontrado");
                 result.status = 404;
