@@ -18,7 +18,7 @@ export default async function registerService(userData: any) {
 
         if (!res.ok) {
             console.error("Erro ao fazer requisição", await res.json());
-            return { auth: false, isNoAuth: true, status: res.status };
+            return { auth: false, isNoAuth: true, status: res.status, password: true };
         }
 
         const data = await res.json();
@@ -29,12 +29,12 @@ export default async function registerService(userData: any) {
             new Date().getTime() + 24 * 60 * 60 * 1000
         )}; path=/;`;
 
-        return { auth: true, status: res.status, data: data };
+        return { auth: true, status: res.status, data: data, password: true };
     } catch (err) {
         alert(
             "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
         );
         console.error(err);
-        return { auth: false, status: 500, data: [] };
+        return { auth: false, status: 500, data: [], password: true};
     }
 }

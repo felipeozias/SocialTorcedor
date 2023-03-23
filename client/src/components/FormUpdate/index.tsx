@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 interface IProps {
     submit: (e: any) => void;
     noAuth?: boolean;
-    password?: boolean;
+    password: boolean;
 }
 
 const FormUpdate = (props: IProps) => {
@@ -154,11 +154,11 @@ const FormUpdate = (props: IProps) => {
                     Confimar Senha:
                 </InputUser>
                 {errors.confirmPassword && errors.confirmPassword.type === "required" && (
-                    <ErrorMessage>Preencha o campo Password</ErrorMessage>
+                    <ErrorMessage>Preencha o campo Password...</ErrorMessage>
                 )}
-                {!props.password && (
+                {!props.password ?  (
                     <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
-                )}
+                ): <></>}
             </BoxInputs>
 
             <Button disabled={!image}>ATUALIZAR</Button>
