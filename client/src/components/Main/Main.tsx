@@ -99,15 +99,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         async function getGroups() {
-            //dataG = await chat("641a05b9e793ef2ca38b2eb0");
-            //setGroups(dataG.data);
-            //fail = dataG.failure;
-            //setChatAll(dataG.data.data.chat);
-
-            //if (dataG?.failure) {
-            //    setModalAlert({ content: `${dataG.error}`, color: 'red', times: 2 })
-            //    return;
-
             if (groupId) {
                 dataG = await chat(groupId);
                 setGroups(dataG.data);
@@ -128,8 +119,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            // console.log("***********", res);
-
             const chat = dataG.data.data.chat;
             setChatAll([...chat, res.data]);
             chat.push(res.data);
