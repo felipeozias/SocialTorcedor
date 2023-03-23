@@ -54,6 +54,7 @@ export const StyledImg = styled.img`
 `
 export const UsersContainer = styled.div`
     overflow-y: scroll;
+    overflow-x: hidden;
     margin-left: 1.3vw;
   ::-webkit-scrollbar {
     width: 15px;

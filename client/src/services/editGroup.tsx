@@ -30,6 +30,7 @@ export async function editGroupService(userData: { groupId: string }) {
 }
 
 export async function updateGroupService(userData: IUpdateGroup) {
+
     try {
         const formData = new FormData();
         formData.append("admin", userData.admin);
@@ -37,6 +38,8 @@ export async function updateGroupService(userData: IUpdateGroup) {
             for (let i = 0; i < userData.members.length; i++) {
                 formData.append("members", userData.members[i]);
             }
+        } else {
+            // formData.append("members", [] as any);
         }
         formData.append("title", userData.title);
         formData.append("photo", userData.photo);
