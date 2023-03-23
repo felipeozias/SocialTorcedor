@@ -14,12 +14,25 @@ import { apiRequestUsers } from "../../database";
 import { IUser } from "../../interfaces/Users";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+import { connect } from "../../services/socket"
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
     let [usersDb, setUsersDb] = useState([] as IUser[]);
     let [reqSuccess, setReqSuccess] = useState(false);
+    let [changed, setChanged] = useState(false);
+
     const { id } = useContext(DataUserForHeader);
+
+    const socket = connect();
+
+    socket.on("feed", (data : any) => {
+
+        if (data["target"] == "user") {
+            // console.log("alterou usuario")
+            setChanged(true);
+        }
+    })
 
     const userId = id.toString();
 
@@ -38,6 +51,14 @@ export default function MainUserSection(): JSX.Element {
         requestDb();
         testApi();
     }, [reqSuccess]);
+
+    useEffect(() => {
+        requestDb();
+        testApi();
+        setTimeout(() => {
+            setChanged(false);
+        },1000)
+    }, [changed])
 
     function testApi() {
         let removedSelf = usersDb.filter(

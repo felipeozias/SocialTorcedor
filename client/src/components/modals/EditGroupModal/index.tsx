@@ -33,16 +33,8 @@ export default function EditGroupModal(props: IEditModal) {
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
+    let [change, setChange] = useState(false);
 
-    props.group?.members.map(user => {
-        if (usersAdded.includes(user._id)) {
-            // console.log("a")
-        } else {
-            usersAdded.push(user._id);
-            usersAddedNick.push(user.nickname);
-        }
-    })
-    
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
         if (event.files && event.files[0]) {
@@ -68,7 +60,7 @@ export default function EditGroupModal(props: IEditModal) {
     useEffect(() => {
         requestDb();
 
-    }, [usersAdded]);
+    }, []);
 
     useEffect(() => {
         if (props.group?.pathImage == undefined) {
@@ -76,7 +68,23 @@ export default function EditGroupModal(props: IEditModal) {
         } else {
             setFileUrl(`${process.env.REACT_APP_API}/assets/${props.group.pathImage}`)
         }
+        requestDb();
+        usersAdded = [];
+        usersAddedNick = [];
+        props.group?.members.map(user => {
+            if (usersAdded.includes(user._id)) {
+                // console.log("a")
+            } else {
+                usersAdded.push(user._id);
+                usersAddedNick.push(user.nickname);
+            }
+        })
     },[props.isOpen])
+
+    useEffect(() => {
+        setChange(false);
+        
+    }, [change]);
 
     function updateGroupTemp() {
         let user = document.querySelector(
@@ -177,17 +185,22 @@ export default function EditGroupModal(props: IEditModal) {
                         // console.log(props.group?.pathImage)
                         // console.log(fileUrl)
 
-                        updateGroupService(sendUpdateGroup);
-                            
-                        setNotifMessage(`Grupo atualizado com sucesso!`);
-                        setIsOpen(true);
-                        setTimeout(() => {
+                        updateGroupService(sendUpdateGroup).then((res) => {
+                            if (res?.status == 200) {
+                                setNotifMessage(`Grupo atualizado com sucesso!`);
+                                props.setChanged(true);
+                            } else {
+                                setNotifMessage(`[ERRO]${res?.status}`);
+                            }
+                            setIsOpen(true);
+                            setTimeout(() => {
                             setIsOpen(false);
                             props.toggle();
                             usersAdded = [];
                             usersAddedNick = [];
-                        }, 2000);
-
+                            }, 2000);
+                        });
+                        
                         event.preventDefault();
 
                     }}>
@@ -229,10 +242,17 @@ export default function EditGroupModal(props: IEditModal) {
                                         console.log(usersAddedNick.indexOf(users))
                                         const index = usersAddedNick.indexOf(users);
                                         if (usersAdded.length == 1) {
-                                            exitGroup({groupId: props.group?._id, userId: usersAdded[index]});
+                                            // exitGroup({groupId: props.group?._id, userId: usersAdded[index]});
+                                            setNotifMessage(`Não pode deixar menos que 1 usuário`);
+                                            setIsOpen(true);
+                                            setTimeout(() => {
+                                                setIsOpen(false)
+                                            }, 1500)
+                                        } else {
+                                            usersAdded.splice(index, 1)
+                                            usersAddedNick.splice(index, 1)
+                                            setChange(true);
                                         }
-                                        usersAdded.splice(index, 1)
-                                        usersAddedNick.splice(index, 1)
                                     }}/>
                                 </UsersListContainer>)}
                             </UsersContainer>

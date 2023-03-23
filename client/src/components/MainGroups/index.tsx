@@ -5,6 +5,7 @@ import {
     P2,
     EditIcon,
     ExitIcon,
+    DeleteIcon,
     ImgContainer,
     ImgContainer2,
     Pcontainer,
@@ -36,6 +37,8 @@ interface Iprops {
     displayExit: string;
     position: number;
     pathImage: string;
+    setChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    click: any;
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -86,8 +89,8 @@ export default function MainGroups(props: Iprops): JSX.Element {
         toggle();
     }
     function activateBorder() {
-        console.log("id do frupo", props.groupId);
-        setBorderActive("solid");
+        console.log("id do grupo", props.groupId);
+        // setBorderActive("solid");
     }
 
     function deleteGroup() {
@@ -100,21 +103,27 @@ export default function MainGroups(props: Iprops): JSX.Element {
                     setNotifMessage(
                         `Grupo ${props.groupName} deletado com sucesso!`
                     );
+                    setIsOpenNotif(true);
                     break;
                 default:
                     setNotifMessage(`[ERRO ${res?.status}]`);
+                    setIsOpenNotif(true);
                     break;
             }
-        });
 
-        setIsOpenNotif(true);
-        setTimeout(() => {
-            setIsOpenNotif(false);
-        }, 1500);
+            setTimeout(() => {
+                setIsOpenNotif(false);
+                props.setChanged(true);
+            }, 1500);
+        });
     }
 
     return (
-        <Container border={borderActive}>
+        <Container
+            border={borderActive}
+            /* onClick={props.click}
+            id={props.groupId} */
+        >
             <NotificationModal
                 message={notifMessage}
                 isOpen={isOpenNotif}
@@ -128,13 +137,29 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 toggle={toggle}
                 index={0}
                 group={groupAtributes}
+                setChanged={props.setChanged}
             />
             <ImgContainer>
                 <Img src={props.pathImage} />
             </ImgContainer>
-            <Pcontainer onClick={activateBorder}>
-                <P textSize={props.textSize}> {props.groupName} </P>
-                <P2> Criado por: {props.adminName}</P2>
+            <Pcontainer
+                /* onClick={activateBorder} */ onClick={props.click}
+                className="group-me-user"
+                id={props.groupId}
+            >
+                <P id={props.groupId} textSize={props.textSize}>
+                    {" "}
+                    {props.groupName}{" "}
+                </P>
+                <P2 id={props.groupId}>
+                    {" "}
+                    Criador :{" "}
+                    {props.adminName.split(" ").length == 1
+                        ? props.adminName.split(" ")[0]
+                        : `${props.adminName.split(" ")[0]} ${
+                              props.adminName.split(" ")[1]
+                          }`}
+                </P2>
             </Pcontainer>
             <ImgContainer2>
                 {isOpenExitIcon && (
@@ -170,7 +195,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 {isOpenDeleteIcon && (
                     <Popup3 position={props.position}>Deletar Grupo</Popup3>
                 )}
-                <EditIcon
+                <DeleteIcon
                     display={props.displayEdit}
                     onMouseOut={() => {
                         setIsOpenDeleteIcon(false);

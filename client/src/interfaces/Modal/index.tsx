@@ -5,7 +5,11 @@ export interface Imodal {
     children?: ReactNode;
     isOpen: boolean;
     toggle: () => void;
-    index: number
+    index: number;
+}
+
+export interface ICreateGroupModal extends Imodal {
+    setChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IEditModal {
@@ -13,7 +17,8 @@ export interface IEditModal {
     isOpen: boolean;
     toggle: () => void;
     index: number;
-    group: IGetGroups | undefined
+    group: IGetGroups | undefined;
+    setChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface InotificationModal extends Imodal {

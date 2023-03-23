@@ -17,13 +17,14 @@ import IconImage from "../ImagePerfil";
 import PerfilNameEmail from "../PerfilNameEmail";
 import { ICommentFeed } from "../../interfaces/DataForFeed";
 
+import ModalAlert from "../ModalAlert";
+
 import CommentsFeed from "../CommentsFeed";
 import { LikeFeed } from "../../services/feed";
 
 //------ Using context ------
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
-import { count } from "console";
 
 interface IProps {
     src: string;
@@ -37,6 +38,7 @@ interface IProps {
 }
 
 export default function FeedCommentLike(props: IProps): JSX.Element {
+    const [modalAlert, setModalAlert] = useState({ content: ``, color: '', times: 2 })
     const { logo, id } = useContext(DataUserForHeader);
     return (
         <StyledContainer>
@@ -72,18 +74,13 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                             postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '');
                             const userId = id;
 
-                            let count = 0;
-                            if (postId === '') {
-                                while (count < 20) {
-                                    if (postId === '') { postId = IdthisElement.id.toString().replace('.jpg###', '').replace('.png###', '') }
-                                    count++;
-                                }
+                            if (postId !== '') {
+                                LikeFeed(postId, userId)
+                            } else {
+                                setModalAlert({ content: `falha ao capturar ID do post`, color: 'red', times: 2 })
                             }
-
-                            LikeFeed(postId, userId)
-                            // console.log(postId, userId)
                         }}>
-                        <img src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />
+                        <img id={props.img_post + '###'} src={props.thisLike ? IconLikeBlue : IconLike} alt="Icone like" />
                         Curtir
                     </StyledLikeComment>
 
@@ -111,6 +108,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
                 // emotion={true}
                 />
             </StyledComment>
+            <ModalAlert>{modalAlert}</ModalAlert>
         </StyledContainer>
     );
 }

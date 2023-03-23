@@ -10,7 +10,7 @@ export default function groupValidator() {
             .escape()
             .isString()
             .withMessage("O nome do grupo deve ser uma string.")
-            .isLength({ min:5, max: 50 })
+            .isLength({ min: 5, max: 50 })
             .withMessage("O nome do grupo deve ter entre 5 e 50 caracteres."),
         check("members.*").isMongoId().withMessage("Os códigos dos membros devem ser ObjectIds válidos."),
     ];

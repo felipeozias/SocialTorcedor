@@ -9,7 +9,7 @@ import { User } from "../models/user";
 export default class GroupService {
     async create(data: IGroup): Promise<IResult<IGroup>> {
         let result: IResult<IGroup> = { errors: [] };
-
+        console.log(data);
         try {
             const group = await Group.create(data);
             result.data = group;
@@ -84,6 +84,9 @@ export default class GroupService {
     async update(id: string, data: IGroup): Promise<IResult<IGroup>> {
         let result: IResult<IGroup> = { errors: [] };
         try {
+            if (!data.members || data.members.length === 0) {
+                data.members = [];
+            }
             const user = await Group.findByIdAndUpdate(id, data, { new: true }); //o new é para trazer ja o objeto atualizado
             if (!user) {
                 result.errors?.push("Grupo não encontrado");

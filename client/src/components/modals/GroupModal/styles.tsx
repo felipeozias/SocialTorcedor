@@ -61,6 +61,22 @@ export const StyledUsersContainer = styled.div`
     height: 15vh;
     background-color: #f3f3f3;
     color: #343232;
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  ::-webkit-scrollbar-track {
+    /* background: #3D6287; */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #5467a0;
+    border-radius: 10px;
+    border: 3px double #ffffff;
+  }
 `
 
 export const StyledInputFile = styled.input`
