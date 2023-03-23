@@ -13,9 +13,9 @@ import {
     Popup2,
     Popup3,
 } from "./styles";
-import exitIcon from "../../assets/exit.png";
-import editIcon from "../../assets/edit.png";
-import deleteIcon from "../../assets/delete.png";
+import exitIcon from "../../assets/exitn.png";
+import editIcon from "../../assets/edita.png";
+import deleteIcon from "../../assets/delete.svg";
 import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import Context from "../../hooks/useContext";
@@ -139,11 +139,11 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 group={groupAtributes}
                 setChanged={props.setChanged}
             />
-            <ImgContainer>
-                <Img src={props.pathImage} />
+            <ImgContainer src={props.pathImage}>
+                {/* <Img src={props.pathImage} /> */}
             </ImgContainer>
             <Pcontainer
-                /* onClick={activateBorder} */ onClick={props.click}
+                onClick={props.click}
                 className="group-me-user"
                 id={props.groupId}
             >
