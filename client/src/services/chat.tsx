@@ -27,13 +27,9 @@ export default async function chat(id: string) {
 
         return { data, failure: false };
     } catch (err) {
-        alert(
-            "Houve um erro ao carregar os grupos. Tente novamente ou contacte um administrador!"
-        );
-        console.error(err);
         return {
             failure: true,
-            error: "Ocorreu um erro ao buscar os grupos",
+            error: `Ocorreu um erro ao buscar os grupos. Se persistir contact um administrador! Erro: ${err}`,
             status: 500,
             data: [],
         };

@@ -3,6 +3,7 @@ import IconImage from "../IconImage";
 import { StyledContainer, StyledInput, StyledSpanPublic, StyledIconsOptions } from "./style";
 import { KeyboardEvent, MouseEvent, useRef, useState } from 'react';
 import { postCommentFeed } from "../../services/feed";
+import ModalAlert from "../ModalAlert";
 
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import { useContext } from "react";
@@ -19,6 +20,7 @@ interface IPropsFeedBarInput {
 export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
     const { id } = useContext(DataUserForHeader);
     const [image, setImage] = useState('');
+    const [modalAlert, setModalAlert] = useState({ content: ``, color: '', times: 2 })
 
     function openImage(e: any) {
         e.preventDefault();
@@ -63,7 +65,6 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         if (props.click) {
             e.preventDefault()
 
-            // ADICIONAR O MODAL DE ALERTA!!!
             if (image) {
                 let content = '.....';
                 if (inputRef.current && inputRef.current.value !== '') {
@@ -78,7 +79,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     inputRef
                 );
             } else {
-                alert("Insira uma foto!")
+                setModalAlert({ content: `Insira uma foto!`, color: 'red', times: 2 });
             }
         }
     }
@@ -91,20 +92,22 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         const postId = elementInput ? elementInput.id.toString().replace('.jpg', '').replace('.png', '') : '';
         const content: string = elementInput ? elementInput.value : '';
 
-        // ADICIONAR O MODAL DE ALERTA!!!
         if ((content ? content.length : 0) > 4) {
             postCommentFeed(content, userId, postId).then(
                 (data) => {
-                    console.log(data?.failure);
+                    if (data?.failure) {
+                        setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
+                        return;
+                    }
+
                     if (data?.failure === false && elementInput) {
-                        elementInput.value = ''
+                        elementInput.value = '';
                     }
                 }
             )
         } else {
-            alert("Escreva um comentário com pelo menos 5 caracteres!")
+            setModalAlert({ content: `Escreva um comentário com pelo menos 5 caracteres!`, color: 'red', times: 2 });
         }
-
     }
 
     if (props.image && props.emotion) {
@@ -116,6 +119,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     <IconEmotion />
                     <IconImage />
                 </StyledIconsOptions>
+                <ModalAlert>{modalAlert}</ModalAlert>
             </StyledContainer>
         )
     }
@@ -132,6 +136,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                 </StyledIconsOptions>
                 <input name="photo" ref={imageRef} id='inputFile' type='file' accept=".jpg,.png" onChange={e => openImage(e)} />
                 <div id='viewImageInput' />
+                <ModalAlert >{modalAlert}</ModalAlert>
             </StyledContainer>
         )
     }
@@ -144,6 +149,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                 <StyledIconsOptions>
                     <IconEmotion />
                 </StyledIconsOptions>
+                <ModalAlert>{modalAlert}</ModalAlert>
             </StyledContainer>
         )
     }
@@ -152,6 +158,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         <StyledContainer>
             <StyledInput id={props.img_post} ref={inputRefCommentFeed} placeholder={props.place_hoder.toString()} onKeyUp={resizeInput} />
             <StyledSpanPublic onClick={commentFeed}>{props.action}</StyledSpanPublic>
+            <ModalAlert>{modalAlert}</ModalAlert>
         </StyledContainer>
     )
 }

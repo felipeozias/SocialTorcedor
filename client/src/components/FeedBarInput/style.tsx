@@ -54,6 +54,7 @@ export const StyledInput = styled.textarea`
 `;
 
 export const StyledSpanPublic = styled.button`
+    user-select: none;
     font-family: Inter, sans-serif;
     font-size: 11pt;
     color: #FFF;

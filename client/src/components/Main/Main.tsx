@@ -3,6 +3,7 @@ import MainLeftSection from "../MainLeftSection";
 import FeedNewPublicate from "../FeedNewPublicate";
 import FeedCommentLike from "../FeedCommentLike";
 import ChatComplete from "../ChatComplete";
+import ModalAlert from "../ModalAlert";
 
 import { IGetFeed } from "../../interfaces/DataForFeed";
 import { fetchFeed } from "../../services/feed";
@@ -41,6 +42,8 @@ export default function Main(): JSX.Element {
     let posts: any[] = [];
     let fail;
 
+    const [modalAlert, setModalAlert] = useState({ content: ``, color: '', times: 2 })
+
     // ----- socket Feet -----
     const socket = connect();
 
@@ -67,8 +70,12 @@ export default function Main(): JSX.Element {
 
         async function fetchAndSetComponents() {
             const data = await fetchFeed();
-            posts = data;
-            setDataFeeds(data);
+            if (data?.failure) {
+                setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
+                return;
+            }
+            posts = data?.data;
+            setDataFeeds(posts);
         }
 
         async function getGroups() {
@@ -76,6 +83,11 @@ export default function Main(): JSX.Element {
             setGroups(dataG.data);
             fail = dataG.failure;
             setChatAll(dataG.data.data.chat);
+
+            if (dataG?.failure) {
+                setModalAlert({ content: `${dataG.error}`, color: 'red', times: 2 })
+                return;
+            }
         }
 
         fetchAndSetComponents();
@@ -92,7 +104,7 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            console.log("***********", res);
+            // console.log("***********", res);
             const chat = dataG.data.data.chat;
             //console.log("---------------", chat);
             setChatAll([...chat, res.data]);
@@ -119,7 +131,7 @@ export default function Main(): JSX.Element {
                         src={
                             feed.author.pathImage !== undefined
                                 ? "https://api.socialtorcedor.shop/assets/" +
-                                  feed.author.pathImage
+                                feed.author.pathImage
                                 : "https://api.socialtorcedor.shop/assets/user_default.jpg"
                         }
                         user_name={feed.author.name}
@@ -159,6 +171,7 @@ export default function Main(): JSX.Element {
                     })}
                 </ChatComplete>
             </StyledRigthSection>
+            <ModalAlert>{modalAlert}</ModalAlert>
         </StyledMain>
     );
 }
