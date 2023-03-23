@@ -33,7 +33,7 @@ export default function EditGroupModal(props: IEditModal) {
     let [isOpen, setIsOpen] = useState(false);
     let [notifMessage, setNotifMessage] = useState("");
     let [usersDb, setUsersDb] = useState([] as IUser[]);
-    let [change, setChange] = useState(false);
+    let [updateMembers, setUpdateMembers] = useState(false);
 
     function changeImg(e: ChangeEvent) {
         let event = e.target as HTMLInputElement;
@@ -82,9 +82,9 @@ export default function EditGroupModal(props: IEditModal) {
     },[props.isOpen])
 
     useEffect(() => {
-        setChange(false);
+        setUpdateMembers(false);
         
-    }, [change]);
+    }, [updateMembers]);
 
     function updateGroupTemp() {
         let user = document.querySelector(
@@ -222,37 +222,16 @@ export default function EditGroupModal(props: IEditModal) {
                                 onChange={updateValue}
                             />
                             <UsersContainer>
-                                {/* {
-                                usersAdded.map(users => usersDb.map(userlist => 
-                                <UsersListContainer onClick={() => {
-                                        console.log(userlist.name)
-                                        // const index = usersAdded.indexOf(userlist._id)
-                                        // if (index > -1) {
-                                        //     usersAdded.splice(index, 1)
-                                        // }
-                                    }
-                                }>
-                                    {userlist._id.includes(users) ? `${userlist.name} (${userlist.nickname}) `: ""}
-                                </UsersListContainer>))
-                                } */}
                                 {usersAddedNick.map(users => 
                                 <UsersListContainer>
                                     {users} 
                                     <RemoveIcon imageUrl={removeIcon} onClick={() => {
                                         console.log(usersAddedNick.indexOf(users))
                                         const index = usersAddedNick.indexOf(users);
-                                        if (usersAdded.length == 1) {
-                                            // exitGroup({groupId: props.group?._id, userId: usersAdded[index]});
-                                            setNotifMessage(`Não pode deixar menos que 1 usuário`);
-                                            setIsOpen(true);
-                                            setTimeout(() => {
-                                                setIsOpen(false)
-                                            }, 1500)
-                                        } else {
-                                            usersAdded.splice(index, 1)
-                                            usersAddedNick.splice(index, 1)
-                                            setChange(true);
-                                        }
+                                    
+                                        usersAdded.splice(index, 1)
+                                        usersAddedNick.splice(index, 1)
+                                        setUpdateMembers(true);
                                     }}/>
                                 </UsersListContainer>)}
                             </UsersContainer>

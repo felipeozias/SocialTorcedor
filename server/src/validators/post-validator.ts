@@ -6,7 +6,6 @@ export default function postValidator() {
         check("content")
             .trim()
             .escape()
-            .notEmpty()
             .isString()
             .withMessage("O conteúdo deve ser uma string.")
             .isLength({ max: 2500 })
