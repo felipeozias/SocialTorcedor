@@ -47,8 +47,8 @@ export default function FormRegister(props: IProps): JSX.Element {
                 )}
                 {errors.nickname && errors.nickname.type === "pattern" && (
                     <ErrorMessage>
-                        O Apelido deve começar e terminar com letras,
-                        pode conter números e os caracteres: .-@_
+                        O Apelido deve começar com letras, pode conter números e caracteres:
+                        .-@_ e não pode finalizar com caracteres
                     </ErrorMessage>
                 )}
                 {errors.nickname && errors.nickname.type === "minLength" && (

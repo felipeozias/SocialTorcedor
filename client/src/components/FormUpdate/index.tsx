@@ -143,17 +143,17 @@ const FormUpdate = (props: IProps) => {
                 )}
                 <InputUser
                     type="password"
-                    name="confirm-password"
+                    name="confirmPassword"
                     password={true}
                     validates={{
-                        ...register("confirm-password", {
+                        ...register("confirmPassword", {
                             required: true,
                         }),
                     }}
                 >
                     Confimar Senha:
                 </InputUser>
-                {errors.password && errors.password.type === "required" && (
+                {errors.confirmPassword && errors.confirmPassword.type === "required" && (
                     <ErrorMessage>Preencha o campo Password</ErrorMessage>
                 )}
                 {!props.password && (
