@@ -11,46 +11,38 @@ import formatTime from "../../utils/formatTime";
 //------ Using context ------
 import { useContext, useEffect, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
+
 import { connect } from "../../services/socket";
+
+let posts: any[] = []
+// ----- socket Feed -----
+const socket = connect();
+// -----------------------
 
 export default function Main(): JSX.Element {
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
-    let posts: any[] = []
-    // ----- socket Feet -----
-    const socket = connect();
 
-    socket.on("feed", (data: any) => {
-        // console.log(data);
+    useEffect(() => {
+        socket.on("feed", (data: any) => {
 
-        if (data.action === 'insert' && data.target === 'post') {
-            posts.push(data.data);
-            setDataFeeds([...posts]);
-        }
-
-        if (data.action === 'update' && data.target === 'post') {
-            // let feeds = dataFeeds;
-            const index = posts.findIndex(objeto => objeto._id === data.data._id);
-
-            if (index !== -1) {
-                posts[index] = data.data;
+            if (data.action === 'insert' && data.target === 'post') {
+                posts.unshift(data.data);
                 setDataFeeds([]);
                 setDataFeeds([...posts]);
             }
 
-            // console.log(posts);
-            // console.log('#### ', data);
-            // console.log('#### ', data.data._id);
-            // console.log('#### INDEX ', index);
-        }
-        // index = -1
+            if (data.action === 'update' && data.target === 'post') {
+                const index = posts.findIndex(objeto => objeto._id === data.data._id);
 
-    });
+                if (index !== -1) {
+                    posts[index] = data.data;
+                    setDataFeeds([]);
+                    setDataFeeds([...posts]);
+                }
+            }
+        });
 
-    // socket.off('feed');
-    // -----------------------
-
-    useEffect(() => {
         async function fetchAndSetComponents() {
             const data = await fetchFeed();
             posts = data;
