@@ -5,6 +5,7 @@ import {
     P2,
     EditIcon,
     ExitIcon,
+    DeleteIcon,
     ImgContainer,
     ImgContainer2,
     Pcontainer,
@@ -101,18 +102,19 @@ export default function MainGroups(props: Iprops): JSX.Element {
                     setNotifMessage(
                         `Grupo ${props.groupName} deletado com sucesso!`
                     );
+                    setIsOpenNotif(true);
                     break;
                 default:
                     setNotifMessage(`[ERRO ${res?.status}]`);
+                    setIsOpenNotif(true);
                     break;
             }
-            setIsOpenNotif(true);
+
             setTimeout(() => {
                 setIsOpenNotif(false);
-                props.setChanged(true);
-            }, 2000);
+                // props.setChanged(true);
+            }, 1500);
         });
-
     }
 
     return (
@@ -137,7 +139,11 @@ export default function MainGroups(props: Iprops): JSX.Element {
             </ImgContainer>
             <Pcontainer onClick={activateBorder}>
                 <P textSize={props.textSize}> {props.groupName} </P>
-                <P2> Criado por: {props.adminName}</P2>
+                <P2> Criador : {
+                props.adminName.split(" ").length == 1 ? 
+                props.adminName.split(" ")[0] : 
+                `${props.adminName.split(" ")[0]} ${props.adminName.split(" ")[1]}`
+                }</P2>
             </Pcontainer>
             <ImgContainer2>
                 {isOpenExitIcon && (
@@ -173,7 +179,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 {isOpenDeleteIcon && (
                     <Popup3 position={props.position}>Deletar Grupo</Popup3>
                 )}
-                <EditIcon
+                <DeleteIcon
                     display={props.displayEdit}
                     onMouseOut={() => {
                         setIsOpenDeleteIcon(false);

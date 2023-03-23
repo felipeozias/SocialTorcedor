@@ -24,6 +24,7 @@ import DataUserForHeader from "../../contexts/DataUserForHeader";
 import logoDefault from "../../../assets/logo.png"
 
 let usersAdded: Array<string> = [];
+let usersAddedNick: string[] = [];
 
 export default function GroupModal(props: ICreateGroupModal) {
     let [fileUrl, setFileUrl] = useState(logoDefault);
@@ -41,7 +42,7 @@ export default function GroupModal(props: ICreateGroupModal) {
         }
         console.log(event.files);
     }
-
+    
     async function requestDb() {
         let res = await apiRequestUsers()
         if (res.succesfull) {
@@ -52,7 +53,8 @@ export default function GroupModal(props: ICreateGroupModal) {
 
     useEffect(() => {
         requestDb();
-    }, []);
+        
+    }, [props.isOpen]);
 
     function sendUserValue() {
         let user = document.querySelector(
@@ -103,6 +105,7 @@ export default function GroupModal(props: ICreateGroupModal) {
             user.value = "";
         } else {
             usersAdded.push(userId);
+            usersAddedNick.push(userNick);
             // console.log(`${user.value} Adicionado com sucesso!`);
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
@@ -122,6 +125,8 @@ export default function GroupModal(props: ICreateGroupModal) {
     function cancelCreation() {
         props.toggle();
         usersAdded = [];
+        usersAddedNick = [];
+
         setFileUrl(logoDefault);
     }
 
@@ -174,6 +179,7 @@ export default function GroupModal(props: ICreateGroupModal) {
                             
                             e.preventDefault();
                             usersAdded = [];
+                            usersAddedNick = [];
                         }}
                     >
                         <StyledSectionLeft>
@@ -187,9 +193,11 @@ export default function GroupModal(props: ICreateGroupModal) {
                                 required
                                 onChange={updateValue}
                             />
-                            {/* <StyledUsersContainer
-                                
-                            /> */}
+                            <StyledUsersContainer>
+                                {usersAddedNick.map(users => 
+                                    <div>{users.toUpperCase()}</div>
+                                )}
+                            </StyledUsersContainer>
                             <DataList />
                             <StyledButton2
                                 onClick={sendUserValue}

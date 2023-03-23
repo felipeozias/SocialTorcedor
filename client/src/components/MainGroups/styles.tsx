@@ -78,6 +78,19 @@ export const EditIcon = styled.img<DProps>`
     margin-right: 10px;
     display: ${props => props.display};
 `
+export const DeleteIcon = styled.img<DProps>`
+    width: 50%;
+    height: 75%;
+    background-color: #FFF;
+    border-radius: 5px;
+    padding: 0.15vw;
+    :hover {
+        cursor: pointer;
+    }
+    margin-right: 15px;
+    display: ${props => props.display};
+`
+
 export const ExitIcon = styled.img<DProps>`
     width: 50%;
     height: 75%;
