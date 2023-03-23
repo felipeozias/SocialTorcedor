@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const StyledUserContainer = styled.div`
     display: flex;
     text-align: left;
+    transition: all .30s;
+
     & span{
         font-size: 7pt;
         font-style: italic;
@@ -68,10 +70,12 @@ export const StyledLikeComment = styled.p`
     width: 50%;
     height: 100%;
     cursor: pointer;
+    user-select: none;
     transition: all .15s;
 
     & img, span{
         margin: 4px;
+        user-select: none;
     }
 
     &:hover{
