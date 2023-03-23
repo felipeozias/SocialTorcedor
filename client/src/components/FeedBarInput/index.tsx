@@ -71,10 +71,10 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     content = inputRef.current.value
                 }
 
-                if (content.length < 5) {
-                    setModalAlert({ content: `Escreva pelo menos uma descrição com 5 caracteres`, color: 'red', times: 2 });
-                    return;
-                }
+                // if (content.length < 5) {
+                //     setModalAlert({ content: `Escreva pelo menos uma descrição com 5 caracteres`, color: 'red', times: 2 });
+                //     return;
+                // }
 
                 props.click(
                     e,

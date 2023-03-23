@@ -35,6 +35,7 @@ export default function Feed(props: IPropsFeednewPublication): JSX.Element {
 
                         const localImg = document.getElementById('imgForInputPublication');
                         if (localImg) { localImg.remove() }
+                        
                     }
                 }
             })
