@@ -50,7 +50,11 @@ export default function Main(): JSX.Element {
     let posts: any[] = [];
     let fail;
 
-    const [modalAlert, setModalAlert] = useState({ content: ``, color: '', times: 2 })
+    const [modalAlert, setModalAlert] = useState({
+        content: ``,
+        color: "",
+        times: 2,
+    });
 
     // ----- socket Feet -----
     const socket = connect();
@@ -79,7 +83,11 @@ export default function Main(): JSX.Element {
         async function fetchAndSetComponents() {
             const data = await fetchFeed();
             if (data?.failure) {
-                setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
+                setModalAlert({
+                    content: `${data.error}`,
+                    color: "red",
+                    times: 2,
+                });
                 return;
             }
             posts = data?.data;
@@ -91,7 +99,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         async function getGroups() {
-            
             if (groupId) {
                 dataG = await chat(groupId);
                 setGroups(dataG.data);
@@ -139,12 +146,12 @@ export default function Main(): JSX.Element {
                 {dataFeeds.map((feed: IGetFeed) => (
                     <FeedCommentLike
                         src={
-                            feed.author.pathImage !== undefined
+                            feed?.author?.pathImage !== undefined
                                 ? "https://api.socialtorcedor.shop/assets/" +
-                                feed.author.pathImage
+                                  feed?.author?.pathImage
                                 : "https://api.socialtorcedor.shop/assets/user_default.jpg"
                         }
-                        user_name={feed.author.name}
+                        user_name={feed?.author?.name}
                         time_publication={formatTime(
                             new Date(`${feed.createdAt}`)
                         ).toString()}
