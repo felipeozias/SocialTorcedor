@@ -99,6 +99,7 @@ export default class UserService {
 
     async update(id: string, data: IUser): Promise<IResult<IUser>> {
         let result: IResult<IUser> = { errors: [] };
+        console.log(data);
         try {
             if (data.password && data.password.length > 0) {
                 data.password = CryptoJS.SHA256(data.password).toString();
@@ -112,6 +113,7 @@ export default class UserService {
             } else {
                 result.data = user;
                 result.status = 200;
+                user.password = "********";
                 io.pubFeed("update", "user", user);
             }
         } catch (error: any) {
