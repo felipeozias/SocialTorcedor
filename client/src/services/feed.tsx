@@ -48,7 +48,7 @@ export async function postFeed(content: string, image: any, userId: string) {
         };
 
         const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);
-
+        
         if (!res.ok) {
             return {
                 failure: true,
