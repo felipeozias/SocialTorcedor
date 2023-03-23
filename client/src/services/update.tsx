@@ -35,13 +35,13 @@ const updateUser = async (userData: any): Promise<any> => {
 
         if (!response.ok) {
             console.error(data);
-            return { ok: false, data };
+            return { ok: false, data, password: true };
         }
 
-        return { ok: true, data };
+        return { ok: true, data , password: true};
     } catch (error) {
         console.log(error);
-        return { ok: false, data: [] };
+        return { ok: false, data: [] , password: true };
     }
 };
 

@@ -27,9 +27,9 @@ export default function Update(): JSX.Element {
 
         try {
             const response = await updateUser(userData);
-            if(!response.password){
-                setPassword(false);
-            }
+            
+            setPassword(response.password);
+            
             setOk(response.ok);
             if (!response.ok) alert("Houve um erro interno com o servidor");
         } catch (error) {
