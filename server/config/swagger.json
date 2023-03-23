@@ -33,24 +33,61 @@
     "application/json"
   ],
   "paths": {
-    "/users": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoints para criar um usuário",
+    "/users/me/": {
+      "get": {
+        "description": "",
         "parameters": [
           {
-            "name": "",
-            "in": "body",
-            "description": "Informações do usuário",
-            "schema": {
-              "$ref": "#/definitions/AddUser"
-            }
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
-          "201": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoints para recuperar um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "User ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
             "schema": {
               "type": "object",
               "properties": {
@@ -59,24 +96,27 @@
                 },
                 "status": {
                   "type": "number",
-                  "example": 201
+                  "example": 200
                 }
               },
               "xml": {
                 "name": "main"
               }
             },
-            "description": "Criado"
+            "description": "OK"
           },
-          "400": {
-            "description": "Apelido já existe",
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado",
             "schema": {
               "type": "object",
               "properties": {
                 "errors": {
                   "type": "array",
                   "example": [
-                    "[nickname]: O apelido já existe"
+                    "Usuário não encontrado"
                   ],
                   "items": {
                     "type": "string"
@@ -84,7 +124,7 @@
                 },
                 "status": {
                   "type": "number",
-                  "example": 400
+                  "example": 404
                 }
               },
               "xml": {
@@ -95,7 +135,7 @@
           "422": {
             "description": "Erro de Validação",
             "schema": {
-              "$ref": "#/definitions/UserAddValidator"
+              "$ref": "#/definitions/IdValidator"
             }
           },
           "500": {
@@ -106,23 +146,36 @@
           }
         }
       },
-      "get": {
+      "patch": {
         "tags": [
           "User"
         ],
-        "description": "Endpoints para listar (filtrado ou não) os usuários ordenados por nome",
+        "description": "Endpoints para editar um usuário",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID."
+          },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
           },
           {
-            "name": "name",
+            "name": "userAuth",
             "in": "query",
-            "description": "pode ser o nome ou parte do nome do usuário ou do seu nickname.",
-            "required": false,
             "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do usuário",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
           }
         ],
         "responses": {
@@ -147,8 +200,41 @@
             },
             "description": "OK"
           },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
           "401": {
             "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Usuário não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/UserUpdateValidator"
+            }
           },
           "500": {
             "description": "Erro Interno do Servidor",
@@ -298,76 +384,42 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoints para criar um usuário",
+        "parameters": [
+          {
+            "name": "",
             "in": "body",
+            "description": "Informações do usuário",
             "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/AddUser"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/users/me": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoints para recuperar um usuário",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "ObjectId",
-            "description": "User ID."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
+          "201": {
             "schema": {
               "type": "object",
               "properties": {
@@ -376,27 +428,24 @@
                 },
                 "status": {
                   "type": "number",
-                  "example": 200
+                  "example": 201
                 }
               },
               "xml": {
                 "name": "main"
               }
             },
-            "description": "OK"
+            "description": "Criado"
           },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Usuário não encontrado",
+          "400": {
+            "description": "Apelido já existe",
             "schema": {
               "type": "object",
               "properties": {
                 "errors": {
                   "type": "array",
                   "example": [
-                    "Usuário não encontrado"
+                    "[nickname]: O apelido já existe"
                   ],
                   "items": {
                     "type": "string"
@@ -404,7 +453,7 @@
                 },
                 "status": {
                   "type": "number",
-                  "example": 404
+                  "example": 400
                 }
               },
               "xml": {
@@ -415,7 +464,7 @@
           "422": {
             "description": "Erro de Validação",
             "schema": {
-              "$ref": "#/definitions/IdValidator"
+              "$ref": "#/definitions/UserAddValidator"
             }
           },
           "500": {
@@ -426,31 +475,28 @@
           }
         }
       },
-      "patch": {
+      "get": {
         "tags": [
           "User"
         ],
-        "description": "Endpoints para editar um usuário",
+        "description": "Endpoints para listar (filtrado ou não) os usuários ordenados por nome",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "User ID."
-          },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
           },
           {
-            "name": "",
-            "in": "body",
-            "description": "Informações do usuário",
-            "schema": {
-              "$ref": "#/definitions/UpdateUser"
-            }
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "pode ser o nome ou parte do nome do usuário ou do seu nickname.",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -475,365 +521,8 @@
             },
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
           "401": {
             "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Usuário não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "example": [
-                    "Usuário não encontrado"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "number",
-                  "example": 404
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/UserUpdateValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoints para remover um usuário",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "ObjectId",
-            "description": "User ID."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/User"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 200
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Usuário não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "example": [
-                    "Usuário não encontrado"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "number",
-                  "example": 404
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/IdValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      }
-    },
-    "/posts": {
-      "post": {
-        "tags": [
-          "Post"
-        ],
-        "description": "Endpoints para criar um post",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "",
-            "in": "body",
-            "description": "Informações do post",
-            "schema": {
-              "$ref": "#/definitions/AddPost"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Post"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 201
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/PostValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      }
-    },
-    "/posts/{id}": {
-      "delete": {
-        "tags": [
-          "Post"
-        ],
-        "description": "Endpoints para remover um post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "ObjectId",
-            "description": "Post ID."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Post"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 200
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Post não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "example": [
-                    "Post não encontrado"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "number",
-                  "example": 404
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/IdValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Post"
-        ],
-        "description": "Endpoints para recuperar um post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "ObjectId",
-            "description": "Post ID."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Post"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 200
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Post não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "example": [
-                    "Post não encontrado"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "number",
-                  "example": 404
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/IdValidator"
-            }
           },
           "500": {
             "description": "Erro Interno do Servidor",
@@ -854,6 +543,11 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -891,6 +585,176 @@
         }
       }
     },
+    "/posts/{id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para recuperar um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Post"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoints para remover um post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Post ID."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Post"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Post não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Post não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
     "/posts/{id}/like/{userId}": {
       "get": {
         "tags": [
@@ -915,6 +779,11 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -1002,6 +871,11 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           },
           {
@@ -1107,16 +981,9 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
@@ -1186,12 +1053,12 @@
         }
       }
     },
-    "/groups": {
+    "/posts": {
       "post": {
         "tags": [
-          "Group"
+          "Post"
         ],
-        "description": "Endpoints para criar um grupo",
+        "description": "Endpoints para criar um post",
         "parameters": [
           {
             "name": "authorization",
@@ -1199,11 +1066,16 @@
             "type": "string"
           },
           {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          },
+          {
             "name": "",
             "in": "body",
-            "description": "Informações do grupo",
+            "description": "Informações do post",
             "schema": {
-              "$ref": "#/definitions/AddGroup"
+              "$ref": "#/definitions/AddPost"
             }
           }
         ],
@@ -1213,7 +1085,7 @@
               "type": "object",
               "properties": {
                 "data": {
-                  "$ref": "#/definitions/Group"
+                  "$ref": "#/definitions/Post"
                 },
                 "status": {
                   "type": "number",
@@ -1235,7 +1107,7 @@
           "422": {
             "description": "Erro de Validação",
             "schema": {
-              "$ref": "#/definitions/GroupValidator"
+              "$ref": "#/definitions/PostValidator"
             }
           },
           "500": {
@@ -1245,16 +1117,30 @@
             }
           }
         }
-      },
+      }
+    },
+    "/groups/{id}": {
       "get": {
         "tags": [
           "Group"
         ],
-        "description": "Endpoints para listar os grupos que o usuário logado pertence do mais recente para o mais antigo",
+        "description": "Endpoints para recuperar um grupo",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "ObjectId",
+            "description": "Grupo ID."
+          },
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -1264,10 +1150,7 @@
               "type": "object",
               "properties": {
                 "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Group"
-                  }
+                  "$ref": "#/definitions/Group"
                 },
                 "status": {
                   "type": "number",
@@ -1283,6 +1166,36 @@
           "401": {
             "description": "Não autorizado"
           },
+          "404": {
+            "description": "Grupo não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "example": [
+                    "Grupo não encontrado"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 404
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/IdValidator"
+            }
+          },
           "500": {
             "description": "Erro Interno do Servidor",
             "schema": {
@@ -1290,9 +1203,7 @@
             }
           }
         }
-      }
-    },
-    "/groups/{id}": {
+      },
       "patch": {
         "tags": [
           "Group"
@@ -1309,6 +1220,11 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           },
           {
@@ -1405,94 +1321,8 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Group"
-                },
-                "status": {
-                  "type": "number",
-                  "example": 200
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "404": {
-            "description": "Grupo não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "example": [
-                    "Grupo não encontrado"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "status": {
-                  "type": "number",
-                  "example": 404
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "422": {
-            "description": "Erro de Validação",
-            "schema": {
-              "$ref": "#/definitions/IdValidator"
-            }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor",
-            "schema": {
-              "$ref": "#/definitions/Error500"
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Group"
-        ],
-        "description": "Endpoints para recuperar um grupo",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "ObjectId",
-            "description": "Grupo ID."
-          },
-          {
-            "name": "authorization",
-            "in": "header",
+            "name": "userAuth",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -1584,16 +1414,9 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userAuth": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
@@ -1653,6 +1476,122 @@
             "schema": {
               "$ref": "#/definitions/IdValidator"
             }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      }
+    },
+    "/groups": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para criar um grupo",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "description": "Informações do grupo",
+            "schema": {
+              "$ref": "#/definitions/AddGroup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Group"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 201
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "422": {
+            "description": "Erro de Validação",
+            "schema": {
+              "$ref": "#/definitions/GroupValidator"
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "description": "Endpoints para listar os grupos que o usuário logado pertence do mais recente para o mais antigo",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userAuth",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Group"
+                  }
+                },
+                "status": {
+                  "type": "number",
+                  "example": 200
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
           },
           "500": {
             "description": "Erro Interno do Servidor",

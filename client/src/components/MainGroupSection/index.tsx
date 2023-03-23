@@ -16,9 +16,13 @@ import { IGetGroups } from "../../interfaces/Groups";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import logoIcon from "../../assets/logo.png";
-import { connect } from "../../services/socket"
+import { connect } from "../../services/socket";
 
-export default function MainGroupSection() {
+interface IProps {
+    click: any;
+}
+
+export default function MainGroupSection(props: IProps) {
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
     let [reqGroups, setReqGroups] = useState([] as IGetGroups[]);
@@ -67,7 +71,6 @@ export default function MainGroupSection() {
     });
     // console.log(groupsIn);
 
-
     const socket = connect();
 
     socket.on("group", (data: any) => {
@@ -76,15 +79,14 @@ export default function MainGroupSection() {
         if (data["action"] == "delete") {
             setTimeout(() => {
                 setChange(true);
-            },1500)
+            }, 1500);
         } else if (data["action"] == "update") {
-            setChange(true)
+            setChange(true);
         } else {
             setTimeout(() => {
                 setChange(true);
-            }, 2000)
+            }, 2000);
         }
-        
     });
 
     useEffect(() => {
@@ -97,11 +99,11 @@ export default function MainGroupSection() {
             requestDb();
             setTimeout(() => {
                 setChange(false);
-            },1000)
+            }, 1000);
         } else {
             // console.log("Estado voltou ao de origem")
         }
-    }, [change])
+    }, [change]);
 
     return (
         <Context.Provider value={[]}>
@@ -149,6 +151,7 @@ export default function MainGroupSection() {
                                 : logoIcon
                         }
                         setChanged={setChange}
+                        click={props.click}
                     />
                 ))}
                 {groupsIn.map((groups) => (
@@ -168,6 +171,7 @@ export default function MainGroupSection() {
                                 : logoIcon
                         }
                         setChanged={setChange}
+                        click={props.click}
                     />
                 ))}
             </StyledGroupSection>

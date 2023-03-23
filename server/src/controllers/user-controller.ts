@@ -120,6 +120,7 @@ class UserControlller {
         */
 
         try {
+            console.log(req.query);
             const name: string = (req.query.name as string) || "";
             const service = new UserService();
             const result: IResult<IUser[]> = await service.list(name);
@@ -158,9 +159,12 @@ class UserControlller {
         */
 
         try {
-            const data = req.body;
-
             const _id = req.params.id;
+            const userAuth: any = req.query.userAuth;
+            if (userAuth._id !== _id) {
+                return res.status(401).json({ errors: ["[Não autorizado] - Não é possivel alterar um usuário diferente do seu."] });
+            }
+            const data = req.body;
             const service = new UserService();
             const result: IResult<IUser> = await service.update(_id, data);
             return res.status(result.status || 500).json(result);
@@ -236,8 +240,7 @@ class UserControlller {
 
     async getMe(req: Request, res: Response) {
         try {
-            const user = req.body.userAuth;
-
+            const user = req.query.userAuth;
             return res.status(200).json(user);
         } catch (error: any) {
             Logger.error("Erro obter os dados do usuário", error);

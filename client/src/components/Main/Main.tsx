@@ -1,4 +1,10 @@
-import { StyledMain, StyledMainSection, StyledRigthSection } from "./styles";
+import {
+    BoxMessageChat,
+    NicknameSpan,
+    StyledMain,
+    StyledMainSection,
+    StyledRigthSection,
+} from "./styles";
 import MainLeftSection from "../MainLeftSection";
 import FeedNewPublicate from "../FeedNewPublicate";
 import FeedCommentLike from "../FeedCommentLike";
@@ -24,6 +30,7 @@ interface IChat {
 
 interface IAuthor {
     name: string;
+    nickname: string;
     _id: string;
 }
 
@@ -39,6 +46,7 @@ export default function Main(): JSX.Element {
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
     const [groups, setGroups] = useState<any>();
+    const [groupId, setGroupId] = useState();
     let posts: any[] = [];
     let fail;
 
@@ -78,21 +86,31 @@ export default function Main(): JSX.Element {
             setDataFeeds(posts);
         }
 
-        async function getGroups() {
-            dataG = await chat("641a05b9e793ef2ca38b2eb0");
-            setGroups(dataG.data);
-            fail = dataG.failure;
-            setChatAll(dataG.data.data.chat);
+        fetchAndSetComponents();
+    }, []);
 
-            if (dataG?.failure) {
-                setModalAlert({ content: `${dataG.error}`, color: 'red', times: 2 })
-                return;
+    useEffect(() => {
+        async function getGroups() {
+
+            //dataG = await chat("641a05b9e793ef2ca38b2eb0");
+            //setGroups(dataG.data);
+            //fail = dataG.failure;
+            //setChatAll(dataG.data.data.chat);
+
+            //if (dataG?.failure) {
+            //    setModalAlert({ content: `${dataG.error}`, color: 'red', times: 2 })
+            //    return;
+            
+            if (groupId) {
+                dataG = await chat(groupId);
+                setGroups(dataG.data);
+                fail = dataG.failure;
+                setChatAll(dataG.data.data.chat);
+
             }
         }
-
-        fetchAndSetComponents();
         getGroups();
-    }, []);
+    }, [groupId]);
 
     const props_new_publication = {
         place_hoder: "Adicione um feed aqui!",
@@ -105,8 +123,8 @@ export default function Main(): JSX.Element {
     useEffect(() => {
         socket.on("chat", (res: any) => {
             // console.log("***********", res);
+
             const chat = dataG.data.data.chat;
-            //console.log("---------------", chat);
             setChatAll([...chat, res.data]);
             chat.push(res.data);
         });
@@ -120,9 +138,13 @@ export default function Main(): JSX.Element {
         return names.slice(0, -1);
     };
 
+    function clickGroup(e: any) {
+        setGroupId(e.target.id);
+    }
+
     return (
         <StyledMain>
-            <MainLeftSection />
+            <MainLeftSection click={(e: any) => clickGroup(e)} />
 
             <StyledMainSection>
                 <FeedNewPublicate {...props_new_publication} />
@@ -151,7 +173,7 @@ export default function Main(): JSX.Element {
 
             <StyledRigthSection>
                 <ChatComplete
-                    groupId="641a05b9e793ef2ca38b2eb0"
+                    groupId={groupId}
                     title={groups?.data?.title ? groups.data.title : "Chat"}
                     members={!fail ? membersName() : ""}
                     admin={
@@ -159,16 +181,31 @@ export default function Main(): JSX.Element {
                             ? groups.data.admin.name
                             : "Alguem"
                     }
-                    empty={false}
+                    empty={!groupId}
                 >
-                    {chatAll.map((post: IChat) => {
-                        return (
-                            <StyleMessage>
-                                <span>{post.author.name}:</span>
-                                <p>{post.message}</p>
-                            </StyleMessage>
-                        );
-                    })}
+                    {groupId ? (
+                        chatAll.map((post: IChat) => {
+                            return (
+                                <StyleMessage>
+                                    <span>
+                                        {`${post.author.name.split(" ")[0]} `}
+                                        <NicknameSpan>
+                                            {`(${post.author.nickname}) :`}
+                                        </NicknameSpan>
+                                    </span>
+                                    <p>{post.message}</p>
+                                </StyleMessage>
+                            );
+                        })
+                    ) : (
+                        <BoxMessageChat>
+                            <p>
+                                Escolha um grupo para interagir no chat, ou
+                                então, crie novos grupos com seus amigos ou
+                                rivais. 😁{" "}
+                            </p>
+                        </BoxMessageChat>
+                    )}
                 </ChatComplete>
             </StyledRigthSection>
             <ModalAlert>{modalAlert}</ModalAlert>
