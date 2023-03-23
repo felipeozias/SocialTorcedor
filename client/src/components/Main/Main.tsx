@@ -12,25 +12,45 @@ import formatTime from "../../utils/formatTime";
 import { useContext, useEffect, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import { connect } from "../../services/socket";
+import chat from "../../services/chat";
+import { StyleMessage } from "../ChatMessages/styles";
+
+interface IChat {
+    message: string;
+    author: IAuthor;
+}
+
+interface IAuthor {
+    name: string;
+    _id: string;
+}
+
+let dataG: any = [];
 
 export default function Main(): JSX.Element {
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
-    let posts: any[] = []
+    const [chatAll, setChatAll] = useState<Array<IChat>>([]);
+    const [groups, setGroups] = useState<any>();
+    let posts: any[] = [];
+    let fail;
+
     // ----- socket Feet -----
     const socket = connect();
 
     socket.on("feed", (data: any) => {
         // console.log(data);
 
-        if (data.action === 'insert' && data.target === 'post') {
+        if (data.action === "insert" && data.target === "post") {
             posts.push(data.data);
             setDataFeeds([...posts]);
         }
 
-        if (data.action === 'update' && data.target === 'post') {
+        if (data.action === "update" && data.target === "post") {
             // let feeds = dataFeeds;
-            const index = posts.findIndex(objeto => objeto._id === data.data._id);
+            const index = posts.findIndex(
+                (objeto) => objeto._id === data.data._id
+            );
 
             if (index !== -1) {
                 posts[index] = data.data;
@@ -44,7 +64,6 @@ export default function Main(): JSX.Element {
             // console.log('#### INDEX ', index);
         }
         // index = -1
-
     });
 
     // socket.off('feed');
@@ -54,10 +73,18 @@ export default function Main(): JSX.Element {
         async function fetchAndSetComponents() {
             const data = await fetchFeed();
             posts = data;
-            setDataFeeds(data)
+            setDataFeeds(data);
+        }
+
+        async function getGroups() {
+            dataG = await chat("641a05b9e793ef2ca38b2eb0");
+            setGroups(dataG.data);
+            fail = dataG.failure;
+            setChatAll(dataG.data.data.chat);
         }
 
         fetchAndSetComponents();
+        getGroups();
     }, []);
 
     const props_new_publication = {
@@ -68,37 +95,74 @@ export default function Main(): JSX.Element {
         image: true,
     };
 
+    useEffect(() => {
+        socket.on("chat", (res: any) => {
+            console.log("***********", res);
+            const chat = dataG.data.data.chat;
+            console.log("---------------", chat);
+            setChatAll([...chat, res.data]);
+            chat.push(res.data);
+        });
+    }, []);
+
+    const membersName = () => {
+        let names = `${groups?.data?.admin ? groups.data.admin.name : ""},`;
+        for (const memb of groups?.data?.members ? groups?.data?.members : []) {
+            names += ` ${memb.name},`;
+        }
+        return names.slice(0, -1);
+    };
+
     return (
         <StyledMain>
             <MainLeftSection />
 
             <StyledMainSection>
                 <FeedNewPublicate {...props_new_publication} />
-                {
-                    dataFeeds.map((feed: IGetFeed) => (
-                        <FeedCommentLike
-                            src={
-                                feed.author.pathImage !== undefined
-                                    ? "https://api.socialtorcedor.shop/assets/" +
-                                    feed.author.pathImage
-                                    : "https://api.socialtorcedor.shop/assets/user_default.jpg"
-                            }
-                            user_name={feed.author.name}
-                            time_publication={formatTime(
-                                new Date(`${feed.createdAt}`)
-                            ).toString()}
-                            comment_post={feed.content}
-                            img_post={feed.pathImage}
-                            comments={feed.comments}
-                            likes={`${feed.likes ? feed.likes.length : 0}`}
-                            thisLike={feed.likes ? feed.likes.includes(`${id}`) : false}
-                        />
-                    ))
-                }
+                {dataFeeds.map((feed: IGetFeed) => (
+                    <FeedCommentLike
+                        src={
+                            feed.author.pathImage !== undefined
+                                ? "https://api.socialtorcedor.shop/assets/" +
+                                  feed.author.pathImage
+                                : "https://api.socialtorcedor.shop/assets/user_default.jpg"
+                        }
+                        user_name={feed.author.name}
+                        time_publication={formatTime(
+                            new Date(`${feed.createdAt}`)
+                        ).toString()}
+                        comment_post={feed.content}
+                        img_post={feed.pathImage}
+                        comments={feed.comments}
+                        likes={`${feed.likes ? feed.likes.length : 0}`}
+                        thisLike={
+                            feed.likes ? feed.likes.includes(`${id}`) : false
+                        }
+                    />
+                ))}
             </StyledMainSection>
 
             <StyledRigthSection>
-                <ChatComplete groupId="641a05b9e793ef2ca38b2eb0" />
+                <ChatComplete
+                    groupId="641a05b9e793ef2ca38b2eb0"
+                    title={groups?.data?.title ? groups.data.title : "Chat"}
+                    members={!fail ? membersName() : ""}
+                    admin={
+                        groups?.data?.admin?.name
+                            ? groups.data.admin.name
+                            : "Alguem"
+                    }
+                    empty={false}
+                >
+                    {chatAll.map((post: IChat) => {
+                        return (
+                            <StyleMessage>
+                                <span>{post.author.name}:</span>
+                                <p>{post.message}</p>
+                            </StyleMessage>
+                        );
+                    })}
+                </ChatComplete>
             </StyledRigthSection>
         </StyledMain>
     );
