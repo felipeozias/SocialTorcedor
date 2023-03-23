@@ -39,7 +39,7 @@ export async function updateGroupService(userData: IUpdateGroup) {
                 formData.append("members", userData.members[i]);
             }
         } else {
-            // formData.append("members", [] as any);
+            formData.append("members", "");
         }
         formData.append("title", userData.title);
         formData.append("photo", userData.photo);
