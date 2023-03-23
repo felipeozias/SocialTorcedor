@@ -14,7 +14,7 @@ import { apiRequestUsers } from "../../database";
 import { IUser } from "../../interfaces/Users";
 import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
-import { connect } from "../../services/socket"
+import { connect } from "../../services/socket";
 
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
@@ -26,13 +26,12 @@ export default function MainUserSection(): JSX.Element {
 
     const socket = connect();
 
-    socket.on("feed", (data : any) => {
-
+    socket.on("feed", (data: any) => {
         if (data["target"] == "user") {
             // console.log("alterou usuario")
             setChanged(true);
         }
-    })
+    });
 
     const userId = id.toString();
 
@@ -57,13 +56,11 @@ export default function MainUserSection(): JSX.Element {
         testApi();
         setTimeout(() => {
             setChanged(false);
-        },1000)
-    }, [changed])
+        }, 1000);
+    }, [changed]);
 
     function testApi() {
-        let removedSelf = usersDb.filter(
-            (users) => users._id !== userId
-        );
+        let removedSelf = usersDb.filter((users) => users._id !== userId);
         let filteredUsers = removedSelf.filter((users) =>
             users.name.toLowerCase().includes(`${userValue.toLowerCase()}`)
         );
@@ -75,7 +72,7 @@ export default function MainUserSection(): JSX.Element {
                     _id: filteredUsers[i]._id,
                     nickname: filteredUsers[i].nickname,
                     team: filteredUsers[i].team,
-                    pathImage: filteredUsers[i].pathImage
+                    pathImage: filteredUsers[i].pathImage,
                 };
                 filteredArray.push(tempObj);
             }
@@ -117,10 +114,15 @@ export default function MainUserSection(): JSX.Element {
             <UsersContainer>
                 {usersF.map((users) => (
                     <MainUsers
-                    key={users._id} 
-                    name={users.name.split(" ")[0]}
-                    nickname={users.nickname} 
-                    teamUrl={users.pathImage == undefined ? `${users.team.toLowerCase()}.png` : users.pathImage}/>
+                        key={users._id}
+                        name={users.name.split(" ")[0]}
+                        nickname={users.nickname}
+                        teamUrl={
+                            users.pathImage == undefined
+                                ? `${users.team.toLowerCase()}.png`
+                                : users.pathImage
+                        }
+                    />
                 ))}
             </UsersContainer>
         </StyledUserSection>

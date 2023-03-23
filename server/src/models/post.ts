@@ -14,7 +14,7 @@ const comentSchema = new Schema(
 const postSchema = new Schema(
     {
         pathImage: { type: String, required: true },
-        content: { type: String, required: true, trim: true, minLength: 5, maxLength: 2500 },
+        content: { type: String, required: false, trim: true, maxLength: 2500 },
         author: { type: Schema.Types.ObjectId, ref: "User", required: true },
         likes: { type: [Schema.Types.ObjectId], ref: "User" },
         comments: [comentSchema],

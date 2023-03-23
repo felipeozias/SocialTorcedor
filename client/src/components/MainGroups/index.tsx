@@ -13,9 +13,9 @@ import {
     Popup2,
     Popup3,
 } from "./styles";
-import exitIcon from "../../assets/exit.png";
-import editIcon from "../../assets/edit.png";
-import deleteIcon from "../../assets/delete.png";
+import exitIcon from "../../assets/exitn.png";
+import editIcon from "../../assets/edita.png";
+import deleteIcon from "../../assets/delete.svg";
 import { useContext, useState } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import Context from "../../hooks/useContext";
@@ -38,6 +38,7 @@ interface Iprops {
     position: number;
     pathImage: string;
     setChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    click: any;
 }
 
 export default function MainGroups(props: Iprops): JSX.Element {
@@ -118,7 +119,11 @@ export default function MainGroups(props: Iprops): JSX.Element {
     }
 
     return (
-        <Container border={borderActive}>
+        <Container
+            border={borderActive}
+            /* onClick={props.click}
+            id={props.groupId} */
+        >
             <NotificationModal
                 message={notifMessage}
                 isOpen={isOpenNotif}
@@ -134,19 +139,27 @@ export default function MainGroups(props: Iprops): JSX.Element {
                 group={groupAtributes}
                 setChanged={props.setChanged}
             />
-            <ImgContainer>
-                <Img src={props.pathImage} />
+            <ImgContainer src={props.pathImage}>
+                {/* <Img src={props.pathImage} /> */}
             </ImgContainer>
             <Pcontainer
-                /* onClick={activateBorder} */ className="group-me-user"
+                onClick={props.click}
+                className="group-me-user"
                 id={props.groupId}
             >
-                <P textSize={props.textSize}> {props.groupName} </P>
-                <P2> Criador : {
-                props.adminName.split(" ").length == 1 ? 
-                props.adminName.split(" ")[0] : 
-                `${props.adminName.split(" ")[0]} ${props.adminName.split(" ")[1]}`
-                }</P2>
+                <P id={props.groupId} textSize={props.textSize}>
+                    {" "}
+                    {props.groupName}{" "}
+                </P>
+                <P2 id={props.groupId}>
+                    {" "}
+                    Criador :{" "}
+                    {props.adminName.split(" ").length == 1
+                        ? props.adminName.split(" ")[0]
+                        : `${props.adminName.split(" ")[0]} ${
+                              props.adminName.split(" ")[1]
+                          }`}
+                </P2>
             </Pcontainer>
             <ImgContainer2>
                 {isOpenExitIcon && (

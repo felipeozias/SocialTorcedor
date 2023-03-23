@@ -18,17 +18,15 @@ export async function fetchFeed() {
                 failure: true,
                 error: "Ocorreu um erro ao buscar os feeds",
                 status: res.status,
+                data: [],
             };
         }
 
         let data = (await res.json()).data;
+        return { failure: false, error: null, data }
 
-        return data;
     } catch (err) {
-        alert(
-            "Houve um erro ao carregar os feeds. Tente novamente ou contacte um administrador!"
-        );
-        console.error(err);
+        return { failure: true, error: `Ocorreu um erro ao carregar os feeds. Tente novamente ou contacte um administrador! Erro: ${err}`, data: [] }
     }
 }
 
@@ -50,26 +48,21 @@ export async function postFeed(content: string, image: any, userId: string) {
         };
 
         const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);
-
+        
         if (!res.ok) {
-            console.error("Erro ao fazer a publicação", await res.json());
             return {
                 failure: true,
-                error: "Ocorreu um erro ao fazer a publicação",
+                error: `Ocorreu um erro ao fazer a publicação. Erro: ${await res.json()}`,
                 status: res.status,
+                data: [],
             };
         }
 
         let data = (await res.json()).data;
-        // alert("Publicação realizada com sucesso!");
+        return { failure: false, error: null, data };
 
-        return { failure: false, data };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
-        alert(
-            "Houve um erro ao enviar a publicação. Tente novamente ou contacte um administrador!"
-        );
-        console.error(err);
+        return { failure: true, error: `Ocorreu um erro ao enviar a publicação. Tente novamente ou contacte um administrador!. Erro: ${err}`, data: [] };
     }
 }
 
@@ -88,23 +81,19 @@ export async function postCommentFeed(content: string, userId: string, postId: s
         const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/comments`, options);
 
         if (!res.ok) {
-            console.error("Erro ao fazer comentário", await res.json());
             return {
                 failure: true,
-                error: "Ocorreu um erro ao fazer o comentário",
+                error: `Ocorreu ao comentar, se persistir contacte o administrador! Erro: ${await res.json()}`,
                 status: res.status,
+                data: []
             };
         }
 
         let data = (await res.json()).data;
-        return { failure: false, data };
+        return { failure: false, error: null, data };
 
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
-        alert(
-            "Houve um erro ao enviar comentário. Tente novamente ou contacte um administrador!"
-        );
-        console.error(err);
+        return { failure: true, error: `Ocorreu ao comentar, se persistir contacte o administrador! Erro: ${err}` };
     }
 }
 
@@ -116,24 +105,11 @@ export async function LikeFeed(postId: string, userId: string) {
             headers: { authorization: getCookie("token") as string }
         };
 
-        // console.log('---> ...');
-        // console.log(process.env.REACT_APP_API, postId, userId, getCookie("token"));
-       
         const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/like/${userId}`, options);
-        
-        // console.log('---> FINALIZOU');
-
         let data = (await res.json()).data;
-        if (res.ok) {
-            // console.log('---> Curtiu');
-        }
 
-        return data;
+        return { failure: false, error: null, data };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
-        alert(
-            "Erro ao curtir. Tente novamente ou contacte um administrador!"
-        );
-        console.error(err);
+        return { failure: true, error: `Erro ao curtir, recarregue a página e tente novamente!` };
     }
 }
