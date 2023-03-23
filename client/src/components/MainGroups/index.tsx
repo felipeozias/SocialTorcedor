@@ -112,7 +112,7 @@ export default function MainGroups(props: Iprops): JSX.Element {
 
             setTimeout(() => {
                 setIsOpenNotif(false);
-                // props.setChanged(true);
+                props.setChanged(true);
             }, 1500);
         });
     }
