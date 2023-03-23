@@ -19,7 +19,7 @@ export default function Feed(props: IPropsFeednewPublication): JSX.Element {
     const [modalAlert, setModalAlert] = useState({ content: ``, color: '', times: 2 })
 
     function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string, inputRef: React.RefObject<HTMLTextAreaElement>) {
-        if (content) {
+        if (content !== undefined) {
             postFeed(content, image, userId).then((data) => {
 
                 if (data?.failure) {
