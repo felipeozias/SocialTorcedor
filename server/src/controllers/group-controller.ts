@@ -25,8 +25,12 @@ class GroupController {
 
         */
             const data: IGroup = req.body;
-            const service = new GroupService();
+            const userAuth: any = req.query.userAuth;
+            if (userAuth._id !== data.admin) {
+                return res.status(401).json({ errors: ["Você não tem permissão para criar um grupo e adicionar outro usuário como administrador"] });
+            }
 
+            const service = new GroupService();
             const result: IResult<IGroup> = await service.create(data);
 
             return res.status(result.status || 500).json(result);
@@ -153,8 +157,9 @@ class GroupController {
         */
         try {
             const service = new GroupService();
-            const userAuth = req.body.userAuth._id || "";
-            const result: IResult<IGroup[]> = await service.list(userAuth);
+            const userAuth: any = req.query.userAuth || "";
+
+            const result: IResult<IGroup[]> = await service.list(userAuth._id);
 
             return res.status(result.status || 500).json(result);
         } catch (error: any) {
@@ -234,6 +239,11 @@ class GroupController {
         try {
             const id = req.params.id;
             const data: IMessage = { message: req.body.message, author: req.body.author };
+            const userAuth: any = req.query.userAuth;
+            if (userAuth._id !== data.author) {
+                return res.status(401).json({ errors: ["Você não tem permissão para adicionar uma mensagem como sendo outro usuário"] });
+            }
+
             const service = new GroupService();
             const result: IResult<Boolean> = await service.addMessage(id, data);
 
