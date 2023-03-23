@@ -40,13 +40,14 @@ export const BoxInput = styled.div`
     justify-content: center;
     border: none;
     border-radius: 7px;
-    background-color: #c4c4c4;
+    background-color: #c9c9c9;
     color: #000000;
     margin: 0;
 `;
 
 export const InputBox = styled.input`
     font-family: Inter, sans-serif;
+    font-size: 12pt;
     color: #3a3a3a;
     width: 78%;
     border-radius: 10px;
@@ -66,7 +67,7 @@ export const ButtonChat = styled.button`
     margin-top: 8px;
     border: none;
     border-radius: 7px;
-    background-color: #c4c4c4;
+    background-color: #c9c9c9;
     color: #3a3a3a;
     font-size: 11pt;
     font-weight: bold;

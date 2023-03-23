@@ -137,7 +137,10 @@ export default function MainGroups(props: Iprops): JSX.Element {
             <ImgContainer>
                 <Img src={props.pathImage} />
             </ImgContainer>
-            <Pcontainer onClick={activateBorder}>
+            <Pcontainer
+                /* onClick={activateBorder} */ className="group-me-user"
+                id={props.groupId}
+            >
                 <P textSize={props.textSize}> {props.groupName} </P>
                 <P2> Criador : {
                 props.adminName.split(" ").length == 1 ? 
