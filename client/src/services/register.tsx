@@ -5,8 +5,6 @@ export default async function registerService(userData: any) {
         return {auth: false, isNoAuth: true, status: 400, password: false}
     }
 
-    console.error(userData.errors);
-
     try {
         const options = {
             method: "POST",
@@ -16,13 +14,9 @@ export default async function registerService(userData: any) {
 
         const url: string = process.env.REACT_APP_REGISTER as string;
         const res = await fetch(url, options);
-        console.log(res);
         const data = await res.json();
 
-        if (!res.ok) {
-            console.log("Erro ao fazer requisição", data.errors);
-           
-            
+        if (!res.ok) {         
             return { auth: false, isNoAuth: true, status: res.status, password: true, error:data.errors[0]};
         }
 
@@ -39,7 +33,6 @@ export default async function registerService(userData: any) {
         // alert(
         //     "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
         // );
-        console.log(err);
         return { auth: false, status: 500, data: [], password: true,  error: ""};
     }
 }
