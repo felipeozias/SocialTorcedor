@@ -37,13 +37,13 @@ interface IAuthor {
 let dataG: any = [];
 let idClick: string = "";
 
-let posts: any[] = [];
+// let posts: any[] = [];
 // ----- socket Feed -----
-let socket: any;
+// const socket: any;
 // -----------------------
 
 export default function Main(): JSX.Element {
-    socket = connect();
+    const socket = connect();
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
