@@ -91,7 +91,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
 
         const userId = id;
         const postId = elementInput ? elementInput.id.toString().replace('.jpg', '').replace('.png', '') : '';
-        const content: string = elementInput ? elementInput.value : '';
+        const content: string = elementInput ? elementInput.value.trim() : '';
 
         if ((content ? content.length : 0) > 4) {
 
