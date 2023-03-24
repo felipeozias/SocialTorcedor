@@ -22,6 +22,7 @@ interface IProps {
     click: any;
 }
 
+const socket = connect();
 export default function MainGroupSection(props: IProps) {
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
@@ -64,28 +65,28 @@ export default function MainGroupSection(props: IProps) {
         groupsIn.push(reqGroups[el]);
     });
 
-    const socket = connect();
-
-    socket.on("group", (data: any) => {
-        if (data["action"] == "delete") {
-            setTimeout(() => {
+    useEffect(() => {
+        socket.on("group", (data: any) => {
+            if (data["action"] === "delete") {
+                setTimeout(() => {
+                    setChange(true);
+                }, 1500);
+            } else if (data["action"] === "update") {
                 setChange(true);
-            }, 1500);
-        } else if (data["action"] == "update") {
-            setChange(true);
-        } else {
-            setTimeout(() => {
-                setChange(true);
-            }, 2000);
-        }
-    });
+            } else {
+                setTimeout(() => {
+                    setChange(true);
+                }, 2000);
+            }
+        });
+    }, [])
 
     useEffect(() => {
         requestDb();
     }, [reqSuccess]);
 
     useEffect(() => {
-        if (change == true) {
+        if (change === true) {
             requestDb();
             setTimeout(() => {
                 setChange(false);
@@ -103,7 +104,7 @@ export default function MainGroupSection(props: IProps) {
                         "#groupSection"
                     ) as HTMLElement;
                     const scrollTop = groupObj.scrollTop;
-                    if (scrollTop == 0) {
+                    if (scrollTop === 0) {
                         setPositionPopUp(80);
                     } else {
                         setPositionPopUp(80 + scrollTop * 2);
@@ -134,7 +135,7 @@ export default function MainGroupSection(props: IProps) {
                         position={positionPopUp}
                         groupId={groups._id}
                         pathImage={
-                            groups.pathImage != undefined
+                            groups.pathImage !== undefined
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}?${date}`
                                 : logoIcon
                         }
@@ -154,7 +155,7 @@ export default function MainGroupSection(props: IProps) {
                         position={positionPopUp}
                         groupId={groups._id}
                         pathImage={
-                            groups.pathImage != undefined
+                            groups.pathImage !== undefined
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}`
                                 : logoIcon
                         }
