@@ -39,7 +39,7 @@ let idClick: string = "";
 
 let posts: any[] = [];
 // ----- socket Feed -----
-const socket = connect();
+//const socket = connect();
 // -----------------------
 
 export default function Main(): JSX.Element {
@@ -120,12 +120,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            console.log(
-                "aaaaaaaaaaaaaaaaaaaaaaaaa",
-                res.group._id,
-                "bbbbbb",
-                idClick
-            );
             if (res.group._id === idClick) {
                 const chat = dataG.data.data.chat;
                 setChatAll([...chat, res.data]);
