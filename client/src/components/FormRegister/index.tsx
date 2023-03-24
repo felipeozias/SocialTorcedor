@@ -9,7 +9,8 @@ import { useState } from "react";
 interface IProps {
     submit: (e: any) => void;
     noAuth?: boolean;
-    password?: boolean;
+    password?: boolean; 
+    error: string;
 }
 
 export default function FormRegister(props: IProps): JSX.Element {
@@ -38,7 +39,7 @@ export default function FormRegister(props: IProps): JSX.Element {
                             minLength: 5,
                             maxLength: 25,
                         }),
-                    }}
+                    }}                    
                 >
                     Apelido:
                 </InputUser>
@@ -59,6 +60,11 @@ export default function FormRegister(props: IProps): JSX.Element {
                 {errors.nickname && errors.nickname.type === "maxLength" && (
                     <ErrorMessage>
                         O Nome precisa conter no máximo 25 letras
+                    </ErrorMessage>
+                )}
+                 {errors.error && (
+                    <ErrorMessage>
+                        O apelido já existe, tente um novo
                     </ErrorMessage>
                 )}
 
@@ -145,13 +151,12 @@ export default function FormRegister(props: IProps): JSX.Element {
                     <ErrorMessage>As senhas precisam ser iguais</ErrorMessage>
                 )}
             </BoxInputs>
-
-            {props.noAuth && props.password && (
-                <ErrorServer>
-                    Houve um erro no servidor :({<br />} tente novamente
+            {props.noAuth && props.password && props.error && (                
+                <ErrorServer>                     
+                   {props.error.replace("[nickname]: O apelido já existe","Apelido já existe, por favor tente outro ;)")}
                 </ErrorServer>
             )}
-
+           
             <Button>CADASTRAR</Button>
             <Message>
                 Já possui conta?{" "}

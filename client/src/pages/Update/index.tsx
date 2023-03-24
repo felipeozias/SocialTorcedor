@@ -19,6 +19,7 @@ export default function Update(): JSX.Element {
     const [ok, setOk] = useState(false);
     const [password, setPassword] = useState(true);
 
+
     useEffect(() => {
         if (ok) navigate("/home");
     }, [ok, navigate]);
