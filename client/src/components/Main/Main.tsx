@@ -39,10 +39,11 @@ let idClick: string = "";
 
 let posts: any[] = [];
 // ----- socket Feed -----
-const socket = connect();
+let socket: any;
 // -----------------------
 
 export default function Main(): JSX.Element {
+    socket = connect();
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
@@ -58,10 +59,11 @@ export default function Main(): JSX.Element {
     });
 
     // ----- socket Feet -----
-    const socket = connect();
+    // const socket = connect();
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
+            // console.log('&&&&&&&&&&&', data);
 
             if (data.action === "insert" && data.target === "post") {
                 posts.unshift(data.data);
