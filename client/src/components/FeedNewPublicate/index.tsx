@@ -20,25 +20,39 @@ export default function Feed(props: IPropsFeednewPublication): JSX.Element {
 
     function handleClick(e: MouseEvent<HTMLButtonElement>, image: any, content: string, userId: string, inputRef: React.RefObject<HTMLTextAreaElement>) {
         if (content !== undefined) {
-            postFeed(content, image, userId).then((data) => {
 
-                if (data?.failure) {
-                    setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
-                    return;
-                }
-
-                if (data?.failure === false) {
-                    setModalAlert({ content: `Publicação realizada com sucesso!`, color: 'green', times: 2 })
-
-                    if (inputRef.current) {
-                        inputRef.current.value = '';
-
-                        const localImg = document.getElementById('imgForInputPublication');
-                        if (localImg) { localImg.remove() }
-                        
-                    }
+            let validation = false;
+            
+            const valueContent = content.split(' ');
+            valueContent.forEach((value) => {
+                if (value.length > 30) {
+                    validation = true
                 }
             })
+
+            if (validation) {
+                setModalAlert({ content: `Cada palavra pode conter até 30 caracteres!`, color: 'red', times: 2 });
+            } else {
+                postFeed(content, image, userId).then((data) => {
+    
+                    if (data?.failure) {
+                        setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
+                        return;
+                    }
+    
+                    if (data?.failure === false) {
+                        setModalAlert({ content: `Publicação realizada com sucesso!`, color: 'green', times: 2 })
+    
+                        if (inputRef.current) {
+                            inputRef.current.value = '';
+    
+                            const localImg = document.getElementById('imgForInputPublication');
+                            if (localImg) { localImg.remove() }
+                            
+                        }
+                    }
+                })
+            }
         }
     }
 

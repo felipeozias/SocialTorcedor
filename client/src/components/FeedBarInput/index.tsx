@@ -70,7 +70,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                 if (inputRef.current && inputRef.current.value !== '') {
                     content = inputRef.current.value
                 }
-                
+
                 props.click(
                     e,
                     image,
@@ -94,18 +94,32 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
         const content: string = elementInput ? elementInput.value : '';
 
         if ((content ? content.length : 0) > 4) {
-            postCommentFeed(content, userId, postId).then(
-                (data) => {
-                    if (data?.failure) {
-                        setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
-                        return;
-                    }
 
-                    if (data?.failure === false && elementInput) {
-                        elementInput.value = '';
-                    }
+            let validation = false;
+
+            const valueContent = content.split(' ');
+            valueContent.forEach((value) => {
+                if (value.length > 30) {
+                    validation = true
                 }
-            )
+            })
+
+            if (validation) {
+                setModalAlert({ content: `Cada palavra pode conter até 30 caracteres!`, color: 'red', times: 2 });
+            } else {
+                postCommentFeed(content, userId, postId).then(
+                    (data) => {
+                        if (data?.failure) {
+                            setModalAlert({ content: `${data.error}`, color: 'red', times: 2 })
+                            return;
+                        }
+
+                        if (data?.failure === false && elementInput) {
+                            elementInput.value = '';
+                        }
+                    }
+                )
+            }
         } else {
             setModalAlert({ content: `Escreva um comentário com pelo menos 5 caracteres!`, color: 'red', times: 2 });
         }
