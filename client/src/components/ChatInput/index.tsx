@@ -1,6 +1,5 @@
 import { BoxInput, ButtonChat, InputBox, StyledChatContainer } from "./styles";
-import { useContext, useRef, useState } from "react";
-import DataUserForHeader from "../contexts/DataUserForHeader";
+import { useRef, useState } from "react";
 import { sendMessage } from "../../services/chat";
 
 interface IProps {
@@ -8,17 +7,19 @@ interface IProps {
 }
 
 export default function ChatInput(props: IProps) {
-    const { id } = useContext(DataUserForHeader);
     const [value, setValue] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
     const postChat = () => {
-        sendMessage(props.id /* "641a05b9e793ef2ca38b2eb0" */, value);
-        const input = inputRef.current;
+        if (value && value.trim() !== "") {
+            sendMessage(props.id, value);
+            const input = inputRef.current;
 
-        if (input) {
-            input.value = "";
-            input.focus();
+            if (input) {
+                input.value = "";
+                input.focus();
+                setValue("");
+            }
         }
     };
 
@@ -34,11 +35,6 @@ export default function ChatInput(props: IProps) {
                 />
                 <ButtonChat onClick={postChat}>Enviar</ButtonChat>
             </BoxInput>
-            {/* <FeedBarInput
-                place_hoder="Escreva sua mensagem!"
-                action="Enviar"
-                emotion={false}
-            /> */}
         </StyledChatContainer>
     );
 }

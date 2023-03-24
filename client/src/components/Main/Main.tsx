@@ -35,6 +35,7 @@ interface IAuthor {
 }
 
 let dataG: any = [];
+let idClick: string = "";
 
 let posts: any[] = [];
 // ----- socket Feed -----
@@ -46,7 +47,7 @@ export default function Main(): JSX.Element {
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
     const [groups, setGroups] = useState<any>();
-    const [groupId, setGroupId] = useState();
+    const [groupId, setGroupId] = useState("");
     let posts: any[] = [];
     let fail;
 
@@ -99,7 +100,7 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         async function getGroups() {
-            if (groupId) {
+            if (groupId && groupId !== "") {
                 dataG = await chat(groupId);
                 setGroups(dataG.data);
                 fail = dataG.failure;
@@ -119,9 +120,17 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            const chat = dataG.data.data.chat;
-            setChatAll([...chat, res.data]);
-            chat.push(res.data);
+            console.log(
+                "aaaaaaaaaaaaaaaaaaaaaaaaa",
+                res.group._id,
+                "bbbbbb",
+                idClick
+            );
+            if (res.group._id === idClick) {
+                const chat = dataG.data.data.chat;
+                setChatAll([...chat, res.data]);
+                chat.push(res.data);
+            }
         });
     }, []);
 
@@ -134,6 +143,9 @@ export default function Main(): JSX.Element {
     };
 
     function clickGroup(e: any) {
+        console.log("Id do click ", e.target.id);
+        idClick = e.target.id as string;
+        setGroupId("");
         setGroupId(e.target.id);
     }
 
