@@ -78,6 +78,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     id,
                     inputRef
                 );
+                setImage('');
             } else {
                 setModalAlert({ content: `Insira uma foto!`, color: 'red', times: 2 });
             }
