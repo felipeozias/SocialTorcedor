@@ -32,7 +32,6 @@ export default async function loginService(formData: any) {
 
         return { auth: true, status: res.status, data: data };
     } catch (err) {
-        /// Lembrar de fazer alguma pagina de erro
         alert("Houve um erro ao entrar. Tente novamente!");
         console.error(err);
     }

@@ -59,7 +59,6 @@ export default function Main(): JSX.Element {
     });
 
     // ----- socket Feet -----
-    // const socket = connect();
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
@@ -122,7 +121,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-
             if (res.group._id === idClick) {
                 const chat = dataG.data.data.chat;
                 setChatAll([...chat, res.data]);
@@ -166,7 +164,12 @@ export default function Main(): JSX.Element {
                         src={
                             feed?.author?.pathImage !== undefined
                                 ? `${process.env.REACT_APP_API}/assets/${feed?.author?.pathImage}`
-                                : `${process.env.REACT_APP_API}/assets/${feed?.author?.team.toLocaleLowerCase().replace('-', ' ').replace(' ', '')}.png`
+                                : `${
+                                      process.env.REACT_APP_API
+                                  }/assets/${feed?.author?.team
+                                      .toLocaleLowerCase()
+                                      .replace("-", " ")
+                                      .replace(" ", "")}.png`
                         }
                         user_name={feed?.author?.name}
                         time_publication={formatTime(
