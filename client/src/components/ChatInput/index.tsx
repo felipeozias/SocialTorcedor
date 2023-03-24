@@ -32,6 +32,11 @@ export default function ChatInput(props: IProps) {
                         setValue(e.target.value);
                     }}
                     ref={inputRef}
+                    onKeyUp={(e) => {
+                        if (e.code === "Enter" || e.code === "NumpadEnter") {
+                            postChat();
+                        }
+                    }}
                 />
                 <ButtonChat onClick={postChat}>Enviar</ButtonChat>
             </BoxInput>

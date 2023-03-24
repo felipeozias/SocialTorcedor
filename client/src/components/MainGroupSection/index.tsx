@@ -22,8 +22,8 @@ interface IProps {
     click: any;
 }
 
-const socket = connect();
 export default function MainGroupSection(props: IProps) {
+    const socket = connect();
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
     let [reqGroups, setReqGroups] = useState([] as IGetGroups[]);
