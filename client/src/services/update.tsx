@@ -40,7 +40,6 @@ const updateUser = async (userData: any): Promise<any> => {
 
         return { ok: true, data , password: true};
     } catch (error) {
-        console.log(error);
         return { ok: false, data: [] , password: true };
     }
 };

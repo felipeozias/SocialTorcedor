@@ -48,7 +48,7 @@ export async function postFeed(content: string, image: any, userId: string) {
         };
 
         const res = await fetch(`${process.env.REACT_APP_API}/posts`, options);
-        
+
         if (!res.ok) {
             return {
                 failure: true,
@@ -107,6 +107,7 @@ export async function LikeFeed(postId: string, userId: string) {
 
         const res = await fetch(`${process.env.REACT_APP_API}/posts/${postId}/like/${userId}`, options);
         let data = (await res.json()).data;
+        // console.log('retorno fetch ===> ', data);
 
         return { failure: false, error: null, data };
     } catch (err) {

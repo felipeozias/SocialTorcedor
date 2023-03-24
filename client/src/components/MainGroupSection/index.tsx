@@ -22,6 +22,7 @@ interface IProps {
     click: any;
 }
 
+const socket = connect();
 export default function MainGroupSection(props: IProps) {
     const { isOpen, toggle } = useModal();
     let [positionPopUp, setPositionPopUp] = useState(80);
@@ -35,27 +36,22 @@ export default function MainGroupSection(props: IProps) {
 
     async function requestDb() {
         let res = await apiRequestGroups();
-        // console.log(res)
         if (res.succesfull) {
             setReqGroups(res.data);
             setReqSuccess(res.succesfull);
-            //console.log(res.data);
         }
     }
 
     function addGroup() {
-        // console.log("Criar grupo!")
         toggle();
     }
 
     let filteredGroupsOwner = reqGroups.filter((group) =>
         group.admin._id.includes(userId)
     );
-    // console.log(filteredGroupsOwner)
     let filteredGroupsIn = reqGroups.map((group) =>
         group.members.filter((users) => users._id.includes(userId))
     );
-    // console.log(filteredGroupsIn)
     let positionArray: Array<number> = [];
     let c = 0;
     filteredGroupsIn.forEach((el) => {
@@ -64,44 +60,38 @@ export default function MainGroupSection(props: IProps) {
         }
         c++;
     });
-    // console.log(positionArray);
     let groupsIn: IGetGroups[] = [];
     positionArray.forEach((el) => {
         groupsIn.push(reqGroups[el]);
     });
-    // console.log(groupsIn);
 
-    const socket = connect();
-
-    socket.on("group", (data: any) => {
-        // console.log(data)
-        // console.log(data.length)
-        if (data["action"] == "delete") {
-            setTimeout(() => {
+    useEffect(() => {
+        socket.on("group", (data: any) => {
+            if (data["action"] === "delete") {
+                setTimeout(() => {
+                    setChange(true);
+                }, 1500);
+            } else if (data["action"] === "update") {
                 setChange(true);
-            }, 1500);
-        } else if (data["action"] == "update") {
-            setChange(true);
-        } else {
-            setTimeout(() => {
-                setChange(true);
-            }, 2000);
-        }
-    });
+            } else {
+                setTimeout(() => {
+                    setChange(true);
+                }, 2000);
+            }
+        });
+    }, [])
 
     useEffect(() => {
         requestDb();
     }, [reqSuccess]);
 
     useEffect(() => {
-        if (change == true) {
-            // console.log("Grupo modificado!");
+        if (change === true) {
             requestDb();
             setTimeout(() => {
                 setChange(false);
             }, 1000);
         } else {
-            // console.log("Estado voltou ao de origem")
         }
     }, [change]);
 
@@ -114,8 +104,7 @@ export default function MainGroupSection(props: IProps) {
                         "#groupSection"
                     ) as HTMLElement;
                     const scrollTop = groupObj.scrollTop;
-                    // console.log(scrollTop)
-                    if (scrollTop == 0) {
+                    if (scrollTop === 0) {
                         setPositionPopUp(80);
                     } else {
                         setPositionPopUp(80 + scrollTop * 2);
@@ -146,7 +135,7 @@ export default function MainGroupSection(props: IProps) {
                         position={positionPopUp}
                         groupId={groups._id}
                         pathImage={
-                            groups.pathImage != undefined
+                            groups.pathImage !== undefined
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}?${date}`
                                 : logoIcon
                         }
@@ -166,7 +155,7 @@ export default function MainGroupSection(props: IProps) {
                         position={positionPopUp}
                         groupId={groups._id}
                         pathImage={
-                            groups.pathImage != undefined
+                            groups.pathImage !== undefined
                                 ? `${process.env.REACT_APP_API}/assets/${groups.pathImage}`
                                 : logoIcon
                         }

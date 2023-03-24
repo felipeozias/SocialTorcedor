@@ -1,8 +1,8 @@
 import { connect } from "./socket";
 
 export default async function registerService(userData: any) {
-    /* const socket = connect();
-    socket.disconnect(); */
+    // const socket = connect();
+    // socket.disconnect();
 
     if (userData.password !== userData.password2) {
         return { auth: false, isNoAuth: true, status: 400, password: false };

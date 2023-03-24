@@ -39,10 +39,12 @@ let idClick: string = "";
 
 let posts: any[] = [];
 // ----- socket Feed -----
-//const socket = connect();
+//let socket: any;
 // -----------------------
 
 export default function Main(): JSX.Element {
+    //socket = connect();
+    const socket = connect();
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
@@ -58,10 +60,11 @@ export default function Main(): JSX.Element {
     });
 
     // ----- socket Feet -----
-    const socket = connect();
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
+            // console.log('&&&&&&&&&&&', data);
+
             if (data.action === "insert" && data.target === "post") {
                 posts.unshift(data.data);
                 setDataFeeds([]);
@@ -137,7 +140,6 @@ export default function Main(): JSX.Element {
     };
 
     function clickGroup(e: any) {
-        console.log("Id do click ", e.target.id);
         idClick = e.target.id as string;
         setGroupId("");
         setGroupId(e.target.id);
@@ -153,9 +155,13 @@ export default function Main(): JSX.Element {
                     <FeedCommentLike
                         src={
                             feed?.author?.pathImage !== undefined
-                                ? "https://api.socialtorcedor.shop/assets/" +
-                                  feed?.author?.pathImage
-                                : "https://api.socialtorcedor.shop/assets/user_default.jpg"
+                                ? `${process.env.REACT_APP_API}/assets/${feed?.author?.pathImage}`
+                                : `${
+                                      process.env.REACT_APP_API
+                                  }/assets/${feed?.author?.team
+                                      .toLocaleLowerCase()
+                                      .replace("-", " ")
+                                      .replace(" ", "")}.png`
                         }
                         user_name={feed?.author?.name}
                         time_publication={formatTime(
