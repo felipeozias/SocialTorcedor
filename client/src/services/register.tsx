@@ -1,9 +1,11 @@
-/// Lembrar de fazer alguma pagina de erro
+import { connect } from "./socket";
 
 export default async function registerService(userData: any) {
-    
-    if(userData.password !== userData.password2){
-        return {auth: false, isNoAuth: true, status: 400, password: false}
+    const socket = connect();
+    socket.disconnect();
+
+    if (userData.password !== userData.password2) {
+        return { auth: false, isNoAuth: true, status: 400, password: false };
     }
 
     try {
@@ -18,7 +20,12 @@ export default async function registerService(userData: any) {
 
         if (!res.ok) {
             console.error("Erro ao fazer requisição", await res.json());
-            return { auth: false, isNoAuth: true, status: res.status, password: true };
+            return {
+                auth: false,
+                isNoAuth: true,
+                status: res.status,
+                password: true,
+            };
         }
 
         const data = await res.json();
@@ -35,6 +42,6 @@ export default async function registerService(userData: any) {
             "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
         );
         console.error(err);
-        return { auth: false, status: 500, data: [], password: true};
+        return { auth: false, status: 500, data: [], password: true };
     }
 }

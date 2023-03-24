@@ -1,4 +1,9 @@
+import { connect } from "./socket";
+
 export default async function loginService(formData: any) {
+    const socket = connect();
+    socket.disconnect();
+
     try {
         const options = {
             method: "POST",
