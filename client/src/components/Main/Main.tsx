@@ -62,7 +62,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
-            console.log(data);
 
             if (data.action === "insert" && data.target === "post") {
                 posts.unshift(data.data);
@@ -94,8 +93,6 @@ export default function Main(): JSX.Element {
                 return;
             }
             posts = data?.data;
-            console.log(posts);
-
             setDataFeeds(posts);
         }
 
@@ -124,12 +121,7 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            console.log(
-                "aaaaaaaaaaaaaaaaaaaaaaaaa",
-                res.group._id,
-                "bbbbbb",
-                idClick
-            );
+
             if (res.group._id === idClick) {
                 const chat = dataG.data.data.chat;
                 setChatAll([...chat, res.data]);
@@ -147,7 +139,6 @@ export default function Main(): JSX.Element {
     };
 
     function clickGroup(e: any) {
-        console.log("Id do click ", e.target.id);
         idClick = e.target.id as string;
         setGroupId("");
         setGroupId(e.target.id);
