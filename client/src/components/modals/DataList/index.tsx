@@ -21,17 +21,13 @@ export default function DataList() {
 
     async function createDataOptions() {
         let list = document.querySelector("#user-list");
-        // console.log(list)
+
         users.forEach(el => {
-            if (el.nickname != userNickname) {
+            if (el.nickname !== userNickname) {
                 let option = document.createElement('option');
                 option.value = `${el.name} (${el.nickname})`
                 list?.appendChild(option);
             }
-            // let option = document.createElement('option');
-            //     option.value = `${el.name} (${el.nickname})`
-            //     list?.appendChild(option);
-            // console.log(el)
         });
     }
 

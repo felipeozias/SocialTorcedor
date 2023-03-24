@@ -35,27 +35,22 @@ export default function MainGroupSection(props: IProps) {
 
     async function requestDb() {
         let res = await apiRequestGroups();
-        // console.log(res)
         if (res.succesfull) {
             setReqGroups(res.data);
             setReqSuccess(res.succesfull);
-            //console.log(res.data);
         }
     }
 
     function addGroup() {
-        // console.log("Criar grupo!")
         toggle();
     }
 
     let filteredGroupsOwner = reqGroups.filter((group) =>
         group.admin._id.includes(userId)
     );
-    // console.log(filteredGroupsOwner)
     let filteredGroupsIn = reqGroups.map((group) =>
         group.members.filter((users) => users._id.includes(userId))
     );
-    // console.log(filteredGroupsIn)
     let positionArray: Array<number> = [];
     let c = 0;
     filteredGroupsIn.forEach((el) => {
@@ -64,18 +59,14 @@ export default function MainGroupSection(props: IProps) {
         }
         c++;
     });
-    // console.log(positionArray);
     let groupsIn: IGetGroups[] = [];
     positionArray.forEach((el) => {
         groupsIn.push(reqGroups[el]);
     });
-    // console.log(groupsIn);
 
     const socket = connect();
 
     socket.on("group", (data: any) => {
-        // console.log(data)
-        // console.log(data.length)
         if (data["action"] == "delete") {
             setTimeout(() => {
                 setChange(true);
@@ -95,13 +86,11 @@ export default function MainGroupSection(props: IProps) {
 
     useEffect(() => {
         if (change == true) {
-            // console.log("Grupo modificado!");
             requestDb();
             setTimeout(() => {
                 setChange(false);
             }, 1000);
         } else {
-            // console.log("Estado voltou ao de origem")
         }
     }, [change]);
 
@@ -114,7 +103,6 @@ export default function MainGroupSection(props: IProps) {
                         "#groupSection"
                     ) as HTMLElement;
                     const scrollTop = groupObj.scrollTop;
-                    // console.log(scrollTop)
                     if (scrollTop == 0) {
                         setPositionPopUp(80);
                     } else {

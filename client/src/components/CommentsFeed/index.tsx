@@ -9,7 +9,7 @@ export default function CommentsFeed(comments: ICommentFeed[]): JSX.Element {
         if (comments) {
             comments.forEach((comment) => {
                 components.push(
-                    <StyledComments link={`${process.env.REACT_APP_API}/assets/${comment.author.pathImage ? comment.author.pathImage : comment.author.team}`}>
+                    <StyledComments id={comment?.author?.team} link={`${process.env.REACT_APP_API}/assets/${comment.author.pathImage ? comment.author.pathImage : comment?.author?.team.toLowerCase().replace('-', '').replace(' ', '') + '.png'}`}>
                         <div id='img' />
                         <div>
                             <span>{`${comment.author.name}`}

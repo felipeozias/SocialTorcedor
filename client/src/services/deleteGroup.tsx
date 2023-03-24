@@ -2,7 +2,6 @@ import { getCookie } from "../utils/cookies";
 
 
 export async function deleteGroupService(userData: {groupId: string}) {
-    // console.log(userData);
     try {
 
         const url: string = `${process.env.REACT_APP_GROUP_LOCAL}/${userData.groupId}` as string;
@@ -20,7 +19,6 @@ export async function deleteGroupService(userData: {groupId: string}) {
         }
 
         const data = await res.json();
-        console.log(data);
 
         return { status: res.status, data: data };
     } catch (err) {

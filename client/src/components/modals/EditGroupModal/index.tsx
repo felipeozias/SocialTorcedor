@@ -40,13 +40,11 @@ export default function EditGroupModal(props: IEditModal) {
         if (event.files && event.files[0]) {
             setFileUrl(URL.createObjectURL(event.files[0]));
         }
-        // console.log(event.files);
     }
-    
+
     function updateValue() {
         let inputUser = document.querySelector("#input-name-group") as HTMLInputElement;
         setGroupName(inputUser.value)
-        console.log(groupName)
     }
 
     async function requestDb() {
@@ -73,17 +71,16 @@ export default function EditGroupModal(props: IEditModal) {
         usersAddedNick = [];
         props.group?.members.map(user => {
             if (usersAdded.includes(user._id)) {
-                // console.log("a")
             } else {
                 usersAdded.push(user._id);
                 usersAddedNick.push(user.nickname);
             }
         })
-    },[props.isOpen])
+    }, [props.isOpen])
 
     useEffect(() => {
         setUpdateMembers(false);
-        
+
     }, [updateMembers]);
 
     function updateGroupTemp() {
@@ -100,21 +97,17 @@ export default function EditGroupModal(props: IEditModal) {
                     let userObj = usersDb.filter(name => name.nickname.includes(userNick))
                     userId = userObj[0]._id
                 }
-                console.log(userNick)
-                console.log(userId)
             } else {
                 userNick = user.value
             }
         }
         if (userNick === "") {
-            // console.log("String vazia...");
             setNotifMessage("Campo vazio, digite/escolha um usuário...");
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else if (usersAdded.includes(userId)) {
-            // console.log(`Usuário: ${user.value} já adicionado!`);
             setNotifMessage(`Usuário: "${user.value}" já adicionado!`);
             setIsOpen(true);
             setTimeout(() => {
@@ -126,7 +119,6 @@ export default function EditGroupModal(props: IEditModal) {
                 (userList) => userList.nickname === `${userNick}`
             ) === false
         ) {
-            // console.log(`Usuário: ${user.value} inexistente...`);
             setNotifMessage(`Usuário: "${user.value}" inexistente...`);
             setIsOpen(true);
             setTimeout(() => {
@@ -136,7 +128,6 @@ export default function EditGroupModal(props: IEditModal) {
         } else {
             usersAdded.push(userId);
             usersAddedNick.push(userNick);
-            // console.log(`${user.value} Adicionado com sucesso!`);
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
             setTimeout(() => {
@@ -144,7 +135,6 @@ export default function EditGroupModal(props: IEditModal) {
             }, 2000);
             user.value = "";
         }
-        // console.log(usersAdded);
     }
 
     function cancelUpdateGroupTemp() {
@@ -158,62 +148,57 @@ export default function EditGroupModal(props: IEditModal) {
         <>
             {props.isOpen && (
                 <>
-                    <ModalOverlay isOpen={props.isOpen} toggle={() => {}} index={1001}/>
+                    <ModalOverlay isOpen={props.isOpen} toggle={() => { }} index={1001} />
                     <ModalContainer onClick={() => {
-                        // console.log(usersAdded)
-                        // console.log(usersAddedNick)
                     }}
                         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 
-                        const formData = new FormData(event.target as HTMLFormElement);
-                        const data = Object.fromEntries(formData.entries());
-                        console.log(data)
-                        interface IPicture {
-                            size: number,
-                            name: string
-                        }
-                        let picture: IPicture = data["photo"] as any;
-                        
-                        let sendUpdateGroup: IUpdateGroup= {
-                            admin: props.group?.admin._id!,
-                            groupId: props.group?._id!,
-                            title: groupName == "" ? props.group?.title! : groupName,
-                            members: usersAdded,
-                            photo: picture.size > 0 ? data["photo"] : props.group?.pathImage
-                        }
-                        // console.log(sendUpdateGroup)
-                        // console.log(props.group?.pathImage)
-                        // console.log(fileUrl)
+                            const formData = new FormData(event.target as HTMLFormElement);
+                            const data = Object.fromEntries(formData.entries());
 
-                        updateGroupService(sendUpdateGroup).then((res) => {
-                            if (res?.status == 200) {
-                                setNotifMessage(`Grupo atualizado com sucesso!`);
-                                props.setChanged(true);
-                            } else {
-                                setNotifMessage(`[ERRO]${res?.status}`);
+                            interface IPicture {
+                                size: number,
+                                name: string
                             }
-                            setIsOpen(true);
-                            setTimeout(() => {
-                            setIsOpen(false);
-                            props.toggle();
-                            usersAdded = [];
-                            usersAddedNick = [];
-                            }, 2000);
-                        });
-                        
-                        event.preventDefault();
+                            let picture: IPicture = data["photo"] as any;
 
-                    }}>
-                    <NotificationModal
-                        message={notifMessage}
-                        isOpen={isOpen}
-                        toggle={props.toggle}
-                        index={0}
-                        leftPosition={10}
-                        bottomPosition={45}
-                    />
+                            let sendUpdateGroup: IUpdateGroup = {
+                                admin: props.group?.admin._id!,
+                                groupId: props.group?._id!,
+                                title: groupName == "" ? props.group?.title! : groupName,
+                                members: usersAdded,
+                                photo: picture.size > 0 ? data["photo"] : props.group?.pathImage
+                            }
+
+                            updateGroupService(sendUpdateGroup).then((res) => {
+                                if (res?.status == 200) {
+                                    setNotifMessage(`Grupo atualizado com sucesso!`);
+                                    props.setChanged(true);
+                                } else {
+                                    setNotifMessage(`[ERRO]${res?.status}`);
+                                }
+                                setIsOpen(true);
+                                setTimeout(() => {
+                                    setIsOpen(false);
+                                    props.toggle();
+                                    usersAdded = [];
+                                    usersAddedNick = [];
+                                }, 2000);
+                            });
+
+                            event.preventDefault();
+
+                        }}>
+                        <NotificationModal
+                            message={notifMessage}
+                            isOpen={isOpen}
+                            toggle={props.toggle}
+                            index={0}
+                            leftPosition={10}
+                            bottomPosition={45}
+                        />
                         <SectionLeft>
-                            <InputName 
+                            <InputName
                                 id="input-name-group"
                                 type="text"
                                 placeholder={props.group?.title}
@@ -222,27 +207,27 @@ export default function EditGroupModal(props: IEditModal) {
                                 onChange={updateValue}
                             />
                             <UsersContainer>
-                                {usersAddedNick.map(users => 
-                                <UsersListContainer>
-                                    {users} 
-                                    <RemoveIcon imageUrl={removeIcon} onClick={() => {
-                                        console.log(usersAddedNick.indexOf(users))
-                                        const index = usersAddedNick.indexOf(users);
-                                    
-                                        usersAdded.splice(index, 1)
-                                        usersAddedNick.splice(index, 1)
-                                        setUpdateMembers(true);
-                                    }}/>
-                                </UsersListContainer>)}
+                                {usersAddedNick.map(users =>
+                                    <UsersListContainer>
+                                        {users}
+                                        <RemoveIcon imageUrl={removeIcon} onClick={() => {
+
+                                            const index = usersAddedNick.indexOf(users);
+
+                                            usersAdded.splice(index, 1)
+                                            usersAddedNick.splice(index, 1)
+                                            setUpdateMembers(true);
+                                        }} />
+                                    </UsersListContainer>)}
                             </UsersContainer>
                             <DataList />
-                            <ButtonAdd 
+                            <ButtonAdd
                                 onClick={updateGroupTemp}
                                 type="button"
                             >
                                 Adicionar
                             </ButtonAdd>
-                            <ButtonAdd 
+                            <ButtonAdd
                                 onClick={cancelUpdateGroupTemp}
                                 type="button"
                             >
@@ -250,7 +235,7 @@ export default function EditGroupModal(props: IEditModal) {
                             </ButtonAdd>
                         </SectionLeft>
                         <SectionRight>
-                        <LabelFile htmlFor="fileImage">
+                            <LabelFile htmlFor="fileImage">
                                 Selecionar Imagem{" "}
                             </LabelFile>
                             <InputFile
@@ -261,7 +246,7 @@ export default function EditGroupModal(props: IEditModal) {
                                 onChange={changeImg}
                             />
                             <Img src={fileUrl} alt="preview image" />
-                            <ButtonAdd 
+                            <ButtonAdd
                                 type="submit"
                             >
                                 Atualizar Grupo

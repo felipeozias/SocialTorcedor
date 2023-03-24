@@ -33,8 +33,6 @@ const SelectType: React.FC<TimeSelectProps> = ({ selectedTimeId, name, validates
       let result = await data.map(({ time }: any) => time)
       let times = await result.map(({ time_id, nome_popular }: any) => ({ time_id, nome_popular }));
       setTimes(times);
-
-      // console.log(times);
     }
     fetchTimes();
   }, []);

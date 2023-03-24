@@ -18,7 +18,6 @@ interface Iprops {
 
 export default function MainUsers(props: Iprops): JSX.Element {
     function startChat() {
-        // console.log("Iniciar chat")
     }
 
     return (
