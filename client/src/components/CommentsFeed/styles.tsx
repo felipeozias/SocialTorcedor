@@ -13,6 +13,8 @@ export const StyledComments = styled.main <Iprops> `
   #img{
     background-image: url(${(props) => props.link});
     background-size: cover;
+    background-position:center;
+    background-repeat: no-repeat;
     border-radius: 50%;
     margin-right: 5px;
     width: 30px;

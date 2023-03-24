@@ -62,7 +62,6 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
-            // console.log('&&&&&&&&&&&', data);
 
             if (data.action === "insert" && data.target === "post") {
                 posts.unshift(data.data);
@@ -128,6 +127,16 @@ export default function Main(): JSX.Element {
                 chat.push(res.data);
             }
         });
+    }, []);
+
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem('hasReloaded');
+        if (!hasReloaded) {
+            sessionStorage.setItem('hasReloaded', 'true');
+            window.location.reload();
+        } else {
+            sessionStorage.removeItem('hasReloaded');
+        }
     }, []);
 
     const membersName = () => {
