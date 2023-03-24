@@ -1,6 +1,10 @@
 import { getCookie } from "../utils/cookies";
+import { connect } from "./socket";
 
 export default async function exit() {
+    // const socket = connect();
+    // socket.disconnect();
+
     try {
         const options = {
             method: "DELETE",

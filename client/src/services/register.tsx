@@ -1,4 +1,4 @@
-/// Lembrar de fazer alguma pagina de erro
+import { connect } from "./socket";
 
 export default async function registerService(userData: any) {
     if(userData.password !== userData.password2){

@@ -16,6 +16,7 @@ import { useContext } from "react";
 import DataUserForHeader from "../contexts/DataUserForHeader";
 import { connect } from "../../services/socket";
 
+const socket = connect();
 export default function MainUserSection(): JSX.Element {
     let [usersF, setUsersF] = useState([] as IUser[]);
     let [usersDb, setUsersDb] = useState([] as IUser[]);
@@ -24,14 +25,13 @@ export default function MainUserSection(): JSX.Element {
 
     const { id } = useContext(DataUserForHeader);
 
-    const socket = connect();
-
-    socket.on("feed", (data: any) => {
-        if (data["target"] == "user") {
-            // console.log("alterou usuario")
-            setChanged(true);
-        }
-    });
+    useEffect(() => {
+        socket.on("feed", (data: any) => {
+            if (data["target"] === "user") {
+                setChanged(true);
+            }
+        });
+    }, [])
 
     const userId = id.toString();
 
@@ -118,8 +118,8 @@ export default function MainUserSection(): JSX.Element {
                         name={users.name.split(" ")[0]}
                         nickname={users.nickname}
                         teamUrl={
-                            users.pathImage == undefined
-                                ? `${users.team.toLowerCase()}.png`
+                            users.pathImage === undefined
+                                ? `${users.team.toLowerCase().replace('-', '').replace(' ', '')}.png`
                                 : users.pathImage
                         }
                     />

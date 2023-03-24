@@ -5,7 +5,7 @@ let socket: any = null;
 
 export function connect() {
     if (socket === null) {
-        socket = get();
+        socket = get();        
     }
     return socket;
 }

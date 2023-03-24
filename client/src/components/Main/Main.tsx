@@ -35,18 +35,20 @@ interface IAuthor {
 }
 
 let dataG: any = [];
+let idClick: string = "";
 
-let posts: any[] = [];
+// let posts: any[] = [];
 // ----- socket Feed -----
-const socket = connect();
+// const socket: any;
 // -----------------------
 
 export default function Main(): JSX.Element {
+    const socket = connect();
     const { logo, id } = useContext(DataUserForHeader);
     const [dataFeeds, setDataFeeds] = useState<any[]>([]);
     const [chatAll, setChatAll] = useState<Array<IChat>>([]);
     const [groups, setGroups] = useState<any>();
-    const [groupId, setGroupId] = useState();
+    const [groupId, setGroupId] = useState("");
     let posts: any[] = [];
     let fail;
 
@@ -57,10 +59,10 @@ export default function Main(): JSX.Element {
     });
 
     // ----- socket Feet -----
-    const socket = connect();
 
     useEffect(() => {
         socket.on("feed", (data: any) => {
+
             if (data.action === "insert" && data.target === "post") {
                 posts.unshift(data.data);
                 setDataFeeds([]);
@@ -99,7 +101,7 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         async function getGroups() {
-            if (groupId) {
+            if (groupId && groupId !== "") {
                 dataG = await chat(groupId);
                 setGroups(dataG.data);
                 fail = dataG.failure;
@@ -119,10 +121,22 @@ export default function Main(): JSX.Element {
 
     useEffect(() => {
         socket.on("chat", (res: any) => {
-            const chat = dataG.data.data.chat;
-            setChatAll([...chat, res.data]);
-            chat.push(res.data);
+            if (res.group._id === idClick) {
+                const chat = dataG.data.data.chat;
+                setChatAll([...chat, res.data]);
+                chat.push(res.data);
+            }
         });
+    }, []);
+
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem('hasReloaded');
+        if (!hasReloaded) {
+            sessionStorage.setItem('hasReloaded', 'true');
+            window.location.reload();
+        } else {
+            sessionStorage.removeItem('hasReloaded');
+        }
     }, []);
 
     const membersName = () => {
@@ -134,6 +148,8 @@ export default function Main(): JSX.Element {
     };
 
     function clickGroup(e: any) {
+        idClick = e.target.id as string;
+        setGroupId("");
         setGroupId(e.target.id);
     }
 
@@ -147,9 +163,13 @@ export default function Main(): JSX.Element {
                     <FeedCommentLike
                         src={
                             feed?.author?.pathImage !== undefined
-                                ? "https://api.socialtorcedor.shop/assets/" +
-                                  feed?.author?.pathImage
-                                : "https://api.socialtorcedor.shop/assets/user_default.jpg"
+                                ? `${process.env.REACT_APP_API}/assets/${feed?.author?.pathImage}`
+                                : `${
+                                      process.env.REACT_APP_API
+                                  }/assets/${feed?.author?.team
+                                      .toLocaleLowerCase()
+                                      .replace("-", " ")
+                                      .replace(" ", "")}.png`
                         }
                         user_name={feed?.author?.name}
                         time_publication={formatTime(

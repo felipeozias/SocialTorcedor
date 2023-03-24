@@ -70,12 +70,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                 if (inputRef.current && inputRef.current.value !== '') {
                     content = inputRef.current.value
                 }
-
-                // if (content.length < 5) {
-                //     setModalAlert({ content: `Escreva pelo menos uma descrição com 5 caracteres`, color: 'red', times: 2 });
-                //     return;
-                // }
-
+                
                 props.click(
                     e,
                     image,
@@ -83,6 +78,7 @@ export default function FeedBarInput(props: IPropsFeedBarInput): JSX.Element {
                     id,
                     inputRef
                 );
+                setImage('');
             } else {
                 setModalAlert({ content: `Insira uma foto!`, color: 'red', times: 2 });
             }

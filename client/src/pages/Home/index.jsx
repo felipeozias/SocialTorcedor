@@ -28,11 +28,11 @@ export default function Home() {
                 logo:
                     user.data && user.data.pathImage
                         ? `${process.env.REACT_APP_API}/assets/${user.data.pathImage}`
-                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                        : `${process.env.REACT_APP_API}/assets/${user?.data?.team.toLocaleLowerCase().replace('-', '').replace(' ', '')}.png`,
                 alt: "Usuário",
                 name: user.data ? user.data.name : "",
                 nickname: user.data ? user.data.nickname : "",
-                team: user.data ? user.data.team : "",
+                team: user.data ? user?.data?.team : "",
             }}
         >
             <Header complete={true} />

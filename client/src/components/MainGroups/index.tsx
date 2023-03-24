@@ -55,12 +55,10 @@ export default function MainGroups(props: Iprops): JSX.Element {
     const userId = id.toString();
 
     function exit() {
-        // console.log("Sair do grupo")
         const userData = {
             groupId: props.groupId,
             userId: userId,
         };
-        // console.log(userData);
         // exitGroup(userData);
         setNotifMessage(`Saindo em 3..`);
         setIsOpenNotif(true);
@@ -88,14 +86,12 @@ export default function MainGroups(props: Iprops): JSX.Element {
         }
         toggle();
     }
-    function activateBorder() {
-        console.log("id do grupo", props.groupId);
-        // setBorderActive("solid");
-    }
+    // function activateBorder() {
+    //     console.log("id do grupo", props.groupId);
+    //     // setBorderActive("solid");
+    // }
 
     function deleteGroup() {
-        // console.log("delete")
-        // console.log(props.groupId);
 
         deleteGroupService({ groupId: props.groupId }).then((res) => {
             switch (res?.status) {

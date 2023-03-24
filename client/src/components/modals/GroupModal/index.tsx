@@ -40,7 +40,6 @@ export default function GroupModal(props: ICreateGroupModal) {
         if (event.files && event.files[0]) {
             setFileUrl(URL.createObjectURL(event.files[0]));
         }
-        console.log(event.files);
     }
     
     async function requestDb() {
@@ -70,21 +69,17 @@ export default function GroupModal(props: ICreateGroupModal) {
                     let userObj = usersDb.filter(name => name.nickname.includes(userNick))
                     userId = userObj[0]._id
                 }
-                console.log(userNick)
-                console.log(userId)
             } else {
                 userNick = user.value
             }
         }
         if (userNick === "") {
-            // console.log("String vazia...");
             setNotifMessage("Campo vazio, digite/escolha um usuário...");
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } else if (usersAdded.includes(userId)) {
-            // console.log(`Usuário: ${user.value} já adicionado!`);
             setNotifMessage(`Usuário: "${user.value}" já adicionado!`);
             setIsOpen(true);
             setTimeout(() => {
@@ -96,7 +91,6 @@ export default function GroupModal(props: ICreateGroupModal) {
                 (userList) => userList.nickname === `${userNick}`
             ) === false
         ) {
-            // console.log(`Usuário: ${user.value} inexistente...`);
             setNotifMessage(`Usuário: "${user.value}" inexistente...`);
             setIsOpen(true);
             setTimeout(() => {
@@ -106,7 +100,6 @@ export default function GroupModal(props: ICreateGroupModal) {
         } else {
             usersAdded.push(userId);
             usersAddedNick.push(userNick);
-            // console.log(`${user.value} Adicionado com sucesso!`);
             setNotifMessage(`${user.value} Adicionado com sucesso!`);
             setIsOpen(true);
             setTimeout(() => {
@@ -114,7 +107,6 @@ export default function GroupModal(props: ICreateGroupModal) {
             }, 2000);
             user.value = "";
         }
-        // console.log(usersAdded);
     }
 
     function updateValue() {
@@ -147,20 +139,15 @@ export default function GroupModal(props: ICreateGroupModal) {
                         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                             
                             const formData = new FormData(e.target as HTMLFormElement);
-                            // console.log(formData);
                             const data = Object.fromEntries(formData.entries());
-                            // console.log(data);
                             
-                            // console.log(formData);
                             let sendGroupApi: IRegisterGroup = {
                                 title: groupName,
                                 admin: userId,
                                 members: usersAdded,
                                 photo: data["photo"]
                             }
-                            
-                            // console.log(sendGroupApi)
-                            
+                                                        
                             createGroup(sendGroupApi).then((res) => {
                                 if (res?.status == 201) {
                                     setNotifMessage(`Grupo criado com sucesso!`);
