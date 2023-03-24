@@ -53,7 +53,7 @@ export default function FeedCommentLike(props: IProps): JSX.Element {
             <StyledCommetPost>{props.comment_post}</StyledCommetPost>
 
             <StyledImgPost
-                src={`${process.env.REACT_APP_API}/assets/` + props.img_post}
+                src={`${process.env.REACT_APP_API}/assets/${props.img_post}`}
                 alt="Imagem da publicação"
             ></StyledImgPost>
 

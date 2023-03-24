@@ -19,10 +19,10 @@ export default function IconAndEmail() {
 
     return (
         <StyledContainer onClick={showModal}>
-            <IconImage src={logo.toString()} alt={alt.toString()} />
+            <IconImage src={logo} alt={alt} />
             <PerfilNameEmail
-                name={name.toString()}
-                nickname={nickname.toString()}
+                name={name}
+                nickname={nickname}
             />
             <LogoExpand src={!menu ? ExpandSvg : CloseMenuImg} />
             {menu && <MenuHeader />}

@@ -11,6 +11,7 @@ export interface IGetFeed {
         _id: string | undefined,
         nickname: string,
         name: string,
+        team: string,
     },
 }
 
@@ -24,5 +25,6 @@ export interface ICommentFeed {
         nickname: string,
         name: string,
         pathImage: string
+        team: string,
     },
 }
