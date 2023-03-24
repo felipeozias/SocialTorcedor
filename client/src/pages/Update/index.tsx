@@ -21,6 +21,7 @@ export default function Update(): JSX.Element {
     const [password, setPassword] = useState(true);
     const [modalAlert, setModalAlert] = useState({ content: ``, color: "", times: 2, });
 
+
     useEffect(() => {
         if (ok) navigate("/home");
     }, [ok, navigate]);

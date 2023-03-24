@@ -1,12 +1,11 @@
 import { connect } from "./socket";
 
 export default async function registerService(userData: any) {
-    // const socket = connect();
-    // socket.disconnect();
-
-    if (userData.password !== userData.password2) {
-        return { auth: false, isNoAuth: true, status: 400, password: false };
+    if(userData.password !== userData.password2){
+        return {auth: false, isNoAuth: true, status: 400, password: false}
     }
+
+    console.error(userData.errors);
 
     try {
         const options = {
@@ -17,18 +16,17 @@ export default async function registerService(userData: any) {
 
         const url: string = process.env.REACT_APP_REGISTER as string;
         const res = await fetch(url, options);
+        console.log(res);
+        const data = await res.json();
 
         if (!res.ok) {
-            console.error("Erro ao fazer requisição", await res.json());
-            return {
-                auth: false,
-                isNoAuth: true,
-                status: res.status,
-                password: true,
-            };
+            console.log("Erro ao fazer requisição", data.errors);
+           
+            
+            return { auth: false, isNoAuth: true, status: res.status, password: true, error:data.errors[0]};
         }
 
-        const data = await res.json();
+        
         document.cookie =
             "token=; expires=" + new Date(2010, 0, 1) + "; path=/";
 
@@ -36,12 +34,12 @@ export default async function registerService(userData: any) {
             new Date().getTime() + 24 * 60 * 60 * 1000
         )}; path=/;`;
 
-        return { auth: true, status: res.status, data: data, password: true };
+        return { auth: true, status: res.status, data: data, password: true, error: ""};
     } catch (err) {
-        alert(
-            "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
-        );
-        console.error(err);
-        return { auth: false, status: 500, data: [], password: true };
+        // alert(
+        //     "Houve um erro ao realizar o cadastro. Por favor tente novamente!"
+        // );
+        console.log(err);
+        return { auth: false, status: 500, data: [], password: true,  error: ""};
     }
 }

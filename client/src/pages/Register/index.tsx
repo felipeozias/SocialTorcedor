@@ -10,7 +10,8 @@ export default function Register(): JSX.Element {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(false);
     const [authError, setAuthError] = useState(false);
-    const [password, setPassword] = useState(true);
+    const [password, setPassword] = useState(true);  
+    const [error, setError] = useState("");  
 
     useEffect(() => {
         if (auth) navigate("/home");
@@ -18,6 +19,10 @@ export default function Register(): JSX.Element {
 
     async function register(e: any) {
         const req = await registerService(e);
+
+        
+        setError(req.error? req.error: "");
+        
 
         if(!req.password){
             setPassword(false);
@@ -30,6 +35,8 @@ export default function Register(): JSX.Element {
         }
 
     }
+
+
     return (
         <>
             <BackgroundFan />
@@ -37,7 +44,8 @@ export default function Register(): JSX.Element {
                 <FormRegister
                     submit={(e: any) => register(e)}
                     noAuth={authError}
-                    password={password}
+                    password={password}  
+                    error={error}
                 />
             </TemplateMain>
             <Footer />
