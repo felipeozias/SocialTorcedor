@@ -27,8 +27,7 @@ export default function MainUserSection(): JSX.Element {
     const socket = connect();
 
     socket.on("feed", (data: any) => {
-        if (data["target"] == "user") {
-            // console.log("alterou usuario")
+        if (data["target"] === "user") {
             setChanged(true);
         }
     });
@@ -118,8 +117,8 @@ export default function MainUserSection(): JSX.Element {
                         name={users.name.split(" ")[0]}
                         nickname={users.nickname}
                         teamUrl={
-                            users.pathImage == undefined
-                                ? `${users.team.toLowerCase()}.png`
+                            users.pathImage === undefined
+                                ? `${users.team.toLowerCase().replace('-', '').replace(' ', '')}.png`
                                 : users.pathImage
                         }
                     />
